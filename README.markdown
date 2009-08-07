@@ -8,3 +8,8 @@ dotiw is a plugin for Rails that overrides the default `distance_of_time_in_word
 Better than "about 1 year", am I right? Of course I am.
 
 This takes the same options plus an additional one on the end for passing options to the output (which uses `to_sentence`). 
+
+## Contributors
+
+chendo - for talking through it with me and drawing on the whiteboard
+Derander - correct Spanish translations

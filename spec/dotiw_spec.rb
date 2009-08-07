@@ -32,12 +32,16 @@ describe "A better distance_of_time_in_words" do
       it "debe hablar español" do
         I18n.locale = :es
         hash = distance_of_time_in_words_hash(Time.now, Time.now + 5.days)  
-        hash["día"].should eql(5)
+        hash["días"].should eql(5)
       end
     end
   end
   
   describe "real version" do
+    it "debe hablar español" do
+      distance_of_time_in_words(Time.now, Time.now + 5.days, true, :locale => "es").should eql("5 días")
+    end
+    
     [
       [Time.now, Time.now + 5.days + 3.minutes, "5 days and 3 minutes"],
       [Time.now, Time.now + 1.minute, "1 minute"],
@@ -53,6 +57,17 @@ describe "A better distance_of_time_in_words" do
     ].each do |start, finish, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true).should eql(output)
+      end
+    end
+  end
+  
+  describe "with output options" do
+   [
+      # Any numeric sequence is merely coincidental.
+      [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, { :except => "minutes" }, "1 year, 2 months, 3 days, 4 hours, and 6 seconds"]
+    ].each do |start, finish, options, output|
+      it "should be #{output}" do
+        distance_of_time_in_words(start, finish, true, options).should eql(output)
       end
     end
   end
