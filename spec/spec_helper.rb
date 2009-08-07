@@ -1,6 +1,7 @@
 require 'rubygems'
 $:.unshift(File.join(File.dirname(__FILE__), "../lib"))
 
+require 'action_controller'
 require 'activesupport'
 require 'dotiw'
 require 'spec'

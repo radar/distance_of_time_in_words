@@ -3,6 +3,7 @@ require 'dotiw'
 
 describe "A better distance_of_time_in_words" do
   include ActionView::Helpers::DateHelper
+  include ActionView::Helpers::TextHelper
   
   before do
     I18n.locale = :en
@@ -14,7 +15,7 @@ describe "A better distance_of_time_in_words" do
   describe "hash version" do
     describe "giving correct numbers of" do
       
-      [:years, :months, :weeks, :days, :minutes, :seconds].each do |name|
+      [:years, :months, :days, :minutes, :seconds].each do |name|
         describe name do
           it "exactly" do
             hash = distance_of_time_in_words_hash(Time.now, Time.now + 1.send(name))
@@ -40,10 +41,18 @@ describe "A better distance_of_time_in_words" do
     [
       [Time.now, Time.now + 5.days + 3.minutes, "5 days and 3 minutes"],
       [Time.now, Time.now + 1.minute, "1 minute"],
-      [Time.now, Time.now + 10.years, "10 years"]
+      [Time.now, Time.now + 3.years, "3 years"],
+      [Time.now, Time.now + 10.years, "10 years"],
+      [Time.now, Time.now + 3.hour, "3 hours"],
+      [Time.now, Time.now + 13.months, "1 year and 1 month"],
+      # Any numeric sequence is merely coincidental.
+      [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
+      ["2009-3-16".to_time, "2008-4-14".to_time, "11 months and 2 days"],
+      ["2009-3-16".to_time + 1.minute, "2008-4-14".to_time, "11 months, 2 days, and 1 minute"],
+      ["2009-4-14".to_time, "2008-3-16".to_time, "1 year and 29 days"]
     ].each do |start, finish, output|
       it "should be #{output}" do
-        distance_of_time_in_words(start, finish).should eql(output)
+        distance_of_time_in_words(start, finish, true).should eql(output)
       end
     end
   end
