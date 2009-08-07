@@ -28,6 +28,27 @@ describe "A better distance_of_time_in_words" do
           end    
         end
       end
+      
+      it "should be happy with lots of measurements" do
+        hash = distance_of_time_in_words_hash(Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds)
+        hash[:years].should eql(1)
+        hash[:months].should eql(2)
+        hash[:days].should eql(3)
+        hash[:hours].should eql(4)
+        hash[:minutes].should eql(5)
+        hash[:seconds].should eql(6)
+      end
+      
+      it "debe estar contento con las mediciones en español" do
+        hash = distance_of_time_in_words_hash(Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, :locale => "es")
+        hash[:años].should eql(1)
+        hash[:meses].should eql(2)
+        hash[:días].should eql(3)
+        hash[:horas].should eql(4)
+        hash[:minutos].should eql(5)
+        hash[:segundos].should eql(6)
+      end
+        
     
       it "debe hablar español" do
         I18n.locale = :es
@@ -66,7 +87,12 @@ describe "A better distance_of_time_in_words" do
   describe "with output options" do
    [
       # Any numeric sequence is merely coincidental.
-      [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, { :except => "minutes" }, "1 year, 2 months, 3 days, 4 hours, and 6 seconds"]
+      [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, { :except => "minutes" }, "1 year, 2 months, 3 days, 4 hours, and 6 seconds"],
+      [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, { :words_connector => " - " }, "1 year - 2 months - 3 days - 4 hours - 5 minutes, and 6 seconds"],
+      [Time.now, Time.now + 5.minutes + 6.seconds, { :two_words_connector => " - " }, "5 minutes - 6 seconds"],
+      [Time.now, Time.now + 4.hours +  5.minutes + 6.seconds, { :last_word_connector => " - " }, "4 hours, 5 minutes - 6 seconds"],
+      [Time.now, Time.now + 1.hour + 1.minute, { :except => "minutes"}, "1 hour"],
+      [Time.now, Time.now + 1.hour + 1.day + 1.minute, { :except => ["minutes", "hours"]}, "1 day"]
     ].each do |start, finish, options, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true, options).should eql(output)
