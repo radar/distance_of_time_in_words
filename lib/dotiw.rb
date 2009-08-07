@@ -7,8 +7,18 @@ module ActionView
         to_time = to_time.to_time if to_time.respond_to?(:to_time)
         distance = (from_time - to_time).abs
         I18n.with_options :locale => options[:locale] do |locale|
-          while distance > 0  
-            if distance >= 1.month 
+          while distance > 0
+            if distance < 1.minute
+              output[locale.t(:seconds, :default => "seconds")] = distance.to_i
+              distance = 0
+            elsif distance < 1.hour
+              output[locale.t(:minutes, :default => "minutes")], distance = distance.divmod(1.minute)
+            elsif distance < 1.day
+              output[locale.t(:hours, :default => "hours")], distance = distance.divmod(1.hour)
+            elsif distance < 28.days
+              output[locale.t(:days, :default => "days")], distance = distance.divmod(1.day)
+              # Time has to be greater than a month
+            else
               smallest, largest = from_time < to_time ? [from_time, to_time] : [to_time, from_time]   
             
               months = (largest.year - smallest.year) * 12 + (largest.month - smallest.month)
@@ -34,17 +44,6 @@ module ActionView
               output[locale.t(:days, :default => "days")] = days
             
               total_days, distance = distance.divmod(1.day)
-            # elsif distance >= 1.week
-            #   output[locale.t(:weeks, :default => "weeks")], distance = distance.divmod(1.week)
-            elsif distance >= 1.day
-              output[locale.t(:days, :default => "days")], distance = distance.divmod(1.day)
-            elsif distance >= 1.hour
-              output[locale.t(:hours, :default => "hours")], distance = distance.divmod(1.hour)
-            elsif distance >= 1.minute
-              output[locale.t(:minutes, :default => "minutes")], distance = distance.divmod(1.minute)
-            else
-              output[locale.t(:seconds, :default => "seconds")] = distance.to_i
-              distance = 0
             end
           end
         end

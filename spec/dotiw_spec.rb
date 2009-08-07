@@ -53,7 +53,9 @@ describe "A better distance_of_time_in_words" do
       [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
       ["2009-3-16".to_time, "2008-4-14".to_time, "11 months and 2 days"],
       ["2009-3-16".to_time + 1.minute, "2008-4-14".to_time, "11 months, 2 days, and 1 minute"],
-      ["2009-4-14".to_time, "2008-3-16".to_time, "1 year and 29 days"]
+      ["2009-4-14".to_time, "2008-3-16".to_time, "1 year and 29 days"],
+      ["2009-2-01".to_time, "2009-3-01".to_time, "1 month"],
+      ["2008-2-01".to_time, "2008-3-01".to_time, "1 month"]
     ].each do |start, finish, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true).should eql(output)
