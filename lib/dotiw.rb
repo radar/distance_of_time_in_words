@@ -76,6 +76,12 @@ module ActionView
             name = hash[key] > 1 ? key : key.singularize
             output += ["#{hash[key]} #{name}"]
           end
+          
+          # maybe only grab the first few values
+          if options[:first]
+            output = output[0...options[:first]]
+            options.delete(:first)
+          end
         
           output.to_sentence(options)
         end    

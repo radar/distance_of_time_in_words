@@ -92,7 +92,9 @@ describe "A better distance_of_time_in_words" do
       [Time.now, Time.now + 5.minutes + 6.seconds, { :two_words_connector => " - " }, "5 minutes - 6 seconds"],
       [Time.now, Time.now + 4.hours +  5.minutes + 6.seconds, { :last_word_connector => " - " }, "4 hours, 5 minutes - 6 seconds"],
       [Time.now, Time.now + 1.hour + 1.minute, { :except => "minutes"}, "1 hour"],
-      [Time.now, Time.now + 1.hour + 1.day + 1.minute, { :except => ["minutes", "hours"]}, "1 day"]
+      [Time.now, Time.now + 1.hour + 1.day + 1.minute, { :except => ["minutes", "hours"]}, "1 day"],
+      [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, { :first => 2 }, "1 year and 2 months"],
+      [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, { :first => 10 }, "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"]
     ].each do |start, finish, options, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true, options).should eql(output)
