@@ -78,9 +78,9 @@ module ActionView
           end
           
           # maybe only grab the first few values
-          if options[:first]
-            output = output[0...options[:first]]
-            options.delete(:first)
+          if options[:precision]
+            output = output[0...options[:precision]]
+            options.delete(:precision)
           end
         
           output.to_sentence(options)
