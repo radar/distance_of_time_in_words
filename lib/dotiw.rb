@@ -66,11 +66,15 @@ module ActionView
                                locale.t(:hours, :default => "hours"),
                                locale.t(:minutes, :default => "minutes"),
                                locale.t(:seconds, :default => "seconds")].delete_if do |key|
-            hash[key].nil? || hash[key].zero? || (!options[:except].nil? && options[:except].include?(key))
+            hash[key].nil? || hash[key].zero? || 
+            # Remove the keys that we don't want.
+            (!options[:except].nil? && options[:except].include?(key)) ||
+            # keep the keys we only want.
+            (options[:only] && !options[:only].include?(key))
           end
-       
+          
           options.delete(:except)
-        
+          options.delete(:only)
           output = []
           time_measurements.each do |key|
             name = hash[key] > 1 ? key : key.singularize

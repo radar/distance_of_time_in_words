@@ -56,6 +56,20 @@ You can pass in a locale and it'll output it in whatever language you want (prov
     
 This will also be passed to `to_sentence`
 
+#### :only
+
+**Note that values passed into this option must be passed in as strings!**
+
+Only want a specific measurement of time? No problem!
+
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute, false, :only => "minutes")
+    => "1 minute"
+
+You only want some? No problem too!
+
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.day + 1.minute, false, :only => ["minutes", "hours"])
+    => "1 hour and 1 minute"
+
 #### :except
 
 **Note that values passed into this option must be passed in as strings!**
