@@ -54,7 +54,10 @@ module ActionView
         output
       end
       
+      alias_method :old_distance_of_time_in_words, :distance_of_time_in_words
+      
       def distance_of_time_in_words(from_time, to_time, include_seconds = false, options = {})
+        return old_distance_of_time_in_words(from_time, to_time, include_seconds, options) if options.delete(:vague)
         hash = distance_of_time_in_words_hash(from_time, to_time, options)
         hash.delete(:seconds) if !include_seconds
         I18n.with_options :locale => options[:locale] do |locale|

@@ -47,6 +47,10 @@ The third argument for this method is whether or not to include seconds. By defa
     
 Yes this could just be merged into the options hash but I'm leaving it here to ensure "backwards-compatibility".
 
+#### :vague
+
+Specify this if you want it to use the old `distance_of_time_in_words`. The value can be anything except `nil` or `false`.
+
 #### :locale
 
 You can pass in a locale and it'll output it in whatever language you want (provided you have translations, otherwise it'll default to English):
