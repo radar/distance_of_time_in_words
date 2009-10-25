@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ryan Bigg"]
-  s.date = %q{2009-10-18}
+  s.date = %q{2009-10-25}
   s.description = %q{Better distance_of_time_in_words for Rails}
   s.email = %q{radarlistener@gmail.com}
   s.extra_rdoc_files = [
@@ -24,7 +24,6 @@ Gem::Specification.new do |s|
      "dotiw.gemspec",
      "lib/dotiw.rb",
      "lib/i18n.rb",
-     "pkg/dotiw-0.2.4.gem",
      "rails/init.rb",
      "spec/dotiw_spec.rb",
      "spec/spec_helper.rb",
