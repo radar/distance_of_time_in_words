@@ -34,7 +34,7 @@ module ActionView
                 # Convert the last month to days and add to total
                 months -= 1
                 last_month = largest.advance(:months => -1)
-                days += Time.days_in_month(last_month.month, last_month.year)              
+                days += Time.days_in_month(last_month.month, last_month.year)
               end
             
               if months < 0
