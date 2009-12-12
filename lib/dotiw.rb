@@ -63,7 +63,7 @@ module ActionView
       alias_method :old_distance_of_time_in_words, :distance_of_time_in_words
       
       def distance_of_time(seconds, options = {})
-        hash = display_time_in_words(distance_of_time_hash(seconds), options)
+        display_time_in_words(distance_of_time_hash(seconds), options)
       end
       
       def display_time_in_words(hash, include_seconds = false, options = {})
