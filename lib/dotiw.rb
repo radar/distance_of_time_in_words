@@ -2,11 +2,17 @@ module ActionView
   module Helpers
     module DateHelper
       def distance_of_time_in_words_hash(from_time, to_time, options={})
-        output = HashWithIndifferentAccess.new
         from_time = from_time.to_time if from_time.respond_to?(:to_time)
         to_time = to_time.to_time if to_time.respond_to?(:to_time)
         
         distance = (from_time - to_time).abs
+        distance_of_time_hash(distance, from_time, to_time, options)
+      end
+      
+      def distance_of_time_hash(distance, from_time = nil, to_time = nil, options={})
+        output = HashWithIndifferentAccess.new
+        from_time ||= Time.now
+        to_time ||= from_time + distance.seconds
         I18n.with_options :locale => options[:locale] do |locale|
           while distance > 0
             if distance < 1.minute
@@ -56,9 +62,11 @@ module ActionView
       
       alias_method :old_distance_of_time_in_words, :distance_of_time_in_words
       
-      def distance_of_time_in_words(from_time, to_time, include_seconds = false, options = {})
-        return old_distance_of_time_in_words(from_time, to_time, include_seconds, options) if options.delete(:vague)
-        hash = distance_of_time_in_words_hash(from_time, to_time, options)
+      def distance_of_time(seconds, options = {})
+        hash = display_time_in_words(distance_of_time_hash(seconds), options)
+      end
+      
+      def display_time_in_words(hash, include_seconds = false, options = {})
         hash.delete(:seconds) if !include_seconds
         I18n.with_options :locale => options[:locale] do |locale|
           # Remove all the values that are nil.
@@ -90,8 +98,15 @@ module ActionView
             options.delete(:precision)
           end
         
+        
           output.to_sentence(options)
-        end    
+        end
+      end
+      
+      def distance_of_time_in_words(from_time, to_time, include_seconds = false, options = {})
+        return old_distance_of_time_in_words(from_time, to_time, include_seconds, options) if options.delete(:vague)
+        hash = distance_of_time_in_words_hash(from_time, to_time, options)
+        display_time_in_words(hash, include_seconds, options)
       end
     end
   end

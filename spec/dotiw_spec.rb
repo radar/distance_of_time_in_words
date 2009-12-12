@@ -12,6 +12,19 @@ describe "A better distance_of_time_in_words" do
     Time.zone.stub!(:now).and_return(time)
   end
   
+  describe "distance of time" do
+    [
+      [300, "5 minutes"],
+      [600, "10 minutes"],
+      [3600, "1 hour"],
+      [14515200, "5 months and 15 days"]
+    ].each do |number, result|
+      it "#{number} == #{result}" do
+        distance_of_time(number).should eql(result)
+      end
+    end
+  end
+  
   describe "hash version" do
     describe "giving correct numbers of" do
       

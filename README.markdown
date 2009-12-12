@@ -25,6 +25,13 @@ Don't like any format you're given? That's cool too! Here, have an indifferent h
 
 Indiferrent means that you can access all keys by their `String` or `Symbol` version.
 
+## distance\_of\_time
+
+If you have simply a number of seconds you can get the "stringified" version of this by using `distance_of_time`:
+
+    >> distance_of_time(300)
+    => "5 minutes"
+
 ### Options
 
 #### :locale
