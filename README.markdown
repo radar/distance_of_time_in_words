@@ -16,6 +16,13 @@ This takes the same options plus an additional one on the end for passing option
 
 Oh, and did I mention it supports I18n? Oh yeah.
 
+## distance\_of\_time
+
+If you have simply a number of seconds you can get the "stringified" version of this by using `distance_of_time`:
+
+    >> distance_of_time(300)
+    => "5 minutes"
+
 ## distance\_of\_time\_in\_words\_hash
 
 Don't like any format you're given? That's cool too! Here, have an indifferent hash version:
@@ -24,13 +31,6 @@ Don't like any format you're given? That's cool too! Here, have an indifferent h
     => {"days"=>3, "seconds"=>6, "minutes"=>5, "years"=>1, "hours"=>4, "months"=>2}
 
 Indiferrent means that you can access all keys by their `String` or `Symbol` version.
-
-## distance\_of\_time
-
-If you have simply a number of seconds you can get the "stringified" version of this by using `distance_of_time`:
-
-    >> distance_of_time(300)
-    => "5 minutes"
 
 ### Options
 

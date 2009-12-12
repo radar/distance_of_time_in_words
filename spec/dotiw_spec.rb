@@ -14,10 +14,11 @@ describe "A better distance_of_time_in_words" do
   
   describe "distance of time" do
     [
-      [300, "5 minutes"],
-      [600, "10 minutes"],
-      [3600, "1 hour"],
-      [14515200, "5 months and 15 days"]
+      [5.minutes.to_i, "5 minutes"],
+      [10.minutes.to_i, "10 minutes"],
+      [1.hour.to_i, "1 hour"],
+      [4.weeks.to_i, "4 weeks"],
+      [24.weeks.to_i, "5 months and 15 days"],
     ].each do |number, result|
       it "#{number} == #{result}" do
         distance_of_time(number).should eql(result)
