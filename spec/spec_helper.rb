@@ -1,8 +1,9 @@
+# encoding: utf-8
 require 'rubygems'
 $:.unshift(File.join(File.dirname(__FILE__), "../lib"))
 
 require 'action_controller'
-require 'activesupport'
+require 'active_support'
 require 'dotiw'
 require 'spec'
 

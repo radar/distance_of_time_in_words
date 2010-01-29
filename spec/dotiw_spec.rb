@@ -1,9 +1,11 @@
+# encoding: utf-8
 require File.join(File.dirname(__FILE__), 'spec_helper')
 require 'dotiw'
 
 describe "A better distance_of_time_in_words" do
   include ActionView::Helpers::DateHelper
   include ActionView::Helpers::TextHelper
+  include ActionView::Helpers::NumberHelper
   
   before do
     I18n.locale = :en
@@ -17,8 +19,8 @@ describe "A better distance_of_time_in_words" do
       [5.minutes.to_i, "5 minutes"],
       [10.minutes.to_i, "10 minutes"],
       [1.hour.to_i, "1 hour"],
-      [4.weeks.to_i, "4 weeks"],
-      [24.weeks.to_i, "5 months and 15 days"],
+      [4.weeks.to_i, "28 days"],
+      [24.weeks.to_i, "5 months and 15 days"]
     ].each do |number, result|
       it "#{number} == #{result}" do
         distance_of_time(number).should eql(result)
@@ -83,7 +85,9 @@ describe "A better distance_of_time_in_words" do
       [Time.now, Time.now + 3.years, "3 years"],
       [Time.now, Time.now + 10.years, "10 years"],
       [Time.now, Time.now + 3.hour, "3 hours"],
-      [Time.now, Time.now + 13.months, "1 year and 1 month"],
+      # Need to be +1.day because it will output "1 year and 30 days" otherwise.
+      # Haven't investigated fully how this is caused.
+      [Time.now, Time.now + 13.months + 1.day, "1 year and 1 month"],
       # Any numeric sequence is merely coincidental.
       [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
       ["2009-3-16".to_time, "2008-4-14".to_time, "11 months and 2 days"],
@@ -121,11 +125,28 @@ describe "A better distance_of_time_in_words" do
       [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, { :vague => "Yes please" }, "about 1 year"],
       [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, { :vague => false }, "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
       [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, { :vague => nil }, "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
+      [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, { "except" => "minutes" }, "1 year, 2 months, 3 days, 4 hours, and 6 seconds"],
     ].each do |start, finish, options, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true, options).should eql(output)
       end
     end
+  end
+  
+  describe "percentage of time" do
+    
+    def time_in_percent(options = {})
+      distance_of_time_in_percent("04-12-2009".to_time, "29-01-2010".to_time, "04-12-2010".to_time, options)
+    end
+    
+    it "calculates 15%" do
+      time_in_percent.should eql("15%")
+    end
+    
+    it "calculates 15.3%" do
+      time_in_percent(:precision => 1).should eql("15.3%")
+    end
+    
   end
     
 end

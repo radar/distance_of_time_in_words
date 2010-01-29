@@ -68,6 +68,7 @@ module ActionView
       end
       
       def display_time_in_words(hash, include_seconds = false, options = {})
+        options.symbolize_keys!
         hash.delete(:seconds) if !include_seconds
         I18n.with_options :locale => options[:locale] do |locale|
           # Remove all the values that are nil.
@@ -108,6 +109,12 @@ module ActionView
         return old_distance_of_time_in_words(from_time, to_time, include_seconds, options) if options.delete(:vague)
         hash = distance_of_time_in_words_hash(from_time, to_time, options)
         display_time_in_words(hash, include_seconds, options)
+      end
+      
+      def distance_of_time_in_percent(from_time, current_time, to_time, options = {})
+        options[:precision] ||= 0
+        distance = to_time - from_time
+        number_with_precision(((current_time - from_time) / distance) * 100, options).to_s + "%"
       end
     end
   end
