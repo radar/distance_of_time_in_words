@@ -12,6 +12,12 @@ Also if one of the measurement is zero it will not output it:
      
 Better than "about 1 year", am I right? Of course I am.
 
+"But Ryan!", you say, "What happens if the time is only in seconds but because of the default the seconds aren't shown? Won't it be blank?"
+"No!" I triumphantly reply:
+
+    >> distance_of_time_in_words(Time.now, Time.now + 1.second, false)
+    => "1 second"
+
 This takes the same options plus an additional one on the end for passing options to the output (which uses `to_sentence`). 
 
 Oh, and did I mention it supports I18n? Oh yeah.

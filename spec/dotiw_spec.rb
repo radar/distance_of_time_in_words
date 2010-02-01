@@ -131,6 +131,11 @@ describe "A better distance_of_time_in_words" do
         distance_of_time_in_words(start, finish, true, options).should eql(output)
       end
     end
+    
+    it "outputs seconds regardless of include_seconds setting if only seconds have passed" do
+      distance_of_time_in_words(Time.now, Time.now + 1.second).should eql("1 second")
+    end
+    
   end
   
   describe "percentage of time" do

@@ -69,7 +69,7 @@ module ActionView
       
       def display_time_in_words(hash, include_seconds = false, options = {})
         options.symbolize_keys!
-        hash.delete(:seconds) if !include_seconds
+        hash.delete(:seconds) if !include_seconds && hash[:minutes]
         I18n.with_options :locale => options[:locale] do |locale|
           # Remove all the values that are nil.
           time_measurements = [locale.t(:years, :default => "years"),
