@@ -94,7 +94,9 @@ describe "A better distance_of_time_in_words" do
       ["2009-3-16".to_time + 1.minute, "2008-4-14".to_time, "11 months, 2 days, and 1 minute"],
       ["2009-4-14".to_time, "2008-3-16".to_time, "1 year and 29 days"],
       ["2009-2-01".to_time, "2009-3-01".to_time, "1 month"],
-      ["2008-2-01".to_time, "2008-3-01".to_time, "1 month"]
+      ["2008-2-01".to_time, "2008-3-01".to_time, "1 month"],
+      # Regression tests
+      ["2010-2-22 3:30pm".to_time, "2010-2-22 4:30pm".to_time, "1 hour"]
     ].each do |start, finish, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true).should eql(output)
