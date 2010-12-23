@@ -1,19 +1,17 @@
 # encoding: utf-8
-require 'rubygems'
-$:.unshift(File.join(File.dirname(__FILE__), "../lib"))
 
-require 'action_controller'
-require 'active_support'
-require 'dotiw'
-require 'spec'
+DOTIW_LIB_PATH = File.join(File.dirname(__FILE__), '..', 'lib')
 
-# Define time zone before loading, just like in the real world
-zone = "UTC"
-Time.zone = zone
+$:.unshift DOTIW_LIB_PATH unless $:.include? DOTIW_LIB_PATH
+$:.unshift File.dirname(__FILE__)
 
+require 'i18n'
+require 'active_support/i18n'
+require 'active_support/core_ext/time/zones'
+require 'ruby-debug'
+
+Time.zone = 'UTC'
+
+I18n.load_path.clear
 I18n.load_path << Dir[File.join(File.dirname(__FILE__), "translations", "*")]
 I18n.locale = :en
-
-# bootstraping the plugin through init.rb
-# tests how it would load in a real application
-load File.dirname(__FILE__) + "/../rails/init.rb"
