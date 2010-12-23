@@ -87,7 +87,7 @@ describe "A better distance_of_time_in_words" do
       [Time.now, Time.now + 3.hour, "3 hours"],
       # Need to be +1.day because it will output "1 year and 30 days" otherwise.
       # Haven't investigated fully how this is caused.
-      [Time.now, Time.now + 13.months + 1.day, "1 year and 1 month"],
+      [Time.now, Time.now + 13.months, "1 year and 1 month"],
       # Any numeric sequence is merely coincidental.
       [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
       ["2009-3-16".to_time, "2008-4-14".to_time, "11 months and 2 days"],
