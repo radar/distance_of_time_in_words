@@ -1,17 +1,16 @@
 # encoding: utf-8
 
-DOTIW_LIB_PATH = File.join(File.dirname(__FILE__), '..', 'lib')
+# Files that are usually required by Rails, but in a testing context will not be.
+require 'erb'
 
-$:.unshift DOTIW_LIB_PATH unless $:.include? DOTIW_LIB_PATH
-$:.unshift File.dirname(__FILE__)
+require 'active_support/all'
 
-require 'i18n'
-require 'active_support/i18n'
-require 'active_support/core_ext/time/zones'
-require 'ruby-debug'
+require 'action_view/context'
+require 'action_view/helpers'
+
+require 'dotiw'
 
 Time.zone = 'UTC'
-
 I18n.load_path.clear
 I18n.load_path << Dir[File.join(File.dirname(__FILE__), "translations", "*")]
 I18n.locale = :en
