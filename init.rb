@@ -1,3 +1,3 @@
 # encoding: utf-8
 
-require 'dotiw'
+require 'rails/init'

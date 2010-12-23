@@ -1,22 +1,22 @@
 require 'rubygems'
 require 'rake'
 
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "dotiw"
-    gem.summary = %Q{Better distance_of_time_in_words for Rails}
-    gem.description = %Q{Better distance_of_time_in_words for Rails}
-    gem.email = "radarlistener@gmail.com"
-    gem.homepage = "http://github.com/radar/dotiw"
-    gem.authors = ["Ryan Bigg"]
-    gem.add_development_dependency "rspec"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
-  end
-  Jeweler::GemcutterTasks.new
-rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
-end
+# begin
+#   require 'jeweler'
+#   Jeweler::Tasks.new do |gem|
+#     gem.name = "dotiw"
+#     gem.summary = %Q{Better distance_of_time_in_words for Rails}
+#     gem.description = %Q{Better distance_of_time_in_words for Rails}
+#     gem.email = "radarlistener@gmail.com"
+#     gem.homepage = "http://github.com/radar/dotiw"
+#     gem.authors = ["Ryan Bigg"]
+#     gem.add_development_dependency "rspec"
+#     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+#   end
+#   Jeweler::GemcutterTasks.new
+# rescue LoadError
+#   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
+# end
 
 # require 'spec/rake/spectask'
 # Spec::Rake::SpecTask.new(:spec) do |spec|
