@@ -1,6 +1,6 @@
 # encoding: utf-8
-require File.join(File.dirname(__FILE__), 'spec_helper')
-require 'dotiw'
+
+require 'spec_helper'
 
 describe "A better distance_of_time_in_words" do
   include ActionView::Helpers::DateHelper

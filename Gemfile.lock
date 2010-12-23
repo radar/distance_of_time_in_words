@@ -1,10 +1,10 @@
 PATH
   remote: .
   specs:
-    dotiw (0.4.1)
-      actionpack (>= 3.0.0)
-      activerecord (>= 3.0.0)
-      chronic
+    dotiw (0.4.0)
+      actionpack (~> 3.0.0)
+      activerecord (~> 3.0.0)
+      chronic (~> 0.3)
 
 GEM
   remote: http://rubygems.org/
@@ -30,24 +30,22 @@ GEM
       arel (~> 2.0.2)
       tzinfo (~> 0.3.23)
     activesupport (3.0.3)
+    archive-tar-minitar (0.5.2)
     arel (2.0.6)
     builder (2.1.2)
-    chronic (0.2.3)
-      hoe (>= 1.2.1)
+    chronic (0.3.0)
+    columnize (0.3.2)
     diff-lcs (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
-    hoe (2.6.2)
-      rake (>= 0.8.7)
-      rubyforge (>= 2.0.4)
     i18n (0.5.0)
-    json_pure (1.4.6)
+    linecache19 (0.5.11)
+      ruby_core_source (>= 0.1.4)
     rack (1.2.1)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
     rack-test (0.5.6)
       rack (>= 1.0)
-    rake (0.8.7)
     rspec (2.3.0)
       rspec-core (~> 2.3.0)
       rspec-expectations (~> 2.3.0)
@@ -56,20 +54,26 @@ GEM
     rspec-expectations (2.3.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.3.0)
-    rubyforge (2.0.4)
-      json_pure (>= 1.1.7)
+    ruby-debug-base19 (0.11.24)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby_core_source (>= 0.1.4)
+    ruby-debug19 (0.11.6)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby-debug-base19 (>= 0.11.19)
+    ruby_core_source (0.1.4)
+      archive-tar-minitar (>= 0.5.2)
     tzinfo (0.3.23)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  actionpack (>= 3.0.0)
-  activerecord (>= 3.0.0)
-  bundler (>= 1.0.0)
-  chronic
+  actionpack (~> 3.0.0)
+  activerecord (~> 3.0.0)
+  bundler (~> 1.0.0)
+  chronic (~> 0.3)
   dotiw!
-  rspec (~> 2.3)
-
-METADATA
-  version: 1.0.6
+  rspec (~> 2.0)
+  ruby-debug19 (~> 0.0)
