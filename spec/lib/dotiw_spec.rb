@@ -35,12 +35,12 @@ describe "A better distance_of_time_in_words" do
         describe name do
           it "exactly" do
             hash = distance_of_time_in_words_hash(Time.now, Time.now + 1.send(name))
-            hash[name].should eql(1)
+            hash[name.to_s].should eql(1)
           end
 
           it "two" do
             hash = distance_of_time_in_words_hash(Time.now, Time.now + 2.send(name))
-            hash[name].should eql(2)
+            hash[name.to_s].should eql(2)
           end
         end
       end
@@ -48,24 +48,24 @@ describe "A better distance_of_time_in_words" do
       it "should be happy with lots of measurements" do
         hash = distance_of_time_in_words_hash(Time.now,
                                               Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds)
-        hash[:years].should eql(1)
-        hash[:months].should eql(2)
-        hash[:days].should eql(3)
-        hash[:hours].should eql(4)
-        hash[:minutes].should eql(5)
-        hash[:seconds].should eql(6)
+        hash["years"].should eql(1)
+        hash["months"].should eql(2)
+        hash["days"].should eql(3)
+        hash["hours"].should eql(4)
+        hash["minutes"].should eql(5)
+        hash["seconds"].should eql(6)
       end
 
       it "debe estar contento con las mediciones en español" do
         hash = distance_of_time_in_words_hash(Time.now,
                                               Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
                                               :locale => "es")
-        hash[:años].should eql(1)
-        hash[:meses].should eql(2)
-        hash[:días].should eql(3)
-        hash[:horas].should eql(4)
-        hash[:minutos].should eql(5)
-        hash[:segundos].should eql(6)
+        hash["años"].should eql(1)
+        hash["meses"].should eql(2)
+        hash["días"].should eql(3)
+        hash["horas"].should eql(4)
+        hash["minutos"].should eql(5)
+        hash["segundos"].should eql(6)
       end
 
       it "debe hablar español" do
@@ -102,6 +102,16 @@ describe "A better distance_of_time_in_words" do
         distance_of_time_in_words(start, finish, true).should eql(output)
       end
     end
+
+    # describe "accumulate on" do
+    #   [
+    #     ["2009-3-16".to_time, "2008-4-14".to_time, :seconds, "29030400 seconds"]
+    #   ].each do |start, finish, accumulator, output|
+    #     it "should be #{output}" do
+    #       distance_of_time_in_words(start, finish, true, :accumulate_on => accumulator).should eql(output)
+    #     end
+    #   end
+    # end # :accumulate_on
   end
 
   describe "with output options" do

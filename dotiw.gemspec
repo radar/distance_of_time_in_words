@@ -1,9 +1,12 @@
 # dotiw.gemspec
 # -*- encoding: utf-8 -*-
 
+$:.unshift File.join(File.dirname(__FILE__), 'lib') unless $:.include? File.join(File.dirname(__FILE__), 'lib')
+require 'dotiw/version'
+
 Gem::Specification.new do |s|
   s.name = 'dotiw'
-  s.version = '0.4.0'
+  s.version = DOTIW::VERSION
   s.platform = Gem::Platform::RUBY
   s.required_rubygems_version = '>= 1.3.6'
   s.authors = ["Ryan Bigg"]

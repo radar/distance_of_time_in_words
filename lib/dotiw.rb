@@ -1,5 +1,10 @@
 # encoding: utf-8
 
+module DOTIW
+  autoload :VERSION, 'dotiw/version'
+  autoload :TimeHash, 'dotiw/time_hash'
+end # DOTIW
+
 module ActionView
   module Helpers
     module DateHelper
@@ -9,11 +14,11 @@ module ActionView
         from_time = from_time.to_time if !from_time.is_a?(Time) && from_time.respond_to?(:to_time)
         to_time   = to_time.to_time   if !to_time.is_a?(Time)   && to_time.respond_to?(:to_time)
 
-        distance_of_time_hash((from_time - to_time).abs, from_time, to_time, options)
+        DOTIW::TimeHash.new((from_time - to_time).abs, from_time, to_time, options).to_hash
       end
 
       def distance_of_time(seconds, options = {})
-        display_time_in_words(distance_of_time_hash(seconds), options)
+        display_time_in_words DOTIW::TimeHash.new(seconds).to_hash, options
       end
 
       def display_time_in_words(hash, include_seconds = false, options = {})
@@ -65,58 +70,6 @@ module ActionView
         result = ((current_time - from_time) / distance) * 100
         number_with_precision(result, options).to_s + "%"
       end
-
-      private
-        def distance_of_time_hash(distance, from_time = nil, to_time = nil, options = {})
-          output = HashWithIndifferentAccess.new
-          from_time ||= Time.now
-          to_time ||= from_time + distance.seconds
-
-          I18n.with_options :locale => options[:locale] do |locale|
-            while distance > 0
-              if distance < 1.minute
-                output[locale.t(:seconds, :default => "seconds")] = distance.to_i
-                distance = 0
-              elsif distance < 1.hour
-                output[locale.t(:minutes, :default => "minutes")], distance = distance.divmod(1.minute)
-              elsif distance < 1.day
-                output[locale.t(:hours, :default => "hours")], distance = distance.divmod(1.hour)
-              elsif distance < 28.days
-                output[locale.t(:days, :default => "days")], distance = distance.divmod(1.day)
-              else # greater than a month
-                smallest, largest = [from_time, to_time].minmax
-
-                months = (largest.year - smallest.year) * 12 + (largest.month - smallest.month)
-                years, months = months.divmod(12)
-
-                days = largest.day - smallest.day
-
-                # Will otherwise incorrectly say one more day if our range goes over a day.
-                days -= 1 if largest.hour < smallest.hour
-
-                if days < 0
-                  # Convert the last month to days and add to total
-                  months -= 1
-                  last_month = largest.advance(:months => -1)
-                  days += Time.days_in_month(last_month.month, last_month.year)
-                end
-
-                if months < 0
-                  # Convert a year to months
-                  years -= 1
-                  months += 12
-                end
-
-                output[locale.t(:years, :default => "years")]   = years
-                output[locale.t(:months, :default => "months")] = months
-                output[locale.t(:days, :default => "days")]     = days
-
-                total_days, distance = distance.divmod(1.day)
-              end
-            end
-          end
-          output
-        end
     end # DateHelper
   end # Helpers
 end # ActionView
