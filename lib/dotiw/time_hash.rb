@@ -2,7 +2,9 @@
 
 module DOTIW
   class TimeHash
-    attr_accessor :distance, :from_time, :to_time, :options
+    TIME_FRACTIONS = [:seconds, :minutes, :hours, :days, :months, :years]
+
+    attr_accessor :distance, :smallest, :largest, :from_time, :to_time, :options
 
     def initialize(distance, from_time = nil, to_time = nil, options = {})
       self.output     = {}
@@ -10,6 +12,7 @@ module DOTIW
       self.distance   = distance
       self.from_time  = from_time || Time.now
       self.to_time    = to_time   || (self.from_time + self.distance.seconds)
+      self.smallest, self.largest = [self.from_time, self.to_time].minmax
 
       I18n.locale = options[:locale] if options[:locale]
 
@@ -24,17 +27,21 @@ module DOTIW
       attr_accessor :options, :output
 
       def build_time_hash
-        while self.distance > 0
-          if self.distance < 1.minute
-            build_seconds
-          elsif self.distance < 1.hour
-            build_minutes
-          elsif self.distance < 1.day
-            build_hours
-          elsif self.distance < 28.days
-            build_days
-          else # greater than a month
-            build_years_months_days
+        if accumulate_on = options.delete(:accumulate_on)
+          TIME_FRACTIONS.index(accumulate_on).downto(0) { |i| self.send("build_#{TIME_FRACTIONS[i]}") }
+        else
+          while distance > 0
+            if distance < 1.minute
+              build_seconds
+            elsif distance < 1.hour
+              build_minutes
+            elsif distance < 1.day
+              build_hours
+            elsif distance < 28.days
+              build_days
+            else # greater than a month
+              build_years_months_days
+            end
           end
         end
 
@@ -58,9 +65,11 @@ module DOTIW
         output[I18n.t(:days, :default => "days")], self.distance = distance.divmod(1.day)
       end
 
-      def build_years_months_days
-        smallest, largest = [from_time, to_time].minmax
+      def build_months
+        output[I18n.t(:months, :default => "months")], self.distance = distance.divmod(1.month)
+      end
 
+      def build_years_months_days
         months = (largest.year - smallest.year) * 12 + (largest.month - smallest.month)
         years, months = months.divmod(12)
 
@@ -88,5 +97,7 @@ module DOTIW
 
         total_days, self.distance = (from_time - to_time).abs.divmod(1.day)
       end
+
+      alias :build_years :build_years_months_days
   end # TimeHash
 end # DOTIW
