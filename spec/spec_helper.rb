@@ -11,8 +11,6 @@ require 'active_support/all'
 require 'action_view/context'
 require 'action_view/helpers'
 
-require 'ruby-debug'
-
 require 'init' # require dotiw through init (like a plugin would)
 
 Time.zone = 'UTC'
