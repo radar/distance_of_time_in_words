@@ -51,6 +51,3 @@ DEPENDENCIES
   bundler (~> 1.0.0)
   dotiw!
   rspec (~> 2.0)
-
-METADATA
-  version: 1.0.6

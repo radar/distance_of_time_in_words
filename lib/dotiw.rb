@@ -47,9 +47,11 @@ module ActionView
         output = []
 
         time_measurements.each do |measure, key|
-          name = hash[key] > 1 ? key : key.singularize
+          name = options[:singularize] == :always || hash[key].between?(-1, 1) ? key.singularize : key
           output += ["#{hash[key]} #{name}"]
         end
+
+        options.delete(:singularize)
 
         # maybe only grab the first few values
         if options[:precision]

@@ -199,6 +199,10 @@ describe "A better distance_of_time_in_words" do
        Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
        { "except" => "minutes" },
        "1 year, 2 months, 3 days, 4 hours, and 6 seconds"],
+      [Time.now,
+       Time.now + 2.year + 3.months + 4.days + 5.hours + 6.minutes + 7.seconds,
+       { :singularize => :always },
+       "2 year, 3 month, 4 day, 5 hour, 6 minute, and 7 second"]
     ].each do |start, finish, options, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true, options).should eql(output)
