@@ -205,9 +205,17 @@ describe "A better distance_of_time_in_words" do
       end
     end
 
-    it "outputs seconds regardless of include_seconds setting if only seconds have passed" do
-      distance_of_time_in_words(Time.now, Time.now + 1.second).should eql("1 second")
-    end
+    describe "include_seconds" do
+      it "is ignored if only seconds have passed" do
+        distance_of_time_in_words(Time.now, Time.now + 1.second, false).should eql("1 second")
+      end
+
+      it "removes seconds in all other cases" do
+        distance_of_time_in_words(Time.now,
+                                  Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+                                  false).should eql("1 year, 2 months, 3 days, 4 hours, and 5 minutes")
+      end
+    end # include_seconds
   end
 
   describe "percentage of time" do

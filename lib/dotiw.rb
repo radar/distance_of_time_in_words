@@ -23,39 +23,41 @@ module ActionView
 
       def display_time_in_words(hash, include_seconds = false, options = {})
         options.symbolize_keys!
-        hash.delete(:seconds) if !include_seconds && hash[:minutes]
-        I18n.with_options :locale => options[:locale] do |locale|
-          # Remove all the values that are nil.
-          time_measurements = [locale.t(:years, :default => "years"),
-                               locale.t(:months, :default => "months"),
-                               locale.t(:weeks, :default => "weeks"),
-                               locale.t(:days, :default => "days"),
-                               locale.t(:hours, :default => "hours"),
-                               locale.t(:minutes, :default => "minutes"),
-          locale.t(:seconds, :default => "seconds")].delete_if do |key|
-            hash[key].nil? || hash[key].zero? ||
-              # Remove the keys that we don't want.
-              (!options[:except].nil? && options[:except].include?(key)) ||
-              # keep the keys we only want.
-              (options[:only] && !options[:only].include?(key))
-          end
+        I18n.locale = options[:locale] if options[:locale]
 
-          options.delete(:except)
-          options.delete(:only)
-          output = []
-          time_measurements.each do |key|
-            name = hash[key] > 1 ? key : key.singularize
-            output += ["#{hash[key]} #{name}"]
-          end
+        time_measurements = { :years    => I18n.t(:years,   :default => "years"),
+                              :months   => I18n.t(:months,  :default => "months"),
+                              :weeks    => I18n.t(:weeks,   :default => "weeks"),
+                              :days     => I18n.t(:days,    :default => "days"),
+                              :hours    => I18n.t(:hours,   :default => "hours"),
+                              :minutes  => I18n.t(:minutes, :default => "minutes"),
+                              :seconds  => I18n.t(:seconds, :default => "seconds") }
 
-          # maybe only grab the first few values
-          if options[:precision]
-            output = output[0...options[:precision]]
-            options.delete(:precision)
-          end
+        hash.delete(time_measurements[:seconds]) if !include_seconds && hash[time_measurements[:minutes]]
 
-          output.to_sentence(options)
+        # Remove all the values that are nil or excluded. Keep the required ones.
+        time_measurements.delete_if do |measure, key|
+          hash[key].nil? || hash[key].zero? || (!options[:except].nil? && options[:except].include?(key)) ||
+            (options[:only] && !options[:only].include?(key))
         end
+
+        options.delete(:except)
+        options.delete(:only)
+
+        output = []
+
+        time_measurements.each do |measure, key|
+          name = hash[key] > 1 ? key : key.singularize
+          output += ["#{hash[key]} #{name}"]
+        end
+
+        # maybe only grab the first few values
+        if options[:precision]
+          output = output[0...options[:precision]]
+          options.delete(:precision)
+        end
+
+        output.to_sentence(options)
       end
 
       def distance_of_time_in_words(from_time, to_time, include_seconds = false, options = {})
