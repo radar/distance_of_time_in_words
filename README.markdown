@@ -46,12 +46,19 @@ Specify this if you want it to use the old `distance_of_time_in_words`. The valu
 
 #### :singularize
 
-Specify if all values of the hash should be presented in their singular form. By default they will be pluralized whenever outside the range -1..1. If you wish to have them signularized, just add the option `:singularize => :always`.
+Specify if all values of the hash should be presented in their singular form. By default they will be pluralized whenever outside the `-1..1` range. If you wish to have them signularized, just add the option `:singularize => :always`.
 
 This option is useful for Russian and Icelandic folks (https://github.com/radar/dotiw/issues#issue/2).
 
     >> distance_of_time_in_words(Time.now, Time.now + 2.hour + 2.minute, true, :singularize => :always)
     => "2 hour and 2 minute"
+
+#### :accumulate_on
+
+Specifies the maximum output unit which will accumulate all the surplus. Say you set it to seconds and your time difference is of 2 minutes then the output would be 120 seconds. Here's a code example:
+
+    >> distance_of_time_in_words(Time.now, Time.now + 2.hour + 70.second, true, :accumulate_on => :minutes)
+    => "121 minutes minute and 10 seconds"
 
 #### :only
 
