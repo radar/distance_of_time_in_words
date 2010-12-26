@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dotiw (0.4.0)
+    dotiw (0.6.0)
       actionpack (~> 3.0.0)
       activerecord (~> 3.0.0)
       chronic (~> 0.3)
@@ -77,3 +77,6 @@ DEPENDENCIES
   dotiw!
   rspec (~> 2.0)
   ruby-debug19 (~> 0.0)
+
+METADATA
+  version: 1.0.6
