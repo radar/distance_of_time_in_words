@@ -105,12 +105,30 @@ describe "A better distance_of_time_in_words" do
 
     describe "accumulate on" do
       [
-        [Time.now, Time.now + 10.minute, :seconds, "600 seconds"],
-        [Time.now, Time.now + 10.hour + 10.minute + 1.second, :minutes, "610 minutes and 1 second"],
-        [Time.now, Time.now + 2.day + 10000.hour + 10.second, :hours, "10048 hours and 10 seconds"],
-        [Time.now, Time.now + 2.day + 10000.hour + 10.second, :days, "418 days, 16 hours, and 10 seconds"],
-        [Time.now, Time.now + 2.day + 10000.hour + 10.second, :months, "13 months, 28 days, 16 hours, and 10 seconds"],
-        [Time.now, Time.now + 2.day + 10000.hour + 10.second, :years, "1 year, 16 hours, and 10 seconds"]
+        [Time.now,
+         Time.now + 10.minute,
+         :seconds,
+         "600 seconds"],
+        [Time.now,
+         Time.now + 10.hour + 10.minute + 1.second,
+         :minutes,
+         "610 minutes and 1 second"],
+        [Time.now,
+         Time.now + 2.day + 10000.hour + 10.second,
+         :hours,
+         "10048 hours and 10 seconds"],
+        [Time.now,
+         Time.now + 2.day + 10000.hour + 10.second,
+         :days,
+         "418 days, 16 hours, and 10 seconds"],
+        [Time.now,
+         Time.now + 2.day + 10000.hour + 10.second,
+         :months,
+         "13 months, 16 hours, and 10 seconds"],
+        [Time.now,
+         Time.now + 2.day + 10000.hour + 10.second,
+         :years,
+         "1 year, 1 month, 22 days, 16 hours, and 10 seconds"]
       ].each do |start, finish, accumulator, output|
         it "should be #{output}" do
           distance_of_time_in_words(start, finish, true, :accumulate_on => accumulator).should eql(output)
