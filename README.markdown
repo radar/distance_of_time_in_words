@@ -18,51 +18,18 @@ Better than "about 1 year", am I right? Of course I am.
     >> distance_of_time_in_words(Time.now, Time.now + 1.second, false)
     => "1 second"
 
-This takes the same options plus an additional one on the end for passing options to the output (which uses `to_sentence`). 
-
-Oh, and did I mention it supports I18n? Oh yeah.
-
-## distance\_of\_time
-
-If you have simply a number of seconds you can get the "stringified" version of this by using `distance_of_time`:
-
-    >> distance_of_time(300)
-    => "5 minutes"
-
-## distance\_of\_time\_in\_words\_hash
-
-Don't like any format you're given? That's cool too! Here, have an indifferent hash version:
-
-    >> distance_of_time_in_words_hash(Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds)
-    => {"days"=>3, "seconds"=>6, "minutes"=>5, "years"=>1, "hours"=>4, "months"=>2}
-
-Indiferrent means that you can access all keys by their `String` or `Symbol` version.
-
-### Options
-
-#### :locale
-
-The keys can be in your local language too:
-
-    >> distance_of_time_in_words_hash(Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, :locale => "es")
-    => {"horas"=>4, "días"=>3, "minutos"=>5, "segundos"=>6, "años"=>1, "meses"=>2}
-    
-You are not guaranteed the order of the hash in Ruby 1.8.
-
-## distance\_of\_time\_in\_words
-
-### Options
-
 The third argument for this method is whether or not to include seconds. By default this is `false` (because in Rails' `distance_of_time_in_words` it is), you can turn it on though by passing `true` as the third argument:
 
     >> distance_of_time_in_words(Time.now, Time.now + 1.year + 1.second, true)
     => "1 year, and 1 second" 
-    
+
 Yes this could just be merged into the options hash but I'm leaving it here to ensure "backwards-compatibility".
 
-#### :vague
+The last argument is an optional options hash that can be used to manipulate behavior and (which uses `to_sentence`). 
 
-Specify this if you want it to use the old `distance_of_time_in_words`. The value can be anything except `nil` or `false`.
+Oh, and did I mention it supports I18n? Oh yeah.
+
+### Options
 
 #### :locale
 
@@ -72,6 +39,19 @@ You can pass in a locale and it'll output it in whatever language you want (prov
     => "1 minuto"
     
 This will also be passed to `to_sentence`
+
+#### :vague
+
+Specify this if you want it to use the old `distance_of_time_in_words`. The value can be anything except `nil` or `false`.
+
+#### :singularize
+
+Specify if all values of the hash should be presented in their singular form. By default they will be pluralized whenever outside the range -1..1. If you wish to have them signularized, just add the option `:singularize => :always`.
+
+This option is useful for Russian and Icelandic folks (https://github.com/radar/dotiw/issues#issue/2).
+
+  >> distance_of_time_in_words(Time.now, Time.now + 2.hour + 2.minute, true, :singularize => :always)
+  => "2 hour and 2 minute"
 
 #### :only
 
@@ -127,6 +107,22 @@ Using something other than ', and':
 
     >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :last_word_connector => ', finally ' })
     => "1 hour, 1 minute, finally 1 second"
+
+## distance\_of\_time
+
+If you have simply a number of seconds you can get the "stringified" version of this by using `distance_of_time`:
+
+    >> distance_of_time(300)
+    => "5 minutes"
+
+## distance\_of\_time\_in\_words\_hash
+
+Don't like any format you're given? That's cool too! Here, have an indifferent hash version:
+
+    >> distance_of_time_in_words_hash(Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds)
+    => {"days"=>3, "seconds"=>6, "minutes"=>5, "years"=>1, "hours"=>4, "months"=>2}
+
+Indifferent means that you can access all keys by their `String` or `Symbol` version.
     
 ## distance\_of\_time\_in\_percent
 
@@ -139,4 +135,4 @@ If you want to calculate a distance of time in percent, use `distance_of_time_in
 
 * [chendo][http://github.com/chendo] - for talking through it with me and drawing on the whiteboard
 * [Derander][http://github.com/derander] - correct Spanish translations
-* [DBA][http://github.com/dba] - Commits leading up to the 0.6 release. 
+* [DBA][http://github.com/dba] - Commits leading up to the 0.7 release. 

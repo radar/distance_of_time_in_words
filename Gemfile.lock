@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dotiw (0.6.0)
+    dotiw (0.7.0)
       actionpack (~> 3.0.0)
 
 GEM

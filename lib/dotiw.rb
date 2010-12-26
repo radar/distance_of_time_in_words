@@ -21,47 +21,6 @@ module ActionView
         display_time_in_words DOTIW::TimeHash.new(seconds).to_hash, options
       end
 
-      def display_time_in_words(hash, include_seconds = false, options = {})
-        options.symbolize_keys!
-        I18n.locale = options[:locale] if options[:locale]
-
-        time_measurements = { :years    => I18n.t(:years,   :default => "years"),
-                              :months   => I18n.t(:months,  :default => "months"),
-                              :weeks    => I18n.t(:weeks,   :default => "weeks"),
-                              :days     => I18n.t(:days,    :default => "days"),
-                              :hours    => I18n.t(:hours,   :default => "hours"),
-                              :minutes  => I18n.t(:minutes, :default => "minutes"),
-                              :seconds  => I18n.t(:seconds, :default => "seconds") }
-
-        hash.delete(time_measurements[:seconds]) if !include_seconds && hash[time_measurements[:minutes]]
-
-        # Remove all the values that are nil or excluded. Keep the required ones.
-        time_measurements.delete_if do |measure, key|
-          hash[key].nil? || hash[key].zero? || (!options[:except].nil? && options[:except].include?(key)) ||
-            (options[:only] && !options[:only].include?(key))
-        end
-
-        options.delete(:except)
-        options.delete(:only)
-
-        output = []
-
-        time_measurements.each do |measure, key|
-          name = options[:singularize] == :always || hash[key].between?(-1, 1) ? key.singularize : key
-          output += ["#{hash[key]} #{name}"]
-        end
-
-        options.delete(:singularize)
-
-        # maybe only grab the first few values
-        if options[:precision]
-          output = output[0...options[:precision]]
-          options.delete(:precision)
-        end
-
-        output.to_sentence(options)
-      end
-
       def distance_of_time_in_words(from_time, to_time, include_seconds = false, options = {})
         return old_distance_of_time_in_words(from_time, to_time, include_seconds, options) if options.delete(:vague)
         hash = distance_of_time_in_words_hash(from_time, to_time, options)
@@ -74,6 +33,48 @@ module ActionView
         result = ((current_time - from_time) / distance) * 100
         number_with_precision(result, options).to_s + "%"
       end
+
+      private
+        def display_time_in_words(hash, include_seconds = false, options = {})
+          options.symbolize_keys!
+          I18n.locale = options[:locale] if options[:locale]
+
+          time_measurements = { :years    => I18n.t(:years,   :default => "years"),
+                                :months   => I18n.t(:months,  :default => "months"),
+                                :weeks    => I18n.t(:weeks,   :default => "weeks"),
+                                :days     => I18n.t(:days,    :default => "days"),
+                                :hours    => I18n.t(:hours,   :default => "hours"),
+                                :minutes  => I18n.t(:minutes, :default => "minutes"),
+                                :seconds  => I18n.t(:seconds, :default => "seconds") }
+
+          hash.delete(time_measurements[:seconds]) if !include_seconds && hash[time_measurements[:minutes]]
+
+          # Remove all the values that are nil or excluded. Keep the required ones.
+          time_measurements.delete_if do |measure, key|
+            hash[key].nil? || hash[key].zero? || (!options[:except].nil? && options[:except].include?(key)) ||
+              (options[:only] && !options[:only].include?(key))
+          end
+
+          options.delete(:except)
+          options.delete(:only)
+
+          output = []
+
+          time_measurements.each do |measure, key|
+            name = options[:singularize] == :always || hash[key].between?(-1, 1) ? key.singularize : key
+            output += ["#{hash[key]} #{name}"]
+          end
+
+          options.delete(:singularize)
+
+          # maybe only grab the first few values
+          if options[:precision]
+            output = output[0...options[:precision]]
+            options.delete(:precision)
+          end
+
+          output.to_sentence(options)
+        end
     end # DateHelper
   end # Helpers
 end # ActionView
