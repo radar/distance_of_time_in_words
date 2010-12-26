@@ -137,5 +137,6 @@ If you want to calculate a distance of time in percent, use `distance_of_time_in
 
 ## Contributors
 
-chendo - for talking through it with me and drawing on the whiteboard
-Derander - correct Spanish translations
+* [chendo][http://github.com/chendo] - for talking through it with me and drawing on the whiteboard
+* [Derander][http://github.com/derander] - correct Spanish translations
+* [DBA][http://github.com/dba] - Commits leading up to the 0.6 release. 
