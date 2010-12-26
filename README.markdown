@@ -50,8 +50,8 @@ Specify if all values of the hash should be presented in their singular form. By
 
 This option is useful for Russian and Icelandic folks (https://github.com/radar/dotiw/issues#issue/2).
 
-  >> distance_of_time_in_words(Time.now, Time.now + 2.hour + 2.minute, true, :singularize => :always)
-  => "2 hour and 2 minute"
+    >> distance_of_time_in_words(Time.now, Time.now + 2.hour + 2.minute, true, :singularize => :always)
+    => "2 hour and 2 minute"
 
 #### :only
 
