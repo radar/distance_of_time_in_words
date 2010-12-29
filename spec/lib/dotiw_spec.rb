@@ -201,7 +201,7 @@ describe "A better distance_of_time_in_words" do
        "1 year, 2 months, 3 days, 4 hours, and 6 seconds"],
       [Time.now,
         Time.now + 1.hour + 2.minutes + 3.seconds,
-        { :only_highest_measure => true },
+        { :highest_measure_only => true },
         "1 hour"],
       [Time.now,
        Time.now + 2.year + 3.months + 4.days + 5.hours + 6.minutes + 7.seconds,

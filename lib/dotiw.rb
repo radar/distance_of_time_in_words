@@ -60,7 +60,7 @@ module ActionView
 
           output = []
 
-          time_measurements = Hash[*time_measurements.first] if options.delete(:only_highest_measure)
+          time_measurements = Hash[*time_measurements.first] if options.delete(:highest_measure_only)
 
           time_measurements.each do |measure, key|
             name = options[:singularize] == :always || hash[key].between?(-1, 1) ? key.singularize : key

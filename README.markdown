@@ -115,12 +115,19 @@ Using something other than ', and':
     >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :last_word_connector => ', finally ' })
     => "1 hour, 1 minute, finally 1 second"
 
-#### :only\_latest\_measure
+#### :highest\_measure\_only
 
-Specify if you only want the latest measure item.
+For times when Rails `distance_of_time_in_words` is not precise enough and `DOTIW` is too precise. For instance, if you only want to know the highest time part (measure) that elapsed between two dates.
 
-    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :only_latest_measure => true })
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :highest_measure_only => true })
     => "1 hour"
+
+Notice how minutes and seconds were removed from the output. Another example:
+
+    >> distance_of_time_in_words(Time.now, Time.now + 1.minute + 1.second, true, { :highest_measure_only => true })
+    => "1 minute"
+
+Minutes are the highest measure, so seconds were discarded from the output.
 
 ## distance\_of\_time
 
