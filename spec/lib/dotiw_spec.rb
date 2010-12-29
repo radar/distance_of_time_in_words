@@ -200,6 +200,10 @@ describe "A better distance_of_time_in_words" do
        { "except" => "minutes" },
        "1 year, 2 months, 3 days, 4 hours, and 6 seconds"],
       [Time.now,
+        Time.now + 1.hour + 2.minutes + 3.seconds,
+        { :only_latest_measure => true },
+        "1 hour"],
+      [Time.now,
        Time.now + 2.year + 3.months + 4.days + 5.hours + 6.minutes + 7.seconds,
        { :singularize => :always },
        "2 year, 3 month, 4 day, 4 hour, 6 minute, and 7 second"]

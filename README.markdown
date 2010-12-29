@@ -115,6 +115,13 @@ Using something other than ', and':
     >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :last_word_connector => ', finally ' })
     => "1 hour, 1 minute, finally 1 second"
 
+#### :only\_latest\_measure
+
+Specify if you only want the latest measure item.
+
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :only_latest_measure => true })
+    => "1 hour"
+
 ## distance\_of\_time
 
 If you have simply a number of seconds you can get the "stringified" version of this by using `distance_of_time`:

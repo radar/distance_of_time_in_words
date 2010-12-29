@@ -60,6 +60,11 @@ module ActionView
 
           output = []
 
+          if options[:only_latest_measure].present?
+            options.delete(:only_latest_measure)
+            time_measurements = Hash[*time_measurements.first]
+          end
+
           time_measurements.each do |measure, key|
             name = options[:singularize] == :always || hash[key].between?(-1, 1) ? key.singularize : key
             output += ["#{hash[key]} #{name}"]
