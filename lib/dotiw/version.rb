@@ -1,5 +1,5 @@
 # encoding: utf-8
 
 module DOTIW
-  VERSION = "0.7.0"
+  VERSION = "1.0.0.beta"
 end
