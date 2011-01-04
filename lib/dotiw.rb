@@ -4,7 +4,11 @@ module DOTIW
   autoload :VERSION, 'dotiw/version'
   autoload :TimeHash, 'dotiw/time_hash'
 
-  alias_method :old_distance_of_time_in_words, :distance_of_time_in_words
+  def self.included(klass)
+    klass.class_eval do
+      alias_method :old_distance_of_time_in_words, :distance_of_time_in_words
+    end
+  end
 
   def distance_of_time_in_words_hash(from_time, to_time, options = {})
     from_time = from_time.to_time if !from_time.is_a?(Time) && from_time.respond_to?(:to_time)
