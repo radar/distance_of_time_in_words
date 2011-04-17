@@ -17,8 +17,8 @@ module ActionView
         DOTIW::TimeHash.new((from_time - to_time).abs, from_time, to_time, options).to_hash
       end
 
-      def distance_of_time(seconds, options = {})
-        display_time_in_words DOTIW::TimeHash.new(seconds).to_hash, options
+      def distance_of_time(seconds, include_seconds = false, options = {})
+        display_time_in_words DOTIW::TimeHash.new(seconds).to_hash, include_seconds, options
       end
 
       def distance_of_time_in_words(from_time, to_time, include_seconds = false, options = {})
