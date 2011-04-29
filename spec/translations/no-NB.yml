@@ -1,0 +1,11 @@
+no-NB:
+  seconds: sekunder
+  minutes: mintues
+  hour:
+      one: time
+      other: "%{count} timer"
+  hours: timer
+  days: dager
+  weeks: uker
+  months: måneder
+  years: år
