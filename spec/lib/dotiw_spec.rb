@@ -128,7 +128,7 @@ describe "A better distance_of_time_in_words" do
         [Time.now,
          Time.now + 2.day + 10000.hour + 10.second,
          :years,
-         "1 year, 1 month, 22 days, 16 hours, and 10 seconds"]
+         "1 year, 1 month, 21 days, 16 hours, and 10 seconds"]
       ].each do |start, finish, accumulator, output|
         it "should be #{output}" do
           distance_of_time_in_words(start, finish, true, :accumulate_on => accumulator).should eql(output)
@@ -206,7 +206,11 @@ describe "A better distance_of_time_in_words" do
       [Time.now,
        Time.now + 2.year + 3.months + 4.days + 5.hours + 6.minutes + 7.seconds,
        { :singularize => :always },
-       "2 year, 3 month, 4 day, 5 hour, 6 minute, and 7 second"]
+       "2 year, 3 month, 4 day, 5 hour, 6 minute, and 7 second"],
+      [Time.now,
+       Time.now + 2.year + 3.months + 4.days + 5.hours + 6.minutes + 7.seconds,
+       { :translation_scope => 'custom.scope' },
+       "2 y, 3 m, 4 d, 5 h, 6 min, and 7 sec"]
     ].each do |start, finish, options, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true, options).should eql(output)

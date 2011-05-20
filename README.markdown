@@ -40,6 +40,14 @@ You can pass in a locale and it'll output it in whatever language you want (prov
     
 This will also be passed to `to_sentence`
 
+#### :translation_scope
+
+Specify this if you want it to search for translation values inside a custom scope of your translation file.
+
+    >> distance_of_time_in_words(Time.now, Time.now + 1.minute, false, :translation_scope => "my.scope")
+
+This option is not passed to `to_sentence`.
+
 #### :vague
 
 Specify this if you want it to use the old `distance_of_time_in_words`. The value can be anything except `nil` or `false`.

@@ -50,27 +50,27 @@ module DOTIW
       end
 
       def build_seconds
-        output[I18n.t(:seconds, :default => "seconds")] = distance.to_i
+        output[I18n.t(:seconds, :scope => options[:translation_scope], :default => "seconds")] = distance.to_i
         self.distance = 0
       end
 
       def build_minutes
-        output[I18n.t(:minutes, :default => "minutes")], self.distance = distance.divmod(1.minute)
+        output[I18n.t(:minutes, :scope => options[:translation_scope], :default => "minutes")], self.distance = distance.divmod(1.minute)
       end
 
       def build_hours
-        output[I18n.t(:hours, :default => "hours")], self.distance = distance.divmod(1.hour)
+        output[I18n.t(:hours, :scope => options[:translation_scope], :default => "hours")], self.distance = distance.divmod(1.hour)
       end
 
       def build_days
-        output[I18n.t(:days, :default => "days")], self.distance = distance.divmod(1.day)
+        output[I18n.t(:days, :scope => options[:translation_scope], :default => "days")], self.distance = distance.divmod(1.day)
       end
 
       def build_months
         build_years_months_days
 
-        if (years = output.delete(I18n.t(:years, :default => "years"))) > 0
-          output[I18n.t(:months, :default => "months")] += (years * 12)
+        if (years = output.delete(I18n.t(:years, :scope => options[:translation_scope], :default => "years"))) > 0
+          output[I18n.t(:months, :scope => options[:translation_scope], :default => "months")] += (years * 12)
         end
       end
 
@@ -96,9 +96,9 @@ module DOTIW
           months += 12
         end
 
-        output[I18n.t(:years,   :default => "years")]   = years
-        output[I18n.t(:months,  :default => "months")]  = months
-        output[I18n.t(:days,    :default => "days")]    = days
+        output[I18n.t(:years,  :scope => options[:translation_scope], :default => "years")]  = years
+        output[I18n.t(:months, :scope => options[:translation_scope], :default => "months")] = months
+        output[I18n.t(:days,   :scope => options[:translation_scope], :default => "days")]   = days
 
         total_days, self.distance = (from_time - to_time).abs.divmod(1.day)
       end

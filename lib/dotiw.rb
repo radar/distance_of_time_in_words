@@ -38,15 +38,16 @@ module ActionView
         def display_time_in_words(hash, include_seconds = false, options = {})
           options.symbolize_keys!
           I18n.locale = options[:locale] if options[:locale]
+          translation_scope  = options.delete(:translation_scope)
 
           time_measurements = ActiveSupport::OrderedHash.new
-          time_measurements[:years]   = I18n.t(:years,   :default => "years")
-          time_measurements[:months]  = I18n.t(:months,  :default => "months")
-          time_measurements[:weeks]   = I18n.t(:weeks,   :default => "weeks")
-          time_measurements[:days]    = I18n.t(:days,    :default => "days")
-          time_measurements[:hours]   = I18n.t(:hours,   :default => "hours")
-          time_measurements[:minutes] = I18n.t(:minutes, :default => "minutes")
-          time_measurements[:seconds] = I18n.t(:seconds, :default => "seconds")
+          time_measurements[:years]   = I18n.t(:years,   :scope => translation_scope, :default => "years")
+          time_measurements[:months]  = I18n.t(:months,  :scope => translation_scope, :default => "months")
+          time_measurements[:weeks]   = I18n.t(:weeks,   :scope => translation_scope, :default => "weeks")
+          time_measurements[:days]    = I18n.t(:days,    :scope => translation_scope, :default => "days")
+          time_measurements[:hours]   = I18n.t(:hours,   :scope => translation_scope, :default => "hours")
+          time_measurements[:minutes] = I18n.t(:minutes, :scope => translation_scope, :default => "minutes")
+          time_measurements[:seconds] = I18n.t(:seconds, :scope => translation_scope, :default => "seconds")
 
           hash.delete(time_measurements[:seconds]) if !include_seconds && hash[time_measurements[:minutes]]
 
