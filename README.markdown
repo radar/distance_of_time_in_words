@@ -42,7 +42,7 @@ This will also be passed to `to_sentence`
 
 #### :translation_scope
 
-Specify this if you want it to search for translation values inside a custom scope of your translation file.
+Specify this if you want it to search for values inside a custom scope of your translation file.
 
     >> distance_of_time_in_words(Time.now, Time.now + 1.minute, false, :translation_scope => "my.scope")
 
@@ -122,6 +122,13 @@ Using something other than ', and':
 
     >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :last_word_connector => ', finally ' })
     => "1 hour, 1 minute, finally 1 second"
+
+#### :spaceless
+
+Set this option if you don't want spaces between numbers and strings. It's useful if you have a custom translation like this:
+
+    >> distance_of_time_in_words(Time.now, Time.now + 1.minute + 1.second, true, { :spaceless => true })
+    => "1min and 1s"
 
 #### :highest\_measure\_only
 

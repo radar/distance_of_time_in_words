@@ -210,7 +210,11 @@ describe "A better distance_of_time_in_words" do
       [Time.now,
        Time.now + 2.year + 3.months + 4.days + 5.hours + 6.minutes + 7.seconds,
        { :translation_scope => 'custom.scope' },
-       "2 y, 3 m, 4 d, 5 h, 6 min, and 7 sec"]
+       "2 y, 3 m, 4 d, 5 h, 6 min, and 7 sec"],
+      [Time.now,
+       Time.now + 1.year + 2.months,
+       { :spaceless => true },
+       "1year and 2months"],
     ].each do |start, finish, options, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true, options).should eql(output)
