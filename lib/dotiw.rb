@@ -58,7 +58,7 @@ module ActionView
           
           options.delete(:show_zeros)
           
-          time_measurements.delete(:seconds) if !include_seconds && hash[time_measurements[:minutes]]
+          time_measurements.delete(:seconds) if !include_seconds && time_measurements[:minutes]
           time_measurements = Hash[*time_measurements.first] if options.delete(:highest_measure_only)
           
           output = []
