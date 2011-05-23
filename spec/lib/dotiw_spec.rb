@@ -215,6 +215,10 @@ describe "A better distance_of_time_in_words" do
        Time.now + 1.year + 2.months,
        { :spaceless => true },
        "1year and 2months"],
+      [Time.now,
+       Time.now + 3.months + 2.days,
+       { :show_zeros => true },
+       "3 months, 2 days, 0 hours, 0 minutes, and 0 seconds"],
     ].each do |start, finish, options, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true, options).should eql(output)
