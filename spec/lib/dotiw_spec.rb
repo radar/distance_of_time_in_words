@@ -233,7 +233,7 @@ describe "A better distance_of_time_in_words" do
       it "removes seconds even with :show_zeros" do
         distance_of_time_in_words(Time.now,
                                   Time.now + 10.days,
-                                  false).should eql("10 days, 0 hours, and 0 minutes")
+                                  false, :show_zeros => true).should eql("10 days, 0 hours, and 0 minutes")
       end
 
       it "removes seconds in all other cases" do
