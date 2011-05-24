@@ -5,7 +5,7 @@ dotiw is a plugin for Rails that overrides the default `distance_of_time_in_word
     >> distance_of_time_in_words(Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, true)
     => "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"
      
-Also if one of the measurement is zero it will not output it:
+Also if one of the measurement is zero, by default it will not output it:
 
     >> distance_of_time_in_words(Time.now, Time.now + 1.year + 2.months + 4.hours + 5.minutes + 6.seconds, true)
     => "1 year, 2 months, 4 hours, 5 minutes, and 6 seconds"
@@ -39,6 +39,14 @@ You can pass in a locale and it'll output it in whatever language you want (prov
     => "1 minuto"
     
 This will also be passed to `to_sentence`
+
+#### :translation_scope
+
+Specify this if you want it to search for values inside a custom scope of your translation file.
+
+    >> distance_of_time_in_words(Time.now, Time.now + 1.minute, false, :translation_scope => "my.scope")
+
+This option is not passed to `to_sentence`.
 
 #### :vague
 
@@ -87,6 +95,13 @@ Culling a whole group of measurements of time:
 
     >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.day + 1.minute, false, :except => ["minutes", "hours"])
     => "1 day"
+
+#### :show_zeros
+
+Set this option to display measurements equal to zero. Only measurements starting from the highest non-zero value are displayed:
+
+    >> distance_of_time_in_words(Time.now, Time.now + 1.day, false, :show_zeros => true)
+    => "1 day, 0 hours, and 0 minutes"
     
 #### :words_connector
 
@@ -114,6 +129,13 @@ Using something other than ', and':
 
     >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :last_word_connector => ', finally ' })
     => "1 hour, 1 minute, finally 1 second"
+
+#### :spaceless
+
+Set this option if you don't want spaces between numbers and strings. It's useful if you have a custom translation like this:
+
+    >> distance_of_time_in_words(Time.now, Time.now + 1.minute + 1.second, true, { :spaceless => true })
+    => "1min and 1s"
 
 #### :highest\_measure\_only
 

@@ -7,6 +7,16 @@ en:
   months: months
   years: years
   
+  custom:
+    scope:
+      seconds: sec
+      minutes: min
+      hours: h
+      days: d
+      weeks: w
+      months: m
+      years: y
+  
   support:
     array:
       two_words_connector: " and "

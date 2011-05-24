@@ -128,7 +128,7 @@ describe "A better distance_of_time_in_words" do
         [Time.now,
          Time.now + 2.day + 10000.hour + 10.second,
          :years,
-         "1 year, 1 month, 22 days, 16 hours, and 10 seconds"]
+         "1 year, 1 month, 21 days, 16 hours, and 10 seconds"]
       ].each do |start, finish, accumulator, output|
         it "should be #{output}" do
           distance_of_time_in_words(start, finish, true, :accumulate_on => accumulator).should eql(output)
@@ -206,7 +206,19 @@ describe "A better distance_of_time_in_words" do
       [Time.now,
        Time.now + 2.year + 3.months + 4.days + 5.hours + 6.minutes + 7.seconds,
        { :singularize => :always },
-       "2 year, 3 month, 4 day, 5 hour, 6 minute, and 7 second"]
+       "2 year, 3 month, 4 day, 5 hour, 6 minute, and 7 second"],
+      [Time.now,
+       Time.now + 2.year + 3.months + 4.days + 5.hours + 6.minutes + 7.seconds,
+       { :translation_scope => 'custom.scope' },
+       "2 y, 3 m, 4 d, 5 h, 6 min, and 7 sec"],
+      [Time.now,
+       Time.now + 1.year + 2.months,
+       { :spaceless => true },
+       "1year and 2months"],
+      [Time.now,
+       Time.now + 3.months + 2.days,
+       { :show_zeros => true },
+       "3 months, 2 days, 0 hours, 0 minutes, and 0 seconds"],
     ].each do |start, finish, options, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true, options).should eql(output)
@@ -216,6 +228,12 @@ describe "A better distance_of_time_in_words" do
     describe "include_seconds" do
       it "is ignored if only seconds have passed" do
         distance_of_time_in_words(Time.now, Time.now + 1.second, false).should eql("1 second")
+      end
+      
+      it "removes seconds even with :show_zeros" do
+        distance_of_time_in_words(Time.now,
+                                  Time.now + 10.days,
+                                  false, :show_zeros => true).should eql("10 days, 0 hours, and 0 minutes")
       end
 
       it "removes seconds in all other cases" do
