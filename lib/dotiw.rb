@@ -21,8 +21,9 @@ module ActionView
         display_time_in_words DOTIW::TimeHash.new(seconds).to_hash, options
       end
 
-      def distance_of_time_in_words(from_time, to_time, include_seconds = false, options = {})
+      def distance_of_time_in_words(from_time, to_time = 0, include_seconds = false, options = {})
         return old_distance_of_time_in_words(from_time, to_time, include_seconds, options) if options.delete(:vague)
+        return distance_of_time(from_time, options) if to_time == 0
         hash = distance_of_time_in_words_hash(from_time, to_time, options)
         display_time_in_words(hash, include_seconds, options)
       end
