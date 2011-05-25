@@ -61,7 +61,14 @@ module ActionView
 
           output = []
 
-          time_measurements = Hash[*time_measurements.first] if options.delete(:highest_measure_only)
+          highest_measures = options.delete(:highest_measures)
+          highest_measures = 1 if options.delete(:highest_measure_only)
+          if highest_measures
+            keys = [:years, :months, :days, :hours, :minutes, :seconds]
+            first_index = keys.index(time_measurements.first.first)
+            keys = keys[first_index, highest_measures]
+            time_measurements.delete_if { |measure, key| !keys.include?(measure) }
+          end
 
           time_measurements.each do |measure, key|
             name = options[:singularize] == :always || hash[key].between?(-1, 1) ? key.singularize : key

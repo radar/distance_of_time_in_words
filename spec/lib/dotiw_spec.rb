@@ -206,7 +206,27 @@ describe "A better distance_of_time_in_words" do
       [Time.now,
        Time.now + 2.year + 3.months + 4.days + 5.hours + 6.minutes + 7.seconds,
        { :singularize => :always },
-       "2 year, 3 month, 4 day, 5 hour, 6 minute, and 7 second"]
+       "2 year, 3 month, 4 day, 5 hour, 6 minute, and 7 second"],
+      [Time.now,
+       Time.now + 1.hours + 2.minutes + 3.seconds,
+       { :highest_measures => 1 },
+       "1 hour"],
+      [Time.now,
+       Time.now + 2.year + 3.months + 4.days + 5.hours + 6.minutes + 7.seconds,
+       { :highest_measures => 3 },
+       "2 years, 3 months, and 4 days"],
+      [Time.now,
+       Time.now + 2.year + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+       { :highest_measures => 3 },
+       "2 years and 25 days"],
+      [Time.now,
+       Time.now + 4.days + 6.minutes + 7.seconds,
+       { :highest_measures => 3 },
+       "4 days and 6 minutes"],
+      [Time.now,
+       Time.now + 1.year + 2.weeks,
+       { :highest_measures => 3 },
+       "1 year and 14 days"],
     ].each do |start, finish, options, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true, options).should eql(output)
