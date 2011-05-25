@@ -7,7 +7,7 @@ module DOTIW
     attr_accessor :distance, :smallest, :largest, :from_time, :to_time, :options
 
     def initialize(distance, from_time = nil, to_time = nil, options = {})
-      self.output     = {}
+      self.output     = ActiveSupport::OrderedHash.new
       self.options    = options
       self.distance   = distance
       self.from_time  = from_time || Time.now
