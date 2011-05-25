@@ -35,12 +35,12 @@ describe "A better distance_of_time_in_words" do
         describe name do
           it "exactly" do
             hash = distance_of_time_in_words_hash(Time.now, Time.now + 1.send(name))
-            hash[name.to_s].should eql(1)
+            hash[name].should eql(1)
           end
 
           it "two" do
             hash = distance_of_time_in_words_hash(Time.now, Time.now + 2.send(name))
-            hash[name.to_s].should eql(2)
+            hash[name].should eql(2)
           end
         end
       end
@@ -48,37 +48,20 @@ describe "A better distance_of_time_in_words" do
       it "should be happy with lots of measurements" do
         hash = distance_of_time_in_words_hash(Time.now,
                                               Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds)
-        hash["years"].should eql(1)
-        hash["months"].should eql(2)
-        hash["days"].should eql(3)
-        hash["hours"].should eql(4)
-        hash["minutes"].should eql(5)
-        hash["seconds"].should eql(6)
+        hash[:years].should eql(1)
+        hash[:months].should eql(2)
+        hash[:days].should eql(3)
+        hash[:hours].should eql(4)
+        hash[:minutes].should eql(5)
+        hash[:seconds].should eql(6)
       end
 
-      it "debe estar contento con las mediciones en español" do
-        hash = distance_of_time_in_words_hash(Time.now,
-                                              Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-                                              :locale => "es")
-        hash["años"].should eql(1)
-        hash["meses"].should eql(2)
-        hash["días"].should eql(3)
-        hash["horas"].should eql(4)
-        hash["minutos"].should eql(5)
-        hash["segundos"].should eql(6)
-      end
-
-      it "debe hablar español" do
-        I18n.locale = :es
-        hash = distance_of_time_in_words_hash(Time.now, Time.now + 5.days)
-        hash["días"].should eql(5)
-      end
     end
   end
 
   describe "real version" do
     it "debe hablar español" do
-      distance_of_time_in_words(Time.now, Time.now + 5.days, true, :locale => "es").should eql("5 días")
+      distance_of_time_in_words(Time.now, Time.now + 3.days, true, :locale => "ru").should eql("3 дня")
     end
 
     [
@@ -124,11 +107,7 @@ describe "A better distance_of_time_in_words" do
         [Time.now,
          Time.now + 2.day + 10000.hour + 10.second,
          :months,
-         "13 months, 16 hours, and 10 seconds"],
-        [Time.now,
-         Time.now + 2.day + 10000.hour + 10.second,
-         :years,
-         "1 year, 1 month, 22 days, 16 hours, and 10 seconds"]
+         "13 months, 16 hours, and 10 seconds"]
       ].each do |start, finish, accumulator, output|
         it "should be #{output}" do
           distance_of_time_in_words(start, finish, true, :accumulate_on => accumulator).should eql(output)
@@ -203,10 +182,6 @@ describe "A better distance_of_time_in_words" do
         Time.now + 1.hour + 2.minutes + 3.seconds,
         { :highest_measure_only => true },
         "1 hour"],
-      [Time.now,
-       Time.now + 2.year + 3.months + 4.days + 5.hours + 6.minutes + 7.seconds,
-       { :singularize => :always },
-       "2 year, 3 month, 4 day, 5 hour, 6 minute, and 7 second"],
       [Time.now,
        Time.now + 1.hours + 2.minutes + 3.seconds,
        { :highest_measures => 1 },

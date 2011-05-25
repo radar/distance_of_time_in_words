@@ -1,0 +1,52 @@
+ru:
+  seconds: 
+    one: секунда
+    few: секунды
+    many: секунд
+    other: секунды
+  minutes: 
+    one: минута
+    few: минуты
+    many: минут
+    other: минуты
+  hours: 
+    one: час
+    few: часа
+    many: часов
+    other: часа
+  days: 
+    one: день
+    few: дня
+    many: дней
+    other: дня
+  weeks: 
+    one: неделя
+    few: недели
+    many: недель
+    other: недели
+  months: 
+    one: месяц
+    few: месяца
+    many: месяцев
+    other: месяца
+  years:
+    one: год
+    few: года
+    many: лет
+    other: года
+  
+  support:
+    array:
+      two_words_connector: " и "
+      words_connector: ", "
+      last_word_connector: " и "
+      
+  datetime:
+    distance_in_words:
+      about_x_years:
+        one: "около года"
+        many: "около %{count} лет"
+        
+  number:
+      format:
+        separator: ","

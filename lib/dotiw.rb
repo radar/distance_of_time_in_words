@@ -48,18 +48,16 @@ module ActionView
           time_measurements[:minutes] = I18n.t(:minutes, :default => "minutes")
           time_measurements[:seconds] = I18n.t(:seconds, :default => "seconds")
 
-          hash.delete(time_measurements[:seconds]) if !include_seconds && hash[time_measurements[:minutes]]
+          hash.delete(:seconds) if !include_seconds && hash[:minutes]
 
           # Remove all the values that are nil or excluded. Keep the required ones.
-          time_measurements.delete_if do |measure, key|
-            hash[key].nil? || hash[key].zero? || (!options[:except].nil? && options[:except].include?(key)) ||
-              (options[:only] && !options[:only].include?(key))
+          time_measurements.delete_if do |key, word|
+            hash[key].nil? || hash[key].zero? || (!options[:except].nil? && options[:except].include?(key.to_s)) ||
+              (options[:only] && !options[:only].include?(key.to_s))
           end
 
           options.delete(:except)
           options.delete(:only)
-
-          output = []
 
           highest_measures = options.delete(:highest_measures)
           highest_measures = 1 if options.delete(:highest_measure_only)
@@ -67,15 +65,10 @@ module ActionView
             keys = [:years, :months, :days, :hours, :minutes, :seconds]
             first_index = keys.index(time_measurements.first.first)
             keys = keys[first_index, highest_measures]
-            time_measurements.delete_if { |measure, key| !keys.include?(measure) }
+            time_measurements.delete_if { |key, word| !keys.include?(key) }
           end
 
-          time_measurements.each do |measure, key|
-            name = options[:singularize] == :always || hash[key].between?(-1, 1) ? key.singularize : key
-            output += ["#{hash[key]} #{name}"]
-          end
-
-          options.delete(:singularize)
+          output = time_measurements.map { |key, word| hash[key].to_s + ' ' + I18n.t(key, :count => hash[key], :default => key.to_s) }
 
           # maybe only grab the first few values
           if options[:precision]
