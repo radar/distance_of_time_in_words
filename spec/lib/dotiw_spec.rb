@@ -30,9 +30,15 @@ describe "A better distance_of_time_in_words" do
       end
     end
 
-    it "except:'seconds' should skip seconds" do
-      distance_of_time(1.2.minute, except: 'seconds').should eq("1 minute")
-      distance_of_time(2.5.hours + 30.seconds, except: 'seconds').should eq("2 hours and 30 minutes")
+    describe "with options" do
+      it "except:seconds should skip seconds" do
+        distance_of_time(1.2.minute, except: 'seconds').should eq("1 minute")
+        distance_of_time(2.5.hours + 30.seconds, except: 'seconds').should eq("2 hours and 30 minutes")
+      end
+
+      it "except:seconds har higher presedence than include_seconds:true" do
+        distance_of_time(1.2.minute, include_seconds: true, except: 'seconds').should eq('1 minute')
+      end
     end
 
   end
