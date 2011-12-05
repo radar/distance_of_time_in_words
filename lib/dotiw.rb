@@ -36,6 +36,10 @@ module ActionView
         number_with_precision(result, options).to_s + "%"
       end
 
+      def time_ago_in_words(from_time, include_seconds = false, options = {})
+        distance_of_time_in_words(from_time, Time.now, include_seconds, options)
+      end
+
       private
         def display_time_in_words(hash, options = {})
           options = {
