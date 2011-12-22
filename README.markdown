@@ -95,6 +95,27 @@ Culling a whole group of measurements of time:
     >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.day + 1.minute, false, :except => ["minutes", "hours"])
     => "1 day"
     
+#### :highest\_measure\_only
+
+For times when Rails `distance_of_time_in_words` is not precise enough and `DOTIW` is too precise. For instance, if you only want to know the highest time part (measure) that elapsed between two dates.
+
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :highest_measure_only => true })
+    => "1 hour"
+
+Notice how minutes and seconds were removed from the output. Another example:
+
+    >> distance_of_time_in_words(Time.now, Time.now + 1.minute + 1.second, true, { :highest_measure_only => true })
+    => "1 minute"
+
+Minutes are the highest measure, so seconds were discarded from the output.
+
+#### :highest\_n\_measures
+
+When you want variable precision from `DOTIW`:
+
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :highest_n_measures => 2 })
+		=> "1 hour and 1 minute"
+
 #### :words_connector
 
 **This is an option for `to_sentence`, defaults to ', '**
@@ -121,20 +142,6 @@ Using something other than ', and':
 
     >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :last_word_connector => ', finally ' })
     => "1 hour, 1 minute, finally 1 second"
-
-#### :highest\_measure\_only
-
-For times when Rails `distance_of_time_in_words` is not precise enough and `DOTIW` is too precise. For instance, if you only want to know the highest time part (measure) that elapsed between two dates.
-
-    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :highest_measure_only => true })
-    => "1 hour"
-
-Notice how minutes and seconds were removed from the output. Another example:
-
-    >> distance_of_time_in_words(Time.now, Time.now + 1.minute + 1.second, true, { :highest_measure_only => true })
-    => "1 minute"
-
-Minutes are the highest measure, so seconds were discarded from the output.
 
 ## distance\_of\_time
 
