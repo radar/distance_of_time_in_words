@@ -114,7 +114,7 @@ Minutes are the highest measure, so seconds were discarded from the output.
 When you want variable precision from `DOTIW`:
 
     >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :highest_n_measures => 2 })
-		=> "1 hour and 1 minute"
+    => "1 hour and 1 minute"
 
 #### :words_connector
 
