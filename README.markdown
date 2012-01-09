@@ -23,11 +23,18 @@ The third argument for this method is whether or not to include seconds. By defa
     >> distance_of_time_in_words(Time.now, Time.now + 1.year + 1.second, true)
     => "1 year, and 1 second" 
 
-Yes this could just be merged into the options hash but I'm leaving it here to ensure "backwards-compatibility".
+Yes this could just be merged into the options hash but I'm leaving it here to ensure "backwards-compatibility",
+because that's just an insanely radical thing to do. \m/
 
-The last argument is an optional options hash that can be used to manipulate behavior and (which uses `to_sentence`). 
+The last argument is an optional options hash that can be used to manipulate behavior and (which uses `to_sentence`).
 
-Oh, and did I mention it supports I18n? Oh yeah.
+Don't like having to pass in `Time.now` all the time? Then use `time_ago_in_words` which also will *rock your
+world*:
+
+    >> time_ago_in_words(Time.now + 3 days + 1.second)
+    => "3 days, and 1 second"
+
+Oh, and did I mention it supports I18n? Oh yeah. Rock on!
 
 ### Options
 

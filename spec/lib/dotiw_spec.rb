@@ -16,9 +16,12 @@ describe "A better distance_of_time_in_words" do
 
   describe "distance of time" do
     [
+      [0.5.minutes, "30 seconds"],
+      [4.5.minutes, "4 minutes and 30 seconds"],
       [5.minutes.to_i, "5 minutes"],
       [10.minutes.to_i, "10 minutes"],
       [1.hour.to_i, "1 hour"],
+      [1.hour + 30.seconds, "1 hour and 30 seconds"],
       [4.weeks.to_i, "28 days"],
       [24.weeks.to_i, "5 months and 15 days"]
     ].each do |number, result|
@@ -26,6 +29,18 @@ describe "A better distance_of_time_in_words" do
         distance_of_time(number).should eql(result)
       end
     end
+
+    describe "with options" do
+      it "except:seconds should skip seconds" do
+        distance_of_time(1.2.minute, except: 'seconds').should eq("1 minute")
+        distance_of_time(2.5.hours + 30.seconds, except: 'seconds').should eq("2 hours and 30 minutes")
+      end
+
+      it "except:seconds har higher presedence than include_seconds:true" do
+        distance_of_time(1.2.minute, include_seconds: true, except: 'seconds').should eq('1 minute')
+      end
+    end
+
   end
 
   describe "hash version" do
@@ -92,6 +107,8 @@ describe "A better distance_of_time_in_words" do
       [Time.now, Time.now + 1.minute, "1 minute"],
       [Time.now, Time.now + 3.years, "3 years"],
       [Time.now, Time.now + 10.years, "10 years"],
+      # previous fails, but the next one works
+      [Time.zone.now, Time.zone.now + 10.years, "10 years"],
       [Time.now, Time.now + 3.hour, "3 hours"],
       # Need to be +1.day because it will output "1 year and 30 days" otherwise.
       # Haven't investigated fully how this is caused.
