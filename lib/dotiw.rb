@@ -18,14 +18,16 @@ module ActionView
       end
 
       def distance_of_time(seconds, options = {})
+        options[:include_seconds] ||= true
         display_time_in_words DOTIW::TimeHash.new(seconds).to_hash, options
       end
 
       def distance_of_time_in_words(from_time, to_time = 0, include_seconds = false, options = {})
-        return old_distance_of_time_in_words(from_time, to_time, include_seconds, options) if options.delete(:vague)
+        options[:include_seconds] = include_seconds
         return distance_of_time(from_time, options) if to_time == 0
+        return old_distance_of_time_in_words(from_time, to_time, include_seconds, options) if options.delete(:vague)
         hash = distance_of_time_in_words_hash(from_time, to_time, options)
-        display_time_in_words(hash, include_seconds, options)
+        display_time_in_words(hash, options)
       end
 
       def distance_of_time_in_percent(from_time, current_time, to_time, options = {})
@@ -35,9 +37,19 @@ module ActionView
         number_with_precision(result, options).to_s + "%"
       end
 
+      alias_method :old_time_ago_in_words, :time_ago_in_words
+
+      def time_ago_in_words(from_time, include_seconds = false, options = {})
+        distance_of_time_in_words(from_time, Time.now, include_seconds, options)
+      end
+
+
       private
-        def display_time_in_words(hash, include_seconds = false, options = {})
-          options.symbolize_keys!
+        def display_time_in_words(hash, options = {})
+          options = {
+            :include_seconds => false
+          }.update(options).symbolize_keys
+
           I18n.locale = options[:locale] if options[:locale]
 
           time_measurements = ActiveSupport::OrderedHash.new
@@ -49,7 +61,7 @@ module ActionView
           time_measurements[:minutes] = I18n.t(:minutes, :default => "minutes")
           time_measurements[:seconds] = I18n.t(:seconds, :default => "seconds")
 
-          hash.delete(time_measurements[:seconds]) if !include_seconds && hash[time_measurements[:minutes]]
+          hash.delete(time_measurements[:seconds]) if !options.delete(:include_seconds) && hash[time_measurements[:minutes]]
 
           # Remove all the values that are nil or excluded. Keep the required ones.
           time_measurements.delete_if do |measure, key|
