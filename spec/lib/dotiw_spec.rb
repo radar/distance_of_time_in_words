@@ -152,6 +152,24 @@ describe "A better distance_of_time_in_words" do
         end
       end
     end # :accumulate_on
+    
+    describe "without finish time" do
+      # A missing finish argument should default to zero, essentially returning
+      # the equivalent of distance_of_time in order to be backwards-compatible
+      # with the original rails distance_of_time_in_words helper.
+      [
+        [5.minutes.to_i, "5 minutes"],
+        [10.minutes.to_i, "10 minutes"],
+        [1.hour.to_i, "1 hour"],
+        [4.weeks.to_i, "28 days"],
+        [24.weeks.to_i, "5 months and 15 days"]
+      ].each do |start, output|
+        it "should be #{output}" do
+          distance_of_time_in_words(start).should eql(output)
+        end
+      end
+    end
+    
   end
 
   describe "with output options" do
