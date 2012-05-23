@@ -73,6 +73,10 @@ module ActionView
 
           output = []
 
+          if (n_measures = options.delete(:highest_n_measures)) && n_measures > 0
+            time_measurements = Hash[time_measurements.to_a[0..n_measures - 1]]
+          end
+
           time_measurements = Hash[*time_measurements.first] if options.delete(:highest_measure_only)
 
           time_measurements.each do |measure, key|
