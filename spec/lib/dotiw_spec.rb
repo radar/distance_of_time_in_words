@@ -88,6 +88,16 @@ describe "A better distance_of_time_in_words" do
         hash = distance_of_time_in_words_hash(Time.now, Time.now + 5.days)
         hash["días"].should eql(5)
       end
+
+      describe "given rfc822 formatted date" do
+        it "converts for non-utc time zones" do
+          time = DateTime.parse("Tue, 23 Oct 2012 13:38:09 -0700")
+          hash = distance_of_time_in_words_hash(time, (time + 1.hour + 22.minutes))
+
+          hash["hours"].should eql(1)
+          hash["minutes"].should eql(22)
+        end
+      end
     end
   end
 
