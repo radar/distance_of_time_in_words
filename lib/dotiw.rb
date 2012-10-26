@@ -11,8 +11,8 @@ module ActionView
       alias_method :old_distance_of_time_in_words, :distance_of_time_in_words
 
       def distance_of_time_in_words_hash(from_time, to_time, options = {})
-        from_time = from_time.to_time if !from_time.is_a?(Time) && from_time.respond_to?(:to_time)
-        to_time   = to_time.to_time   if !to_time.is_a?(Time)   && to_time.respond_to?(:to_time)
+        from_time = from_time.utc.to_time if !from_time.is_a?(Time) && from_time.respond_to?(:to_time)
+        to_time   = to_time.utc.to_time   if !to_time.is_a?(Time)   && to_time.respond_to?(:to_time)
 
         DOTIW::TimeHash.new((from_time - to_time).abs, from_time, to_time, options).to_hash
       end
