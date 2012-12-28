@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'action_view'
 
 module DOTIW
   autoload :VERSION, 'dotiw/version'
