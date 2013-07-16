@@ -1,0 +1,14 @@
+de:
+  seconds: Sekunden
+  minutes: Minuten
+
+  # fix: hours should be singularized
+  hours: Stunden
+  hour:
+    one: Stunde
+    other: "%{count} Stunden"
+
+  days: Tage
+  weeks: Wochen
+  months: Monate
+  years: Jahre
