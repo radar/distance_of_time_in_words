@@ -8,7 +8,7 @@ require 'erb'
 
 require 'active_support/all'
 
-require 'action_view/context'
+require 'action_view'
 require 'action_view/helpers'
 
 require 'init' # require dotiw through init (like a plugin would)
