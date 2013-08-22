@@ -3,6 +3,7 @@
 module DOTIW
   autoload :VERSION, 'dotiw/version'
   autoload :TimeHash, 'dotiw/time_hash'
+  autoload :Helper, 'dotiw/helper'
 end # DOTIW
 
 module ActionView
@@ -52,13 +53,13 @@ module ActionView
           I18n.locale = options[:locale] if options[:locale]
 
           time_measurements = ActiveSupport::OrderedHash.new
-          time_measurements[:years]   = I18n.t(:years,   :default => "years")
-          time_measurements[:months]  = I18n.t(:months,  :default => "months")
-          time_measurements[:weeks]   = I18n.t(:weeks,   :default => "weeks")
-          time_measurements[:days]    = I18n.t(:days,    :default => "days")
-          time_measurements[:hours]   = I18n.t(:hours,   :default => "hours")
-          time_measurements[:minutes] = I18n.t(:minutes, :default => "minutes")
-          time_measurements[:seconds] = I18n.t(:seconds, :default => "seconds")
+          time_measurements[:years]   = DOTIW::Helper::i18n_t(:years)
+          time_measurements[:months]  = DOTIW::Helper::i18n_t(:months)
+          time_measurements[:weeks]   = DOTIW::Helper::i18n_t(:weeks)
+          time_measurements[:days]    = DOTIW::Helper::i18n_t(:days)
+          time_measurements[:hours]   = DOTIW::Helper::i18n_t(:hours)
+          time_measurements[:minutes] = DOTIW::Helper::i18n_t(:minutes)
+          time_measurements[:seconds] = DOTIW::Helper::i18n_t(:seconds)
 
           hash.delete(time_measurements[:seconds]) if !options.delete(:include_seconds) && hash[time_measurements[:minutes]]
 
@@ -76,6 +77,7 @@ module ActionView
           time_measurements = Hash[*time_measurements.first] if options.delete(:highest_measure_only)
 
           time_measurements.each do |measure, key|
+
             name = options[:singularize] == :always || hash[key].between?(-1, 1) ? key.singularize : key
             output += ["#{hash[key]} #{name}"]
           end
