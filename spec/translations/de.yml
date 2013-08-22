@@ -1,5 +1,8 @@
 de:
   seconds: Sekunden
+  x_seconds:
+    one: Sekunde
+    other: Sekunden
   minutes: Minuten
   hours: Stunden
   days: Tage
