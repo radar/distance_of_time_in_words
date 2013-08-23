@@ -5,5 +5,8 @@ es:
   days: días
   weeks: semanas
   months: meses
+  x_months:
+    one: mes
+    other: meses
   years: años
   
