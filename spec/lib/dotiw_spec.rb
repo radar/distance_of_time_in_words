@@ -10,20 +10,20 @@ describe "A better distance_of_time_in_words" do
   before do
     I18n.locale = :en
     time = "01-08-2009".to_time
-    Time.stub!(:now).and_return(time)
-    Time.zone.stub!(:now).and_return(time)
+    Time.stub(:now).and_return(time)
+    Time.zone.stub(:now).and_return(time)
   end
 
   describe "distance of time" do
     [
-      [0.5.minutes, "30 seconds"],
-      [4.5.minutes, "4 minutes and 30 seconds"],
-      [5.minutes.to_i, "5 minutes"],
-      [10.minutes.to_i, "10 minutes"],
-      [1.hour.to_i, "1 hour"],
-      [1.hour + 30.seconds, "1 hour and 30 seconds"],
-      [4.weeks.to_i, "28 days"],
-      [24.weeks.to_i, "5 months and 15 days"]
+        [0.5.minutes, "30 seconds"],
+        [4.5.minutes, "4 minutes and 30 seconds"],
+        [5.minutes.to_i, "5 minutes"],
+        [10.minutes.to_i, "10 minutes"],
+        [1.hour.to_i, "1 hour"],
+        [1.hour + 30.seconds, "1 hour and 30 seconds"],
+        [4.weeks.to_i, "28 days"],
+        [3.weeks.to_i, "21 days"]
     ].each do |number, result|
       it "#{number} == #{result}" do
         distance_of_time(number).should eql(result)
@@ -88,6 +88,24 @@ describe "A better distance_of_time_in_words" do
         hash = distance_of_time_in_words_hash(Time.now, Time.now + 5.days)
         hash["días"].should eql(5)
       end
+
+      it "should save its measurements in german when given that locale" do
+        hash = distance_of_time_in_words_hash(Time.now,
+                                              Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+                                              :locale => "de")
+        hash["Jahre"].should eql(1)
+        hash["Monate"].should eql(2)
+        hash["Tage"].should eql(3)
+        hash["Stunden"].should eql(4)
+        hash["Minuten"].should eql(5)
+        hash["Sekunden"].should eql(6)
+      end
+
+      it "should speak german" do
+        I18n.locale = :de
+        hash = distance_of_time_in_words_hash(Time.now, Time.now + 5.days)
+        hash["Tage"].should eql(5)
+      end
     end
   end
 
@@ -96,24 +114,28 @@ describe "A better distance_of_time_in_words" do
       distance_of_time_in_words(Time.now, Time.now + 5.days, true, :locale => "es").should eql("5 días")
     end
 
+    it "should speak german" do
+      distance_of_time_in_words(Time.now, Time.now + 5.days, true, :locale => "de").should eql("5 Tage")
+    end
+
     [
-      [Time.now, Time.now + 5.days + 3.minutes, "5 days and 3 minutes"],
-      [Time.now, Time.now + 1.minute, "1 minute"],
-      [Time.now, Time.now + 3.years, "3 years"],
-      [Time.now, Time.now + 10.years, "10 years"],
-      # previous fails, but the next one works
-      [Time.zone.now, Time.zone.now + 10.years, "10 years"],
-      [Time.now, Time.now + 3.hour, "3 hours"],
-      # Need to be +1.day because it will output "1 year and 30 days" otherwise.
-      # Haven't investigated fully how this is caused.
-      [Time.now, Time.now + 13.months, "1 year and 1 month"],
-      # Any numeric sequence is merely coincidental.
-      [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
-      ["2009-3-16".to_time, "2008-4-14".to_time, "11 months and 2 days"],
-      ["2009-3-16".to_time + 1.minute, "2008-4-14".to_time, "11 months, 2 days, and 1 minute"],
-      ["2009-4-14".to_time, "2008-3-16".to_time, "1 year and 29 days"],
-      ["2009-2-01".to_time, "2009-3-01".to_time, "1 month"],
-      ["2008-2-01".to_time, "2008-3-01".to_time, "1 month"]
+        [Time.now, Time.now + 5.days + 3.minutes, "5 days and 3 minutes"],
+        [Time.now, Time.now + 1.minute, "1 minute"],
+        [Time.now, Time.now + 3.years, "3 years"],
+        [Time.now, Time.now + 10.years, "10 years"],
+        # previous fails, but the next one works
+        [Time.zone.now, Time.zone.now + 10.years, "10 years"],
+        [Time.now, Time.now + 3.hour, "3 hours"],
+        # Need to be +1.day because it will output "1 year and 30 days" otherwise.
+        # Haven't investigated fully how this is caused.
+        [Time.now, Time.now + 13.months, "1 year and 1 month"],
+        # Any numeric sequence is merely coincidental.
+        [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
+        ["2009-3-16".to_time, "2008-4-14".to_time, "11 months and 2 days"],
+        ["2009-3-16".to_time + 1.minute, "2008-4-14".to_time, "11 months, 2 days, and 1 minute"],
+        ["2009-4-14".to_time, "2008-3-16".to_time, "1 year and 29 days"],
+        ["2009-2-01".to_time, "2009-3-01".to_time, "1 month"],
+        ["2008-2-01".to_time, "2008-3-01".to_time, "1 month"]
     ].each do |start, finish, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true).should eql(output)
@@ -122,30 +144,30 @@ describe "A better distance_of_time_in_words" do
 
     describe "accumulate on" do
       [
-        [Time.now,
-         Time.now + 10.minute,
-         :seconds,
-         "600 seconds"],
-        [Time.now,
-         Time.now + 10.hour + 10.minute + 1.second,
-         :minutes,
-         "610 minutes and 1 second"],
-        [Time.now,
-         Time.now + 2.day + 10000.hour + 10.second,
-         :hours,
-         "10048 hours and 10 seconds"],
-        [Time.now,
-         Time.now + 2.day + 10000.hour + 10.second,
-         :days,
-         "418 days, 16 hours, and 10 seconds"],
-        [Time.now,
-         Time.now + 2.day + 10000.hour + 10.second,
-         :months,
-         "13 months, 16 hours, and 10 seconds"],
-        [Time.now,
-         Time.now + 2.day + 10000.hour + 10.second,
-         :years,
-         "1 year, 1 month, 22 days, 16 hours, and 10 seconds"]
+          [Time.now,
+           Time.now + 10.minute,
+           :seconds,
+           "600 seconds"],
+          [Time.now,
+           Time.now + 10.hour + 10.minute + 1.second,
+           :minutes,
+           "610 minutes and 1 second"],
+          [Time.now,
+           Time.now + 2.day + 10000.hour + 10.second,
+           :hours,
+           "10048 hours and 10 seconds"],
+          [Time.now,
+           Time.now + 2.day + 10000.hour + 10.second,
+           :days,
+           "418 days, 16 hours, and 10 seconds"],
+          [Time.now,
+           Time.now + 2.day + 10000.hour + 10.second,
+           :months,
+           "13 months, 16 hours, and 10 seconds"],
+          [Time.now,
+           Time.now + 2.day + 10000.hour + 10.second,
+           :years,
+           "1 year, 1 month, 22 days, 16 hours, and 10 seconds"]
       ].each do |start, finish, accumulator, output|
         it "should be #{output}" do
           distance_of_time_in_words(start, finish, true, :accumulate_on => accumulator).should eql(output)
@@ -156,74 +178,74 @@ describe "A better distance_of_time_in_words" do
 
   describe "with output options" do
     [
-      # Any numeric sequence is merely coincidental.
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-       { :words_connector => " - " },
-       "1 year - 2 months - 3 days - 4 hours - 5 minutes, and 6 seconds"],
-      [Time.now,
-       Time.now + 5.minutes + 6.seconds,
-       { :two_words_connector => " - " },
-       "5 minutes - 6 seconds"],
-      [Time.now,
-       Time.now + 4.hours +  5.minutes + 6.seconds,
-       { :last_word_connector => " - " },
-       "4 hours, 5 minutes - 6 seconds"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-       { :except => "minutes" },
-       "1 year, 2 months, 3 days, 4 hours, and 6 seconds"],
-      [Time.now,
-       Time.now + 1.hour + 1.minute,
-       { :except => "minutes"}, "1 hour"],
-      [Time.now,
-       Time.now + 1.hour + 1.day + 1.minute,
-       { :except => ["minutes", "hours"]},
-       "1 day"],
-      [Time.now,
-       Time.now + 1.hour + 1.day + 1.minute,
-       { :only => ["minutes", "hours"]},
-       "1 hour and 1 minute"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-       { :precision => 2 },
-       "1 year and 2 months"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-       { :precision => 3 },
-       "1 year, 2 months, and 3 days"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-       { :precision => 10 },
-       "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-       { :vague => true },
-       "about 1 year"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-       { :vague => "Yes please" },
-       "about 1 year"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-       { :vague => false },
-       "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-       { :vague => nil },
-       "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-       { "except" => "minutes" },
-       "1 year, 2 months, 3 days, 4 hours, and 6 seconds"],
-      [Time.now,
-        Time.now + 1.hour + 2.minutes + 3.seconds,
-        { :highest_measure_only => true },
-        "1 hour"],
-      [Time.now,
-       Time.now + 2.year + 3.months + 4.days + 5.hours + 6.minutes + 7.seconds,
-       { :singularize => :always },
-       "2 year, 3 month, 4 day, 5 hour, 6 minute, and 7 second"]
+        # Any numeric sequence is merely coincidental.
+        [Time.now,
+         Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+         {:words_connector => " - "},
+         "1 year - 2 months - 3 days - 4 hours - 5 minutes, and 6 seconds"],
+        [Time.now,
+         Time.now + 5.minutes + 6.seconds,
+         {:two_words_connector => " - "},
+         "5 minutes - 6 seconds"],
+        [Time.now,
+         Time.now + 4.hours + 5.minutes + 6.seconds,
+         {:last_word_connector => " - "},
+         "4 hours, 5 minutes - 6 seconds"],
+        [Time.now,
+         Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+         {:except => "minutes"},
+         "1 year, 2 months, 3 days, 4 hours, and 6 seconds"],
+        [Time.now,
+         Time.now + 1.hour + 1.minute,
+         {:except => "minutes"}, "1 hour"],
+        [Time.now,
+         Time.now + 1.hour + 1.day + 1.minute,
+         {:except => ["minutes", "hours"]},
+         "1 day"],
+        [Time.now,
+         Time.now + 1.hour + 1.day + 1.minute,
+         {:only => ["minutes", "hours"]},
+         "1 hour and 1 minute"],
+        [Time.now,
+         Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+         {:precision => 2},
+         "1 year and 2 months"],
+        [Time.now,
+         Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+         {:precision => 3},
+         "1 year, 2 months, and 3 days"],
+        [Time.now,
+         Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+         {:precision => 10},
+         "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
+        [Time.now,
+         Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+         {:vague => true},
+         "about 1 year"],
+        [Time.now,
+         Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+         {:vague => "Yes please"},
+         "about 1 year"],
+        [Time.now,
+         Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+         {:vague => false},
+         "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
+        [Time.now,
+         Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+         {:vague => nil},
+         "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
+        [Time.now,
+         Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+         {"except" => "minutes"},
+         "1 year, 2 months, 3 days, 4 hours, and 6 seconds"],
+        [Time.now,
+         Time.now + 1.hour + 2.minutes + 3.seconds,
+         {:highest_measure_only => true},
+         "1 hour"],
+        [Time.now,
+         Time.now + 2.year + 3.months + 4.days + 5.hours + 6.minutes + 7.seconds,
+         {:singularize => :always},
+         "2 year, 3 month, 4 day, 5 hour, 6 minute, and 7 second"]
     ].each do |start, finish, options, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true, options).should eql(output)
@@ -255,6 +277,119 @@ describe "A better distance_of_time_in_words" do
     it "calculates 15.3%" do
       time_in_percent(:precision => 1).should eql("15.3%")
     end
+  end
+
+  describe "localisation and singular/plural measurements" do
+
+    describe "en (default)" do
+
+      before do
+        I18n.locale = :en
+      end
+
+      describe "singular measurements" do
+        [
+            [1.seconds, "1 second"],
+            [1.minutes, "1 minute"],
+            [1.hour, "1 hour"],
+            [1.days, "1 day"],
+            [31.days, "1 month"],
+            [1.year, "1 year"],
+        ].each do |number, result|
+          it "#{number} == #{result}" do
+            distance_of_time_in_words(Time.now, Time.now+number, locale: "en").should eql(result)
+          end
+        end
+      end
+
+      describe "plural measurements" do
+        [
+            [2.seconds, "2 seconds"],
+            [2.minutes, "2 minutes"],
+            [2.hours, "2 hours"],
+            [2.days, "2 days"],
+            [2.months, "2 months"],
+            [2.years, "2 years"],
+        ].each do |number, result|
+          it "#{number} == #{result}" do
+            distance_of_time_in_words(Time.now, Time.now+number, locale: "en").should eql(result)
+          end
+        end
+      end
+    end
+    describe "de (Deutsch)" do
+
+      before do
+        I18n.locale = :de
+      end
+
+      describe "singular measurements" do
+        [
+            [1.seconds, "1 Sekunde"],
+            [1.minutes, "1 Minute"],
+            [1.hours, "1 Stunde"],
+            [1.days, "1 Tag"],
+            [31.days, "1 Monat"],
+            [1.year, "1 Jahr"],
+        ].each do |number, result|
+          it "#{number} == #{result}" do
+            distance_of_time_in_words(Time.now, Time.now+number, locale: "de").should eql(result)
+          end
+        end
+      end
+
+      describe "plural measurements" do
+        [
+            [2.seconds, "2 Sekunden"],
+            [2.minutes, "2 Minuten"],
+            [2.hours, "2 Stunden"],
+            [2.days, "2 Tage"],
+            [2.months, "2 Monate"],
+            [2.years, "2 Jahre"],
+        ].each do |number, result|
+          it "#{number} == #{result}" do
+            distance_of_time_in_words(Time.now, Time.now+number, locale: "de").should eql(result)
+          end
+        end
+      end
+    end
+    describe "es (español)" do
+
+      before do
+        I18n.locale = :es
+      end
+
+      describe "singular measurements" do
+        [
+            [1.seconds, "1 segundo"],
+            [1.minutes, "1 minuto"],
+            [1.hours, "1 hora"],
+            [1.days, "1 día"],
+            [31.days, "1 mes"],
+            [365.days, "1 año"],
+        ].each do |number, result|
+          it "#{number} == #{result}" do
+            distance_of_time_in_words(Time.now, Time.now+number, locale: "es").should eql(result)
+          end
+        end
+      end
+
+      describe "plural measurements" do
+        [
+            [2.seconds, "2 segundos"],
+            [2.minutes, "2 minutos"],
+            [2.hours, "2 horas"],
+            [2.days, "2 días"],
+            [31*3.days, "3 meses"],
+            [2*365.days, "2 años"],
+        ].each do |number, result|
+          it "#{number} == #{result}" do
+            distance_of_time_in_words(Time.now, Time.now+number, locale: "es").should eql(result)
+          end
+        end
+      end
+    end
+
   end
 
 end

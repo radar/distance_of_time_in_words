@@ -1,0 +1,51 @@
+de:
+
+  seconds: Sekunden
+  x_seconds:
+    one: "Sekunde"
+    other: "Sekunden"
+
+  minutes: Minuten
+  x_minutes:
+    one: Minute
+    other: Minuten
+
+  hours: Stunden
+  x_hours:
+    one: Stunde
+    other: Stunden
+
+  days: Tage
+  x_days:
+    one: Tag
+    other: Tage
+
+  weeks: Wochen
+  x_weeks:
+    one: Woche
+    other: Wochen
+
+  months: Monate
+  x_months:
+    one: Monat
+    other: Monate
+  years: Jahre
+  x_years:
+    one: Jahr
+    other: Jahre
+
+  support:
+    array:
+      two_words_connector: " und "
+      words_connector: ", "
+      last_word_connector: ", und "
+
+  datetime:
+    distance_in_words:
+      about_x_years:
+        one: "ungefähr 1 Jahr"
+        many: "ungefähr %{count} Jahre"
+
+  number:
+      format:
+        separator: ","

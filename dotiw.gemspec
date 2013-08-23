@@ -20,6 +20,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency "bundler", "~> 1.0.0"
   s.add_development_dependency "rspec", "~> 2.0"
 
+  # thinking about adding i18n rails to gemspec (dev)
+  #s.add_development_dependency "i18n"
+  #s.add_development_dependency "i18n-rails"
+
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
