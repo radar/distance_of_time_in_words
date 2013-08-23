@@ -19,7 +19,7 @@ module DOTIW
       x_key = "x_#{measure.to_s}".to_sym
       if exist_x_key? x_key
 
-        return I18n.t x_key, :count => count
+        return I18n.t( x_key, :count => count)
       else
         if count == 1
           # old DOTIW behaviour: defaults to key.singularize
@@ -39,7 +39,7 @@ module DOTIW
       return self.singular_plural_key measure, key, count = 2
     end
 
-    def self.exist_x_key?(key)
+    def self.exist_x_key?(x_key)
       bla = I18n.t(x_key, :default => '', :raise => true) rescue false
       if bla.blank?
         return false
