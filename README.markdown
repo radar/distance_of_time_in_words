@@ -56,7 +56,7 @@ Specify this if you want it to use the old `distance_of_time_in_words`. The valu
 Specifies the maximum output unit which will accumulate all the surplus. Say you set it to seconds and your time difference is of 2 minutes then the output would be 120 seconds. Here's a code example:
 
     >> distance_of_time_in_words(Time.now, Time.now + 2.hour + 70.second, true, :accumulate_on => :minutes)
-    => "121 minutes minute and 10 seconds"
+    => "121 minutes and 10 seconds"
 
 #### :only
 
@@ -146,19 +146,19 @@ If you have simply a number of seconds you can get the "stringified" version of 
 Don't like any format you're given? That's cool too! Here, have an indifferent hash version:
 
     >> distance_of_time_in_words_hash(Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds)
-    => {"days"=>3, "seconds"=>6, "minutes"=>5, "years"=>1, "hours"=>4, "months"=>2}
+    => {:days => 3, :seconds => 6, :minutes => 5, :years => 1, :hours => 4, :months => 2}
 
 Indifferent means that you can access all keys by their `String` or `Symbol` version.
     
 ## distance\_of\_time\_in\_percent
 
-If you want to calculate a distance of time in percent, use `distance_of_time_in_percent`. The first argument is the beginning time, the second argument the "current" time and the third argument is the end time. This method takes the same options as [`number_with_precision`][http://api.rubyonrails.org/classes/ActionView/Helpers/NumberHelper.html#M001687].
+If you want to calculate a distance of time in percent, use `distance_of_time_in_percent`. The first argument is the beginning time, the second argument the "current" time and the third argument is the end time. This method takes the same options as [`number_with_precision`](http://api.rubyonrails.org/classes/ActionView/Helpers/NumberHelper.html#method-i-number_with_precision).
 
     distance_of_time_in_percent("04-12-2009".to_time, "29-01-2010".to_time, "04-12-2010".to_time, options)
     
 
 ## Contributors
 
-* [chendo][http://github.com/chendo] - for talking through it with me and drawing on the whiteboard
-* [Derander][http://github.com/derander] - correct Spanish translations
-* [DBA][http://github.com/dba] - Commits leading up to the 0.7 release. 
+* [chendo](http://github.com/chendo) - for talking through it with me and drawing on the whiteboard
+* [Derander](http://github.com/derander) - correct Spanish translations
+* [DBA](http://github.com/dba) - Commits leading up to the 0.7 release. 
