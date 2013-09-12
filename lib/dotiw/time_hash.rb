@@ -7,14 +7,12 @@ module DOTIW
     attr_accessor :distance, :smallest, :largest, :from_time, :to_time, :options
 
     def initialize(distance, from_time = nil, to_time = nil, options = {})
-      self.output     = {}
+      self.output     = ActiveSupport::OrderedHash.new
       self.options    = options
       self.distance   = distance
       self.from_time  = from_time || Time.now
       self.to_time    = to_time   || (self.from_time + self.distance.seconds)
       self.smallest, self.largest = [self.from_time, self.to_time].minmax
-
-      I18n.locale = options[:locale] if options[:locale]
 
       build_time_hash
     end
@@ -50,27 +48,27 @@ module DOTIW
       end
 
       def build_seconds
-        output[I18n.t(:seconds, :default => "seconds")] = distance.to_i
+        output[:seconds] = distance.to_i
         self.distance = 0
       end
 
       def build_minutes
-        output[I18n.t(:minutes, :default => "minutes")], self.distance = distance.divmod(1.minute)
+        output[:minutes], self.distance = distance.divmod(1.minute)
       end
 
       def build_hours
-        output[I18n.t(:hours, :default => "hours")], self.distance = distance.divmod(1.hour)
+        output[:hours], self.distance = distance.divmod(1.hour)
       end
 
       def build_days
-        output[I18n.t(:days, :default => "days")], self.distance = distance.divmod(1.day)
+        output[:days], self.distance = distance.divmod(1.day)
       end
 
       def build_months
         build_years_months_days
 
-        if (years = output.delete(I18n.t(:years, :default => "years"))) > 0
-          output[I18n.t(:months, :default => "months")] += (years * 12)
+        if (years = output.delete(:years)) > 0
+          output[:months] += (years * 12)
         end
       end
 
@@ -96,9 +94,9 @@ module DOTIW
           months += 12
         end
 
-        output[I18n.t(:years,   :default => "years")]   = years
-        output[I18n.t(:months,  :default => "months")]  = months
-        output[I18n.t(:days,    :default => "days")]    = days
+        output[:years]   = years
+        output[:months]  = months
+        output[:days]    = days
 
         total_days, self.distance = (from_time - to_time).abs.divmod(1.day)
       end
