@@ -49,9 +49,13 @@ module ActionView
         include_seconds = options.delete(:include_seconds)
         hash.delete(:seconds) if !include_seconds && hash[:minutes]
 
+        options[:except] = Array.wrap(options[:except]).map!(&:to_s) if options[:except]
+        options[:only] = Array.wrap(options[:only]).map!(&:to_s) if options[:only]
+
         # Remove all the values that are nil or excluded. Keep the required ones.
         hash.delete_if do |key, value|
-          value.nil? || value.zero? || (!options[:except].nil? && options[:except].include?(key.to_s)) ||
+          value.nil? || value.zero? ||
+            (options[:except] && options[:except].include?(key.to_s)) ||
             (options[:only] && !options[:only].include?(key.to_s))
         end
         return I18n.t('datetime.distance_in_words.less_than_x_seconds', :count => 1, :locale => options[:locale]) if hash.empty?
