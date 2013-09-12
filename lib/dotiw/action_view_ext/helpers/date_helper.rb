@@ -55,28 +55,19 @@ module ActionView
             (options[:only] && !options[:only].include?(key.to_s))
         end
         return I18n.t('datetime.distance_in_words.less_than_x_seconds', :count => 1, :locale => options[:locale]) if hash.empty?
-        
+
         options.delete(:except)
         options.delete(:only)
-
-        highest_measures = options.delete(:highest_measures)
-        highest_measures = 1 if options.delete(:highest_measure_only)
-        if highest_measures
-          keys = [:years, :months, :days, :hours, :minutes, :seconds]
-          first_index = keys.index(hash.first.first)
-          keys = keys[first_index, highest_measures]
-          hash.delete_if { |key, value| !keys.include?(key) }
-        end
 
         output = []
         I18n.with_options :locale => options[:locale], :scope => options.delete(:scope) do |locale|
           output = hash.map { |key, value| "#{value.to_s} #{locale.t(key, :count => value, :default => key.to_s)}" }
         end
 
-        # maybe only grab the first few values
-        if options[:precision]
-          output = output[0...options[:precision]]
-          options.delete(:precision)
+        highest_measures = options.delete(:highest_measures)
+        highest_measures = 1 if options.delete(:highest_measure_only)
+        if highest_measures
+          output = output[0...highest_measures]
         end
 
         output.to_sentence(options)
