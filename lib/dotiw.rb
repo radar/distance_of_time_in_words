@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'i18n'
+
 # Rails hacks
 if defined?(ActionView::Helpers)
   require 'dotiw/action_view_ext/helpers/date_helper'
