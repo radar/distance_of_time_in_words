@@ -50,9 +50,7 @@ module ActionView
     private
       def display_time_in_words(hash, options = {})
         options.reverse_merge!(
-          :include_seconds => false,
-          :two_words_connector => ', ',
-          :last_word_connector => ', '
+          :include_seconds => false
         ).symbolize_keys!
 
         include_seconds = options.delete(:include_seconds)
@@ -76,7 +74,7 @@ module ActionView
           hash.delete_if { |key, value| !keys.include?(key) }
         end
 
-        output = nil
+        output = []
         I18n.with_options :locale => options[:locale], :scope => options.delete(:scope) do |locale|
           output = hash.map { |key, value| "#{value.to_s} #{locale.t(key, :count => value, :default => key.to_s)}" }
         end
