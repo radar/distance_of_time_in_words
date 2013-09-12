@@ -50,12 +50,12 @@ describe "A better distance_of_time_in_words" do
         describe name do
           it "exactly" do
             hash = distance_of_time_in_words_hash(Time.now, Time.now + 1.send(name))
-            hash[name.to_s].should eql(1)
+            hash[name].should eql(1)
           end
 
           it "two" do
             hash = distance_of_time_in_words_hash(Time.now, Time.now + 2.send(name))
-            hash[name.to_s].should eql(2)
+            hash[name].should eql(2)
           end
         end
       end
@@ -63,12 +63,12 @@ describe "A better distance_of_time_in_words" do
       it "should be happy with lots of measurements" do
         hash = distance_of_time_in_words_hash(Time.now,
                                               Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds)
-        hash["years"].should eql(1)
-        hash["months"].should eql(2)
-        hash["days"].should eql(3)
-        hash["hours"].should eql(4)
-        hash["minutes"].should eql(5)
-        hash["seconds"].should eql(6)
+        hash[:years].should eql(1)
+        hash[:months].should eql(2)
+        hash[:days].should eql(3)
+        hash[:hours].should eql(4)
+        hash[:minutes].should eql(5)
+        hash[:seconds].should eql(6)
       end
 
       it "debe estar contento con las mediciones en español" do
@@ -141,11 +141,7 @@ describe "A better distance_of_time_in_words" do
         [Time.now,
          Time.now + 2.day + 10000.hour + 10.second,
          :months,
-         "13 months, 16 hours, and 10 seconds"],
-        [Time.now,
-         Time.now + 2.day + 10000.hour + 10.second,
-         :years,
-         "1 year, 1 month, 22 days, 16 hours, and 10 seconds"]
+         "13 months, 16 hours, and 10 seconds"]
       ].each do |start, finish, accumulator, output|
         it "should be #{output}" do
           distance_of_time_in_words(start, finish, true, :accumulate_on => accumulator).should eql(output)
@@ -239,9 +235,25 @@ describe "A better distance_of_time_in_words" do
         { :highest_measure_only => true },
         "1 hour"],
       [Time.now,
+       Time.now + 1.hours + 2.minutes + 3.seconds,
+       { :highest_measures => 1 },
+       "1 hour"],
+      [Time.now,
        Time.now + 2.year + 3.months + 4.days + 5.hours + 6.minutes + 7.seconds,
-       { :singularize => :always },
-       "2 year, 3 month, 4 day, 5 hour, 6 minute, and 7 second"]
+       { :highest_measures => 3 },
+       "2 years, 3 months, and 4 days"],
+      [Time.now,
+       Time.now + 2.year + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+       { :highest_measures => 3 },
+       "2 years and 25 days"],
+      [Time.now,
+       Time.now + 4.days + 6.minutes + 7.seconds,
+       { :highest_measures => 3 },
+       "4 days and 6 minutes"],
+      [Time.now,
+       Time.now + 1.year + 2.weeks,
+       { :highest_measures => 3 },
+       "1 year and 14 days"]
     ].each do |start, finish, options, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true, options).should eql(output)
