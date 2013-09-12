@@ -22,10 +22,14 @@ module ActionView
         display_time_in_words DOTIW::TimeHash.new(seconds).to_hash, options
       end
 
-      def distance_of_time_in_words(from_time, to_time = 0, include_seconds = false, options = {})
-        options[:include_seconds] = include_seconds
+      def distance_of_time_in_words(from_time, to_time = 0, include_seconds_or_options = {}, options = {})
+        if include_seconds_or_options.is_a?(Hash)
+          options = include_seconds_or_options
+        else
+          options[:include_seconds] ||= !!include_seconds_or_options
+        end
         return distance_of_time(from_time, options) if to_time == 0
-        return old_distance_of_time_in_words(from_time, to_time, include_seconds, options) if options.delete(:vague)
+        return old_distance_of_time_in_words(from_time, to_time, options) if options.delete(:vague)
         hash = distance_of_time_in_words_hash(from_time, to_time, options)
         display_time_in_words(hash, options)
       end
@@ -39,51 +43,52 @@ module ActionView
 
       alias_method :old_time_ago_in_words, :time_ago_in_words
 
-      def time_ago_in_words(from_time, include_seconds = false, options = {})
-        distance_of_time_in_words(from_time, Time.now, include_seconds, options)
+      def time_ago_in_words(from_time, include_seconds_or_options = {})
+        distance_of_time_in_words(from_time, Time.now, include_seconds_or_options)
       end
 
+    private
+      def display_time_in_words(hash, options = {})
+        options.reverse_merge!(
+          :include_seconds => false,
+          :two_words_connector => ', ',
+          :last_word_connector => ', '
+        ).symbolize_keys!
 
-      private
-        def display_time_in_words(hash, options = {})
-          options.reverse_merge!(
-            :include_seconds => false,
-            :two_words_connector => ', ',
-            :last_word_connector => ', '
-          ).symbolize_keys!
+        include_seconds = options.delete(:include_seconds)
+        hash.delete(:seconds) if !include_seconds && hash[:minutes]
 
-          I18n.locale = options[:locale] if options[:locale]
-
-          hash.delete(:seconds) if !include_seconds && hash[:minutes]
-
-          # Remove all the values that are nil or excluded. Keep the required ones.
-          hash.delete_if do |key, value|
-            value.nil? || value.zero? || (!options[:except].nil? && options[:except].include?(key.to_s)) ||
-              (options[:only] && !options[:only].include?(key.to_s))
-          end
-
-          options.delete(:except)
-          options.delete(:only)
-
-          highest_measures = options.delete(:highest_measures)
-          highest_measures = 1 if options.delete(:highest_measure_only)
-          if highest_measures
-            keys = [:years, :months, :days, :hours, :minutes, :seconds]
-            first_index = keys.index(hash.first.first)
-            keys = keys[first_index, highest_measures]
-            hash.delete_if { |key, value| !keys.include?(key) }
-          end
-
-          output = hash.map { |key, value| value.to_s + ' ' + I18n.t(key, :count => value, :default => key.to_s) }
-
-          # maybe only grab the first few values
-          if options[:precision]
-            output = output[0...options[:precision]]
-            options.delete(:precision)
-          end
-
-          output.to_sentence(options)
+        # Remove all the values that are nil or excluded. Keep the required ones.
+        hash.delete_if do |key, value|
+          value.nil? || value.zero? || (!options[:except].nil? && options[:except].include?(key.to_s)) ||
+            (options[:only] && !options[:only].include?(key.to_s))
         end
+
+        options.delete(:except)
+        options.delete(:only)
+
+        highest_measures = options.delete(:highest_measures)
+        highest_measures = 1 if options.delete(:highest_measure_only)
+        if highest_measures
+          keys = [:years, :months, :days, :hours, :minutes, :seconds]
+          first_index = keys.index(hash.first.first)
+          keys = keys[first_index, highest_measures]
+          hash.delete_if { |key, value| !keys.include?(key) }
+        end
+
+        output = nil
+        I18n.with_options :locale => options[:locale], :scope => options.delete(:scope) do |locale|
+          output = hash.map { |key, value| "#{value.to_s} #{locale.t(key, :count => value, :default => key.to_s)}" }
+        end
+
+        # maybe only grab the first few values
+        if options[:precision]
+          output = output[0...options[:precision]]
+          options.delete(:precision)
+        end
+
+        output.to_sentence(options)
+      end
     end # DateHelper
   end # Helpers
 end # ActionView
