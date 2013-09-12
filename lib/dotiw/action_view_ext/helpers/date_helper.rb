@@ -54,7 +54,8 @@ module ActionView
           value.nil? || value.zero? || (!options[:except].nil? && options[:except].include?(key.to_s)) ||
             (options[:only] && !options[:only].include?(key.to_s))
         end
-
+        return I18n.t('datetime.distance_in_words.less_than_x_seconds', :count => 1, :locale => options[:locale]) if hash.empty?
+        
         options.delete(:except)
         options.delete(:only)
 
