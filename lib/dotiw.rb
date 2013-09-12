@@ -54,36 +54,27 @@ module ActionView
 
           I18n.locale = options[:locale] if options[:locale]
 
-          time_measurements = ActiveSupport::OrderedHash.new
-          time_measurements[:years]   = I18n.t(:years,   :default => "years")
-          time_measurements[:months]  = I18n.t(:months,  :default => "months")
-          time_measurements[:weeks]   = I18n.t(:weeks,   :default => "weeks")
-          time_measurements[:days]    = I18n.t(:days,    :default => "days")
-          time_measurements[:hours]   = I18n.t(:hours,   :default => "hours")
-          time_measurements[:minutes] = I18n.t(:minutes, :default => "minutes")
-          time_measurements[:seconds] = I18n.t(:seconds, :default => "seconds")
-
-          hash.delete(time_measurements[:seconds]) if !options.delete(:include_seconds) && hash[time_measurements[:minutes]]
+          hash.delete(:seconds) if !include_seconds && hash[:minutes]
 
           # Remove all the values that are nil or excluded. Keep the required ones.
-          time_measurements.delete_if do |measure, key|
-            hash[key].nil? || hash[key].zero? || (!options[:except].nil? && options[:except].include?(key)) ||
-              (options[:only] && !options[:only].include?(key))
+          hash.delete_if do |key, value|
+            value.nil? || value.zero? || (!options[:except].nil? && options[:except].include?(key.to_s)) ||
+              (options[:only] && !options[:only].include?(key.to_s))
           end
 
           options.delete(:except)
           options.delete(:only)
 
-          output = []
-
-          time_measurements = Hash[*time_measurements.first] if options.delete(:highest_measure_only)
-
-          time_measurements.each do |measure, key|
-            name = options[:singularize] == :always || hash[key].between?(-1, 1) ? key.singularize : key
-            output += ["#{hash[key]} #{name}"]
+          highest_measures = options.delete(:highest_measures)
+          highest_measures = 1 if options.delete(:highest_measure_only)
+          if highest_measures
+            keys = [:years, :months, :days, :hours, :minutes, :seconds]
+            first_index = keys.index(hash.first.first)
+            keys = keys[first_index, highest_measures]
+            hash.delete_if { |key, value| !keys.include?(key) }
           end
 
-          options.delete(:singularize)
+          output = hash.map { |key, value| value.to_s + ' ' + I18n.t(key, :count => value, :default => key.to_s) }
 
           # maybe only grab the first few values
           if options[:precision]
