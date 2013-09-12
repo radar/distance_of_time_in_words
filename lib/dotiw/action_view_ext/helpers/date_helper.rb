@@ -61,7 +61,7 @@ module ActionView
 
         output = []
         I18n.with_options :locale => options[:locale], :scope => options.delete(:scope) do |locale|
-          output = hash.map { |key, value| "#{value.to_s} #{locale.t(key, :count => value, :default => key.to_s)}" }
+          output = hash.map { |key, value| "#{value.to_s} #{locale.t(key, :count => value)}" }
         end
 
         highest_measures = options.delete(:highest_measures)
