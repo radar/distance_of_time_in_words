@@ -51,15 +51,6 @@ This will also be passed to `to_sentence`
 
 Specify this if you want it to use the old `distance_of_time_in_words`. The value can be anything except `nil` or `false`.
 
-#### :singularize
-
-Specify if all values of the hash should be presented in their singular form. By default they will be pluralized whenever outside the `-1..1` range. If you wish to have them signularized, just add the option `:singularize => :always`.
-
-This option is useful for Russian and Icelandic folks (https://github.com/radar/dotiw/issues#issue/2).
-
-    >> distance_of_time_in_words(Time.now, Time.now + 2.hour + 2.minute, true, :singularize => :always)
-    => "2 hour and 2 minute"
-
 #### :accumulate_on
 
 Specifies the maximum output unit which will accumulate all the surplus. Say you set it to seconds and your time difference is of 2 minutes then the output would be 120 seconds. Here's a code example:
@@ -95,6 +86,27 @@ Culling a whole group of measurements of time:
     >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.day + 1.minute, false, :except => ["minutes", "hours"])
     => "1 day"
     
+#### :highest\_measure\_only
+
+For times when Rails `distance_of_time_in_words` is not precise enough and `DOTIW` is too precise. For instance, if you only want to know the highest time part (measure) that elapsed between two dates.
+
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :highest_measure_only => true })
+    => "1 hour"
+
+Notice how minutes and seconds were removed from the output. Another example:
+
+    >> distance_of_time_in_words(Time.now, Time.now + 1.minute + 1.second, true, { :highest_measure_only => true })
+    => "1 minute"
+
+Minutes are the highest measure, so seconds were discarded from the output.
+
+#### :highest\_measuress
+
+When you want variable precision from `DOTIW`:
+
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :highest_measures => 2 })
+    => "1 hour and 1 minute"
+
 #### :words_connector
 
 **This is an option for `to_sentence`, defaults to ', '**
@@ -121,20 +133,6 @@ Using something other than ', and':
 
     >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :last_word_connector => ', finally ' })
     => "1 hour, 1 minute, finally 1 second"
-
-#### :highest\_measure\_only
-
-For times when Rails `distance_of_time_in_words` is not precise enough and `DOTIW` is too precise. For instance, if you only want to know the highest time part (measure) that elapsed between two dates.
-
-    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :highest_measure_only => true })
-    => "1 hour"
-
-Notice how minutes and seconds were removed from the output. Another example:
-
-    >> distance_of_time_in_words(Time.now, Time.now + 1.minute + 1.second, true, { :highest_measure_only => true })
-    => "1 minute"
-
-Minutes are the highest measure, so seconds were discarded from the output.
 
 ## distance\_of\_time
 
