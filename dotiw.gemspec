@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.email = "radarlistener@gmail.com"
 
   s.add_dependency "actionpack", ">= 3"
+  s.add_dependency "i18n"
   
   s.add_development_dependency "rake"
   s.add_development_dependency "bundler"
