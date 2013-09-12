@@ -64,12 +64,12 @@ Specifies the maximum output unit which will accumulate all the surplus. Say you
 
 Only want a specific measurement of time? No problem!
 
-    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute, false, :only => "minutes")
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute, false, :only => :minutes)
     => "1 minute"
 
 You only want some? No problem too!
 
-    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.day + 1.minute, false, :only => ["minutes", "hours"])
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.day + 1.minute, false, :only => [:minutes, :hours])
     => "1 hour and 1 minute"
 
 #### :except
@@ -78,12 +78,12 @@ You only want some? No problem too!
 
 Don't want a measurement of time? No problem!
 
-    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute, false, :except => "minutes")
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute, false, :except => :minutes)
     => "1 hour"
 
 Culling a whole group of measurements of time:
 
-    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.day + 1.minute, false, :except => ["minutes", "hours"])
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.day + 1.minute, false, :except => [:minutes, :hours])
     => "1 day"
     
 #### :highest\_measure\_only
