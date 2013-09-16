@@ -90,12 +90,12 @@ Culling a whole group of measurements of time:
 
 For times when Rails `distance_of_time_in_words` is not precise enough and `DOTIW` is too precise. For instance, if you only want to know the highest time part (measure) that elapsed between two dates.
 
-    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :highest_measure_only => true })
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, :highest_measure_only => true)
     => "1 hour"
 
 Notice how minutes and seconds were removed from the output. Another example:
 
-    >> distance_of_time_in_words(Time.now, Time.now + 1.minute + 1.second, true, { :highest_measure_only => true })
+    >> distance_of_time_in_words(Time.now, Time.now + 1.minute + 1.second, true, :highest_measure_only => true)
     => "1 minute"
 
 Minutes are the highest measure, so seconds were discarded from the output.
@@ -104,7 +104,7 @@ Minutes are the highest measure, so seconds were discarded from the output.
 
 When you want variable precision from `DOTIW`:
 
-    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :highest_measures => 2 })
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, :highest_measures => 2)
     => "1 hour and 1 minute"
 
 #### :words_connector
@@ -113,7 +113,7 @@ When you want variable precision from `DOTIW`:
 
 Using something other than a comma:
 
-    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :words_connector => ' - ' })
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, :words_connector => ' - ')
     => "1 hour - 1 minute, and 1 second"
     
 #### :two\_words\_connector
@@ -122,7 +122,7 @@ Using something other than a comma:
 
 Using something other than 'and':
 
-    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute, true, { :two_words_connector => ' plus ' })
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute, true, :two_words_connector => ' plus ')
     => "1 hour plus 1 minute"
 
 #### :last\_word\_connector 
@@ -131,7 +131,7 @@ Using something other than 'and':
 
 Using something other than ', and':
 
-    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, { :last_word_connector => ', finally ' })
+    >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, :last_word_connector => ', finally ')
     => "1 hour, 1 minute, finally 1 second"
 
 ## distance\_of\_time
