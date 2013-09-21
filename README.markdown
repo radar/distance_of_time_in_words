@@ -42,7 +42,7 @@ Oh, and did I mention it supports I18n? Oh yeah. Rock on!
 
 You can pass in a locale and it'll output it in whatever language you want (provided you have translations, otherwise it'll default to English):
 
-    >> distance_of_time_in_words(Time.now, Time.now + 1.minute, false, :locale => "es")
+    >> distance_of_time_in_words(Time.now, Time.now + 1.minute, false, :locale => :es)
     => "1 minuto"
     
 This will also be passed to `to_sentence`
@@ -60,8 +60,6 @@ Specifies the maximum output unit which will accumulate all the surplus. Say you
 
 #### :only
 
-**Note that values passed into this option must be passed in as strings!**
-
 Only want a specific measurement of time? No problem!
 
     >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute, false, :only => :minutes)
@@ -73,8 +71,6 @@ You only want some? No problem too!
     => "1 hour and 1 minute"
 
 #### :except
-
-**Note that values passed into this option must be passed in as strings!**
 
 Don't want a measurement of time? No problem!
 
