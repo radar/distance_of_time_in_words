@@ -1,9 +1,22 @@
 es:
-  seconds: segundos
-  minutes: minutos
-  hours: horas
-  days: días
-  weeks: semanas
-  months: meses
-  years: años
-  
+  seconds: 
+    one: segundo
+    other: segundos
+  minutes: 
+    one: minuto
+    other: minutos
+  hours: 
+    one: hora
+    other: horas
+  days: 
+    one: día
+    other: días
+  weeks: 
+    one: semana
+    other: semanas
+  months: 
+    one: mes
+    other: meses
+  years:
+    one: año
+    other: años
