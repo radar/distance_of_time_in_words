@@ -10,12 +10,12 @@ describe "A better distance_of_time_in_words" do
   before do
     I18n.locale = :en
     time = "01-08-2009".to_time
-    Time.stub!(:now).and_return(time)
-    Time.zone.stub!(:now).and_return(time)
+    Time.stub(:now).and_return(time)
+    Time.zone.stub(:now).and_return(time)
   end
 
   describe "distance of time" do
-    [
+    fragments = [
       [0.5.minutes, "30 seconds"],
       [4.5.minutes, "4 minutes and 30 seconds"],
       [5.minutes.to_i, "5 minutes"],
@@ -24,7 +24,8 @@ describe "A better distance_of_time_in_words" do
       [1.hour + 30.seconds, "1 hour and 30 seconds"],
       [4.weeks.to_i, "28 days"],
       [24.weeks.to_i, "5 months and 15 days"]
-    ].each do |number, result|
+    ]
+    fragments.each do |number, result|
       it "#{number} == #{result}" do
         distance_of_time(number).should eql(result)
       end
@@ -70,42 +71,22 @@ describe "A better distance_of_time_in_words" do
         hash[:minutes].should eql(5)
         hash[:seconds].should eql(6)
       end
-
-      it "debe estar contento con las mediciones en español" do
-        hash = distance_of_time_in_words_hash(Time.now,
-                                              Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-                                              :locale => "es")
-        hash["años"].should eql(1)
-        hash["meses"].should eql(2)
-        hash["días"].should eql(3)
-        hash["horas"].should eql(4)
-        hash["minutos"].should eql(5)
-        hash["segundos"].should eql(6)
-      end
-
-      it "debe hablar español" do
-        I18n.locale = :es
-        hash = distance_of_time_in_words_hash(Time.now, Time.now + 5.days)
-        hash["días"].should eql(5)
-      end
     end
   end
 
   describe "real version" do
     it "debe hablar español" do
-      distance_of_time_in_words(Time.now, Time.now + 5.days, true, :locale => "es").should eql("5 días")
+      distance_of_time_in_words(Time.now, Time.now + 1.days, true, :locale => :es).should eql("1 día")
+      distance_of_time_in_words(Time.now, Time.now + 5.days, true, :locale => :es).should eql("5 días")
     end
 
-    [
+    fragments = [
       [Time.now, Time.now + 5.days + 3.minutes, "5 days and 3 minutes"],
       [Time.now, Time.now + 1.minute, "1 minute"],
       [Time.now, Time.now + 3.years, "3 years"],
       [Time.now, Time.now + 10.years, "10 years"],
-      # previous fails, but the next one works
-      [Time.zone.now, Time.zone.now + 10.years, "10 years"],
+      [Time.now, Time.now + 10.years, "10 years"],
       [Time.now, Time.now + 3.hour, "3 hours"],
-      # Need to be +1.day because it will output "1 year and 30 days" otherwise.
-      # Haven't investigated fully how this is caused.
       [Time.now, Time.now + 13.months, "1 year and 1 month"],
       # Any numeric sequence is merely coincidental.
       [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
@@ -114,14 +95,15 @@ describe "A better distance_of_time_in_words" do
       ["2009-4-14".to_time, "2008-3-16".to_time, "1 year and 29 days"],
       ["2009-2-01".to_time, "2009-3-01".to_time, "1 month"],
       ["2008-2-01".to_time, "2008-3-01".to_time, "1 month"]
-    ].each do |start, finish, output|
+    ]
+    fragments.each do |start, finish, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true).should eql(output)
       end
     end
 
     describe "accumulate on" do
-      [
+      fragments = [
         [Time.now,
          Time.now + 10.minute,
          :seconds,
@@ -142,7 +124,8 @@ describe "A better distance_of_time_in_words" do
          Time.now + 2.day + 10000.hour + 10.second,
          :months,
          "13 months, 16 hours, and 10 seconds"]
-      ].each do |start, finish, accumulator, output|
+      ]
+      fragments.each do |start, finish, accumulator, output|
         it "should be #{output}" do
           distance_of_time_in_words(start, finish, true, :accumulate_on => accumulator).should eql(output)
         end
@@ -153,13 +136,14 @@ describe "A better distance_of_time_in_words" do
       # A missing finish argument should default to zero, essentially returning
       # the equivalent of distance_of_time in order to be backwards-compatible
       # with the original rails distance_of_time_in_words helper.
-      [
+      fragments = [
         [5.minutes.to_i, "5 minutes"],
         [10.minutes.to_i, "10 minutes"],
         [1.hour.to_i, "1 hour"],
         [4.weeks.to_i, "28 days"],
         [24.weeks.to_i, "5 months and 15 days"]
-      ].each do |start, output|
+      ]
+      fragments.each do |start, output|
         it "should be #{output}" do
           distance_of_time_in_words(start).should eql(output)
         end
@@ -169,7 +153,7 @@ describe "A better distance_of_time_in_words" do
   end
 
   describe "with output options" do
-    [
+    fragments = [
       # Any numeric sequence is merely coincidental.
       [Time.now,
        Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
@@ -200,18 +184,6 @@ describe "A better distance_of_time_in_words" do
        "1 hour and 1 minute"],
       [Time.now,
        Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-       { :precision => 2 },
-       "1 year and 2 months"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-       { :precision => 3 },
-       "1 year, 2 months, and 3 days"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-       { :precision => 10 },
-       "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
        { :vague => true },
        "about 1 year"],
       [Time.now,
@@ -228,7 +200,7 @@ describe "A better distance_of_time_in_words" do
        "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
       [Time.now,
        Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-       { "except" => "minutes" },
+       { :except => "minutes" },
        "1 year, 2 months, 3 days, 4 hours, and 6 seconds"],
       [Time.now,
         Time.now + 1.hour + 2.minutes + 3.seconds,
@@ -244,17 +216,18 @@ describe "A better distance_of_time_in_words" do
        "2 years, 3 months, and 4 days"],
       [Time.now,
        Time.now + 2.year + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
-       { :highest_measures => 3 },
+       { :highest_measures => 2 },
        "2 years and 25 days"],
       [Time.now,
        Time.now + 4.days + 6.minutes + 7.seconds,
        { :highest_measures => 3 },
-       "4 days and 6 minutes"],
+       "4 days, 6 minutes, and 7 seconds"],
       [Time.now,
        Time.now + 1.year + 2.weeks,
        { :highest_measures => 3 },
        "1 year and 14 days"]
-    ].each do |start, finish, options, output|
+    ]
+    fragments.each do |start, finish, options, output|
       it "should be #{output}" do
         distance_of_time_in_words(start, finish, true, options).should eql(output)
       end
