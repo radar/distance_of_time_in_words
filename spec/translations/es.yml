@@ -1,22 +1,22 @@
 es:
   seconds: 
-    one: segundo
-    other: segundos
+    one: uno segundo
+    other: "%{count} segundos"
   minutes: 
-    one: minuto
-    other: minutos
+    one: uno minuto
+    other: "%{count} minutos"
   hours: 
-    one: hora
-    other: horas
+    one: una hora
+    other: "%{count} horas"
   days: 
-    one: día
-    other: días
+    one: un día
+    other: "%{count} días"
   weeks: 
-    one: semana
-    other: semanas
+    one: una semana
+    other: "%{count} semanas"
   months: 
-    one: mes
-    other: meses
+    one: un mes
+    other: "%{count} meses"
   years:
-    one: año
-    other: años
+    one: un año
+    other: "%{count} años"
