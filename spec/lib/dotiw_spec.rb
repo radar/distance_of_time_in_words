@@ -76,7 +76,7 @@ describe "A better distance_of_time_in_words" do
 
   describe "real version" do
     it "debe hablar español" do
-      distance_of_time_in_words(Time.now, Time.now + 1.days, true, :locale => :es).should eql("1 día")
+      distance_of_time_in_words(Time.now, Time.now + 1.days, true, :locale => :es).should eql("un día")
       distance_of_time_in_words(Time.now, Time.now + 5.days, true, :locale => :es).should eql("5 días")
     end
 
