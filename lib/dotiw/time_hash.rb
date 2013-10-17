@@ -4,7 +4,7 @@ module DOTIW
   class TimeHash
     TIME_FRACTIONS = [:seconds, :minutes, :hours, :days, :months, :years]
 
-    attr_accessor :distance, :smallest, :largest, :from_time, :to_time, :options
+    attr_accessor :distance, :smallest, :largest, :from_time, :to_time
 
     def initialize(distance, from_time = nil, to_time = nil, options = {})
       self.output     = ActiveSupport::OrderedHash.new
@@ -26,7 +26,10 @@ module DOTIW
 
     def build_time_hash
       if accumulate_on = options.delete(:accumulate_on)
-        return build_time_hash if accumulate_on == :years
+        accumulate_on = accumulate_on.to_sym
+        if accumulate_on == :years
+          return build_time_hash
+        end
         TIME_FRACTIONS.index(accumulate_on).downto(0) { |i| self.send("build_#{TIME_FRACTIONS[i]}") }
       else
         while distance > 0
