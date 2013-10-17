@@ -12,7 +12,7 @@ module ActionView
 
       def distance_of_time(seconds, options = {})
         options[:include_seconds] ||= true
-        display_time_in_words DOTIW::TimeHash.new(seconds).to_hash, options
+        display_time_in_words DOTIW::TimeHash.new(seconds, nil, nil, options).to_hash, options
       end
 
       def distance_of_time_in_words(from_time, to_time = 0, include_seconds_or_options = {}, options = {})
