@@ -31,7 +31,7 @@ The last argument is an optional options hash that can be used to manipulate beh
 Don't like having to pass in `Time.now` all the time? Then use `time_ago_in_words` which also will *rock your
 world*:
 
-    >> time_ago_in_words(Time.now + 3 days + 1.second)
+    >> time_ago_in_words(Time.now + 3.days + 1.second)
     => "3 days, and 1 second"
 
 Oh, and did I mention it supports I18n? Oh yeah. Rock on!
@@ -55,7 +55,7 @@ Specify this if you want it to use the old `distance_of_time_in_words`. The valu
 
 Specifies the maximum output unit which will accumulate all the surplus. Say you set it to seconds and your time difference is of 2 minutes then the output would be 120 seconds. Here's a code example:
 
-    >> distance_of_time_in_words(Time.now, Time.now + 2.hour + 70.second, true, :accumulate_on => :minutes)
+    >> distance_of_time_in_words(Time.now, Time.now + 2.hours + 70.seconds, true, :accumulate_on => :minutes)
     => "121 minutes and 10 seconds"
 
 #### :only
