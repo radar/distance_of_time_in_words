@@ -63,8 +63,9 @@ module ActionView
         options.delete(:except)
         options.delete(:only)
 
+        i18n_scope = options.delete(:scope) || DOTIW::DEFAULT_I18N_SCOPE
         output = []
-        I18n.with_options :locale => options[:locale], :scope => options.delete(:scope) do |locale|
+        I18n.with_options :locale => options[:locale], :scope => i18n_scope do |locale|
           output = hash.map { |key, value| locale.t(key, :count => value) }
         end
 

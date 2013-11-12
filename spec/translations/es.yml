@@ -1,22 +1,24 @@
 es:
-  seconds: 
-    one: uno segundo
-    other: "%{count} segundos"
-  minutes: 
-    one: uno minuto
-    other: "%{count} minutos"
-  hours: 
-    one: una hora
-    other: "%{count} horas"
-  days: 
-    one: un día
-    other: "%{count} días"
-  weeks: 
-    one: una semana
-    other: "%{count} semanas"
-  months: 
-    one: un mes
-    other: "%{count} meses"
-  years:
-    one: un año
-    other: "%{count} años"
+  datetime:
+    dotiw:
+      seconds:
+        one: uno segundo
+        other: "%{count} segundos"
+      minutes:
+        one: uno minuto
+        other: "%{count} minutos"
+      hours:
+        one: una hora
+        other: "%{count} horas"
+      days:
+        one: un día
+        other: "%{count} días"
+      weeks:
+        one: una semana
+        other: "%{count} semanas"
+      months:
+        one: un mes
+        other: "%{count} meses"
+      years:
+        one: un año
+        other: "%{count} años"
