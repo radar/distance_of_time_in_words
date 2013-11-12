@@ -13,6 +13,8 @@ module DOTIW
   autoload :VERSION, 'dotiw/version'
   autoload :TimeHash, 'dotiw/time_hash'
 
+  DEFAULT_I18N_SCOPE = :'datetime.dotiw'
+
   def init_i18n
     I18n.load_path.unshift(*locale_files)
     I18n.reload!
@@ -21,7 +23,7 @@ module DOTIW
 protected
   # Returns all locale files shipped with library
   def locale_files
-    Dir[File.join(File.dirname(__FILE__), "dotiw", "locale", "**/*")]
+    Dir[File.join(File.dirname(__FILE__), 'dotiw', 'locale', '**/*')]
   end
 end # DOTIW
 
