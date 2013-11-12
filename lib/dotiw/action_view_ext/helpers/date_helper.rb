@@ -75,6 +75,16 @@ module ActionView
           output = output[0...highest_measures]
         end
 
+        options[:words_connector] ||= I18n.translate :'datetime.dotiw.words_connector',
+          :default => :'support.array.words_connector',
+          :locale => options[:locale]
+        options[:two_words_connector] ||= I18n.translate :'datetime.dotiw.two_words_connector',
+          :default => :'support.array.two_words_connector',
+          :locale => options[:locale]
+        options[:last_word_connector] ||= I18n.translate :'datetime.dotiw.last_word_connector',
+          :default => :'support.array.last_word_connector',
+          :locale => options[:locale]
+
         output.to_sentence(options)
       end
     end # DateHelper
