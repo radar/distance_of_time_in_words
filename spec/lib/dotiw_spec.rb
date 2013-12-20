@@ -96,6 +96,12 @@ describe "A better distance_of_time_in_words" do
       distance_of_time_in_words(Time.now, Time.now + 5.days, true, :locale => "es").should eql("5 días")
     end
 
+    it "skal kunne snakke norsk" do
+      distance_of_time_in_words(Time.now, Time.now + 2.hours, true, :locale => "no-NB").should eql("2 timer")
+      distance_of_time_in_words(Time.now, Time.now + 1.hour, true, :locale => "no-NB").should eql("1 time")
+    end
+
+
     [
       [Time.now, Time.now + 5.days + 3.minutes, "5 days and 3 minutes"],
       [Time.now, Time.now + 1.minute, "1 minute"],
