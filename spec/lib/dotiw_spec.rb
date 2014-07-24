@@ -6,12 +6,12 @@ describe "A better distance_of_time_in_words" do
   include ActionView::Helpers::DateHelper
   include ActionView::Helpers::TextHelper
   include ActionView::Helpers::NumberHelper
-
+  
   before do
     I18n.locale = :en
     time = "01-08-2009".to_time
-    Time.stub!(:now).and_return(time)
-    Time.zone.stub!(:now).and_return(time)
+    Time.stub(:now).and_return(time)
+    Time.zone.stub(:now).and_return(time)
   end
 
   describe "distance of time" do
@@ -23,7 +23,7 @@ describe "A better distance_of_time_in_words" do
       [1.hour.to_i, "1 hour"],
       [1.hour + 30.seconds, "1 hour and 30 seconds"],
       [4.weeks.to_i, "28 days"],
-      [24.weeks.to_i, "5 months and 15 days"]
+      [24.weeks.to_i, "5 months and 14 days"]
     ].each do |number, result|
       it "#{number} == #{result}" do
         distance_of_time(number).should eql(result)

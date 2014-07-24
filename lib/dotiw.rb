@@ -24,7 +24,7 @@ module ActionView
 
       def distance_of_time_in_words(from_time, to_time, include_seconds = false, options = {})
         options[:include_seconds] = include_seconds
-        return old_distance_of_time_in_words(from_time, to_time, include_seconds, options) if options.delete(:vague)
+        return old_distance_of_time_in_words(from_time, to_time, options) if options.delete(:vague)
         hash = distance_of_time_in_words_hash(from_time, to_time, options)
         display_time_in_words(hash, options)
       end
