@@ -15,9 +15,9 @@ Gem::Specification.new do |s|
   s.summary = "Better distance_of_time_in_words for Rails"
   s.email = "radarlistener@gmail.com"
 
-  s.add_dependency "actionpack", "~> 3"
+  s.add_dependency "actionpack", "~> 4"
   
-  s.add_development_dependency "bundler", "~> 1.0.0"
+  s.add_development_dependency "bundler", "~> 1.5.0"
   s.add_development_dependency "rspec", "~> 2.0"
 
   s.files         = `git ls-files`.split("\n")
