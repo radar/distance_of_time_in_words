@@ -10,8 +10,8 @@ describe "A better distance_of_time_in_words" do
   before do
     I18n.locale = :en
     time = "01-08-2009".to_time
-    Time.stub!(:now).and_return(time)
-    Time.zone.stub!(:now).and_return(time)
+    allow(Time).to receive(:now).and_return(time)
+    allow(Time.zone).to receive(:now).and_return(time)
   end
 
   describe "distance of time" do
@@ -26,18 +26,18 @@ describe "A better distance_of_time_in_words" do
       [24.weeks.to_i, "5 months and 15 days"]
     ].each do |number, result|
       it "#{number} == #{result}" do
-        distance_of_time(number).should eql(result)
+        expect(distance_of_time(number)).to eq(result)
       end
     end
 
     describe "with options" do
       it "except:seconds should skip seconds" do
-        distance_of_time(1.2.minute, except: 'seconds').should eq("1 minute")
-        distance_of_time(2.5.hours + 30.seconds, except: 'seconds').should eq("2 hours and 30 minutes")
+        expect(distance_of_time(1.2.minute, except: 'seconds')).to eq("1 minute")
+        expect(distance_of_time(2.5.hours + 30.seconds, except: 'seconds')).to eq("2 hours and 30 minutes")
       end
 
       it "except:seconds har higher presedence than include_seconds:true" do
-        distance_of_time(1.2.minute, include_seconds: true, except: 'seconds').should eq('1 minute')
+        expect(distance_of_time(1.2.minute, include_seconds: true, except: 'seconds')).to eq('1 minute')
       end
     end
 
@@ -50,12 +50,12 @@ describe "A better distance_of_time_in_words" do
         describe name do
           it "exactly" do
             hash = distance_of_time_in_words_hash(Time.now, Time.now + 1.send(name))
-            hash[name.to_s].should eql(1)
+            expect(hash[name.to_s]).to eq(1)
           end
 
           it "two" do
             hash = distance_of_time_in_words_hash(Time.now, Time.now + 2.send(name))
-            hash[name.to_s].should eql(2)
+            expect(hash[name.to_s]).to eq(2)
           end
         end
       end
@@ -63,37 +63,37 @@ describe "A better distance_of_time_in_words" do
       it "should be happy with lots of measurements" do
         hash = distance_of_time_in_words_hash(Time.now,
                                               Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds)
-        hash["years"].should eql(1)
-        hash["months"].should eql(2)
-        hash["days"].should eql(3)
-        hash["hours"].should eql(4)
-        hash["minutes"].should eql(5)
-        hash["seconds"].should eql(6)
+        expect(hash["years"]).to eq(1)
+        expect(hash["months"]).to eq(2)
+        expect(hash["days"]).to eq(3)
+        expect(hash["hours"]).to eq(4)
+        expect(hash["minutes"]).to eq(5)
+        expect(hash["seconds"]).to eq(6)
       end
 
       it "debe estar contento con las mediciones en español" do
         hash = distance_of_time_in_words_hash(Time.now,
                                               Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
                                               :locale => "es")
-        hash["años"].should eql(1)
-        hash["meses"].should eql(2)
-        hash["días"].should eql(3)
-        hash["horas"].should eql(4)
-        hash["minutos"].should eql(5)
-        hash["segundos"].should eql(6)
+        expect(hash["años"]).to eq(1)
+        expect(hash["meses"]).to eq(2)
+        expect(hash["días"]).to eq(3)
+        expect(hash["horas"]).to eq(4)
+        expect(hash["minutos"]).to eq(5)
+        expect(hash["segundos"]).to eq(6)
       end
 
       it "debe hablar español" do
         I18n.locale = :es
         hash = distance_of_time_in_words_hash(Time.now, Time.now + 5.days)
-        hash["días"].should eql(5)
+        expect(hash["días"]).to eq(5)
       end
     end
   end
 
   describe "real version" do
     it "debe hablar español" do
-      distance_of_time_in_words(Time.now, Time.now + 5.days, true, :locale => "es").should eql("5 días")
+      expect(distance_of_time_in_words(Time.now, Time.now + 5.days, true, :locale => "es")).to eq("5 días")
     end
 
     [
@@ -116,7 +116,7 @@ describe "A better distance_of_time_in_words" do
       ["2008-2-01".to_time, "2008-3-01".to_time, "1 month"]
     ].each do |start, finish, output|
       it "should be #{output}" do
-        distance_of_time_in_words(start, finish, true).should eql(output)
+        expect(distance_of_time_in_words(start, finish, true)).to eq(output)
       end
     end
 
