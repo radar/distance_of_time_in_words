@@ -3,10 +3,6 @@
 require 'spec_helper'
 
 describe "A better distance_of_time_in_words" do
-  include ActionView::Helpers::DateHelper
-  include ActionView::Helpers::TextHelper
-  include ActionView::Helpers::NumberHelper
-
   before do
     I18n.locale = :en
     time = "01-08-2009".to_time
@@ -148,7 +144,7 @@ describe "A better distance_of_time_in_words" do
          "1 year, 1 month, 22 days, 16 hours, and 10 seconds"]
       ].each do |start, finish, accumulator, output|
         it "should be #{output}" do
-          distance_of_time_in_words(start, finish, true, :accumulate_on => accumulator).should eql(output)
+          expect(distance_of_time_in_words(start, finish, true, :accumulate_on => accumulator)).to eql(output)
         end
       end
     end # :accumulate_on
@@ -226,19 +222,19 @@ describe "A better distance_of_time_in_words" do
        "2 year, 3 month, 4 day, 5 hour, 6 minute, and 7 second"]
     ].each do |start, finish, options, output|
       it "should be #{output}" do
-        distance_of_time_in_words(start, finish, true, options).should eql(output)
+        expect(distance_of_time_in_words(start, finish, true, options)).to eql(output)
       end
     end
 
     describe "include_seconds" do
       it "is ignored if only seconds have passed" do
-        distance_of_time_in_words(Time.now, Time.now + 1.second, false).should eql("1 second")
+        expect(distance_of_time_in_words(Time.now, Time.now + 1.second, false)).to eql("1 second")
       end
 
       it "removes seconds in all other cases" do
-        distance_of_time_in_words(Time.now,
-                                  Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-                                  false).should eql("1 year, 2 months, 3 days, 4 hours, and 5 minutes")
+        expect(distance_of_time_in_words(Time.now,
+                                         Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+                                         false)).to eql("1 year, 2 months, 3 days, 4 hours, and 5 minutes")
       end
     end # include_seconds
   end
@@ -249,11 +245,11 @@ describe "A better distance_of_time_in_words" do
     end
 
     it "calculates 15%" do
-      time_in_percent.should eql("15%")
+      expect(time_in_percent).to eql("15%")
     end
 
     it "calculates 15.3%" do
-      time_in_percent(:precision => 1).should eql("15.3%")
+      expect(time_in_percent(:precision => 1)).to eql("15.3%")
     end
   end
 

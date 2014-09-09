@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.email = "radarlistener@gmail.com"
 
   s.add_dependency "actionpack", ">= 3.0", "<= 5"
-  
+
   s.add_development_dependency "rspec", "~> 3.0"
   s.add_development_dependency "appraisal", "1.0.2"
 
