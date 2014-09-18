@@ -1,4 +1,4 @@
-# dotiw [![](https://travis-ci.org/Sija/dotiw.png)](https://travis-ci.org/Sija/dotiw)
+# dotiw [![](https://travis-ci.org/radar/dotiw.png)](https://travis-ci.org/radar/dotiw)
 
 dotiw is a plugin for Rails that overrides the default `distance_of_time_in_words` and provides a more accurate output. Do you crave accuracy down to the second? So do I. That's why I made this plugin. Take this for a totally kickass example:
 
