@@ -157,4 +157,5 @@ If you want to calculate a distance of time in percent, use `distance_of_time_in
 
 * [chendo](http://github.com/chendo) - for talking through it with me and drawing on the whiteboard
 * [Derander](http://github.com/derander) - correct Spanish translations
-* [DBA](http://github.com/dba) - Commits leading up to the 0.7 release. 
+* [DBA](http://github.com/dba) - commits leading up to the 0.7 release
+* [Sija](http://github.com/Sija) - rails 4 support, v2.0 release
