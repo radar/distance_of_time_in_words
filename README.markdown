@@ -96,7 +96,7 @@ Notice how minutes and seconds were removed from the output. Another example:
 
 Minutes are the highest measure, so seconds were discarded from the output.
 
-#### :highest\_measuress
+#### :highest\_measures
 
 When you want variable precision from `DOTIW`:
 
