@@ -10,8 +10,8 @@ describe "A better distance_of_time_in_words" do
   before do
     I18n.locale = :en
     time = "01-08-2009".to_time
-    Time.stub(:now).and_return(time)
-    Time.zone.stub(:now).and_return(time)
+    allow(Time).to receive(:now).and_return(time)
+    allow(Time.zone).to receive(:now).and_return(time)
   end
 
   describe "distance of time" do
@@ -27,18 +27,18 @@ describe "A better distance_of_time_in_words" do
     ]
     fragments.each do |number, result|
       it "#{number} == #{result}" do
-        distance_of_time(number).should eql(result)
+        expect(distance_of_time(number)).to eq(result)
       end
     end
 
     describe "with options" do
       it "except:seconds should skip seconds" do
-        distance_of_time(1.2.minute, except: 'seconds').should eq("1 minute")
-        distance_of_time(2.5.hours + 30.seconds, except: 'seconds').should eq("2 hours and 30 minutes")
+        expect(distance_of_time(1.2.minute, except: 'seconds')).to eq("1 minute")
+        expect(distance_of_time(2.5.hours + 30.seconds, except: 'seconds')).to eq("2 hours and 30 minutes")
       end
 
       it "except:seconds har higher presedence than include_seconds:true" do
-        distance_of_time(1.2.minute, include_seconds: true, except: 'seconds').should eq('1 minute')
+        expect(distance_of_time(1.2.minute, include_seconds: true, except: 'seconds')).to eq('1 minute')
       end
     end
 
@@ -51,12 +51,12 @@ describe "A better distance_of_time_in_words" do
         describe name do
           it "exactly" do
             hash = distance_of_time_in_words_hash(Time.now, Time.now + 1.send(name))
-            hash[name].should eql(1)
+            expect(hash[name]).to eq(1)
           end
 
           it "two" do
             hash = distance_of_time_in_words_hash(Time.now, Time.now + 2.send(name))
-            hash[name].should eql(2)
+            expect(hash[name]).to eq(2)
           end
         end
       end
@@ -64,20 +64,20 @@ describe "A better distance_of_time_in_words" do
       it "should be happy with lots of measurements" do
         hash = distance_of_time_in_words_hash(Time.now,
                                               Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds)
-        hash[:years].should eql(1)
-        hash[:months].should eql(2)
-        hash[:days].should eql(3)
-        hash[:hours].should eql(4)
-        hash[:minutes].should eql(5)
-        hash[:seconds].should eql(6)
+        expect(hash[:years]).to eq(1)
+        expect(hash[:months]).to eq(2)
+        expect(hash[:days]).to eq(3)
+        expect(hash[:hours]).to eq(4)
+        expect(hash[:minutes]).to eq(5)
+        expect(hash[:seconds]).to eq(6)
       end
     end
   end
 
   describe "real version" do
     it "debe hablar español" do
-      distance_of_time_in_words(Time.now, Time.now + 1.days, true, :locale => :es).should eql("un día")
-      distance_of_time_in_words(Time.now, Time.now + 5.days, true, :locale => :es).should eql("5 días")
+      expect(distance_of_time_in_words(Time.now, Time.now + 1.days, true, :locale => :es)).to eq("un día")
+      expect(distance_of_time_in_words(Time.now, Time.now + 5.days, true, :locale => :es)).to eq("5 días")
     end
 
     fragments = [
@@ -98,7 +98,7 @@ describe "A better distance_of_time_in_words" do
     ]
     fragments.each do |start, finish, output|
       it "should be #{output}" do
-        distance_of_time_in_words(start, finish, true).should eql(output)
+        expect(distance_of_time_in_words(start, finish, true)).to eq(output)
       end
     end
 
@@ -127,11 +127,11 @@ describe "A better distance_of_time_in_words" do
       ]
       fragments.each do |start, finish, accumulator, output|
         it "should be #{output}" do
-          distance_of_time_in_words(start, finish, true, :accumulate_on => accumulator).should eql(output)
+          expect(distance_of_time_in_words(start, finish, true, :accumulate_on => accumulator)).to eq(output)
         end
       end
     end # :accumulate_on
-    
+
     describe "without finish time" do
       # A missing finish argument should default to zero, essentially returning
       # the equivalent of distance_of_time in order to be backwards-compatible
@@ -145,11 +145,11 @@ describe "A better distance_of_time_in_words" do
       ]
       fragments.each do |start, output|
         it "should be #{output}" do
-          distance_of_time_in_words(start).should eql(output)
+          expect(distance_of_time_in_words(start)).to eq(output)
         end
       end
     end
-    
+
   end
 
   describe "with output options" do
@@ -229,19 +229,19 @@ describe "A better distance_of_time_in_words" do
     ]
     fragments.each do |start, finish, options, output|
       it "should be #{output}" do
-        distance_of_time_in_words(start, finish, true, options).should eql(output)
+        expect(distance_of_time_in_words(start, finish, true, options)).to eq(output)
       end
     end
 
     describe "include_seconds" do
       it "is ignored if only seconds have passed" do
-        distance_of_time_in_words(Time.now, Time.now + 1.second, false).should eql("1 second")
+        expect(distance_of_time_in_words(Time.now, Time.now + 1.second, false)).to eq("1 second")
       end
 
       it "removes seconds in all other cases" do
-        distance_of_time_in_words(Time.now,
+        expect(distance_of_time_in_words(Time.now,
                                   Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-                                  false).should eql("1 year, 2 months, 3 days, 4 hours, and 5 minutes")
+                                  false)).to eq("1 year, 2 months, 3 days, 4 hours, and 5 minutes")
       end
     end # include_seconds
   end
@@ -252,11 +252,11 @@ describe "A better distance_of_time_in_words" do
     end
 
     it "calculates 15%" do
-      time_in_percent.should eql("15%")
+      expect(time_in_percent).to eq("15%")
     end
 
     it "calculates 15.3%" do
-      time_in_percent(:precision => 1).should eql("15.3%")
+      expect(time_in_percent(:precision => 1)).to eq("15.3%")
     end
   end
 

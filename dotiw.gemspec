@@ -16,10 +16,10 @@ Gem::Specification.new do |s|
 
   s.add_dependency "actionpack", ">= 3"
   s.add_dependency "i18n"
-  
+
   s.add_development_dependency "rake"
   s.add_development_dependency "bundler"
-  s.add_development_dependency "rspec", "~> 2.0"
+  s.add_development_dependency "rspec", "~> 3.0"
   s.add_development_dependency "tzinfo"
 
   s.files         = `git ls-files`.split("\n")
