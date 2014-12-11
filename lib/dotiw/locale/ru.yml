@@ -1,0 +1,38 @@
+ru:
+  datetime:
+    dotiw:
+      seconds:
+        one:   1 секунда
+        few:   "%{count} секунды"
+        many:  "%{count} секунд"
+        other: "%{count} секунды"
+      minutes:
+        one:   1 минута
+        few:   "%{count} минуты"
+        many:  "%{count} минут"
+        other: "%{count} минуты"
+      hours:
+        one:   1 час
+        few:   "%{count} часа"
+        many:  "%{count} часов"
+        other: "%{count} часа"
+      days:
+        one:   1 день
+        few:   "%{count} дня"
+        many:  "%{count} дней"
+        other: "%{count} дня"
+      weeks:
+        one:   1 неделя
+        few:   "%{count} недели"
+        many:  "%{count} недель"
+        other: "%{count} недели"
+      months:
+        one:   1 месяц
+        few:   "%{count} месяца"
+        many:  "%{count} месяцев"
+        other: "%{count} месяцы"
+      years:
+        one:   1 год
+        few:   "%{count} года"
+        many:  "%{count} лет"
+        other: "%{count} года"
