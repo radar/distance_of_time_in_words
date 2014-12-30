@@ -1,0 +1,31 @@
+pl:
+  datetime:
+    dotiw:
+      seconds:
+        one: "1 sekunda"
+        few: "%{count} sekundy"
+        other: "%{count} sekund"
+      minutes:
+        one: "1 minuta"
+        few: "%{count} minuty"
+        other: "%{count} minut"
+      hours:
+        one: "1 godzina"
+        few: "%{count} godziny"
+        other: "%{count} godzin"
+      days:
+        one: "1 dzień"
+        few: "%{count} dni"
+        other: "%{count} dni"
+      weeks:
+        one: "1 tydzień"
+        few: "%{count} tygodnie"
+        other: "%{count} tygodni"
+      months:
+        one: "1 miesiąc"
+        few: "%{count} miesiące"
+        other: "%{count} miesięcy"
+      years:
+        one: "1 rok"
+        few: "%{count} lata"
+        other: "%{count} lat"
