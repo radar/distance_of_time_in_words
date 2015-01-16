@@ -11,8 +11,17 @@ module DOTIW
       self.options    = options
       self.distance   = distance
       self.from_time  = from_time || Time.now
-      self.to_time    = to_time   || (self.from_time + self.distance.seconds)
+      self.to_time    = to_time   || (@to_time_not_given = true && self.from_time + self.distance.seconds)
       self.smallest, self.largest = [self.from_time, self.to_time].minmax
+      self.to_time   += 1.hour if @to_time_not_given && self.smallest.dst? && !self.largest.dst?
+      self.to_time   -= 1.hour if @to_time_not_given && !self.smallest.dst? && self.largest.dst?
+      self.smallest, self.largest = [self.from_time, self.to_time].minmax
+      self.distance ||= begin
+        d = largest - smallest
+        d -= 1.hour if self.smallest.dst? && !self.largest.dst?
+        d += 1.hour if !self.smallest.dst? && self.largest.dst?
+        d
+      end
 
       build_time_hash
     end
@@ -64,7 +73,7 @@ module DOTIW
     end
 
     def build_days
-      output[:days], self.distance = distance.divmod(1.day)
+      output[:days], self.distance = distance.divmod(1.day) if output[:days].nil?
     end
 
     def build_months
@@ -101,7 +110,9 @@ module DOTIW
       output[:months]  = months
       output[:days]    = days
 
-      total_days, self.distance = (from_time - to_time).abs.divmod(1.day)
+      total_days, self.distance = distance.abs.divmod(1.day)
+
+      [total_days, self.distance]
     end
   end # TimeHash
 end # DOTIW
