@@ -11,9 +11,8 @@ describe "A better distance_of_time_in_words" do
 
   before do
     I18n.locale = :en
-    time = "01-08-2009".to_time
-    allow(Time).to receive(:now).and_return(time)
-    allow(Time.zone).to receive(:now).and_return(time)
+    allow(Time).to receive(:now).and_return(START_TIME)
+    allow(Time.zone).to receive(:now).and_return(START_TIME)
   end
 
   describe "distance of time" do
