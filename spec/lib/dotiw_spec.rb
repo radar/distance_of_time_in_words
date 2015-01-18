@@ -7,11 +7,12 @@ describe "A better distance_of_time_in_words" do
   include ActionView::Helpers::TextHelper
   include ActionView::Helpers::NumberHelper
 
+  START_TIME = "01-08-2009".to_time
+
   before do
     I18n.locale = :en
-    time = "01-08-2009".to_time
-    allow(Time).to receive(:now).and_return(time)
-    allow(Time.zone).to receive(:now).and_return(time)
+    allow(Time).to receive(:now).and_return(START_TIME)
+    allow(Time.zone).to receive(:now).and_return(START_TIME)
   end
 
   describe "distance of time" do
@@ -50,20 +51,20 @@ describe "A better distance_of_time_in_words" do
       [:years, :months, :days, :minutes, :seconds].each do |name|
         describe name do
           it "exactly" do
-            hash = distance_of_time_in_words_hash(Time.now, Time.now + 1.send(name))
+            hash = distance_of_time_in_words_hash(START_TIME, START_TIME + 1.send(name))
             expect(hash[name]).to eq(1)
           end
 
           it "two" do
-            hash = distance_of_time_in_words_hash(Time.now, Time.now + 2.send(name))
+            hash = distance_of_time_in_words_hash(START_TIME, START_TIME + 2.send(name))
             expect(hash[name]).to eq(2)
           end
         end
       end
 
       it "should be happy with lots of measurements" do
-        hash = distance_of_time_in_words_hash(Time.now,
-                                              Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds)
+        hash = distance_of_time_in_words_hash(START_TIME,
+                                              START_TIME + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds)
         expect(hash[:years]).to eq(1)
         expect(hash[:months]).to eq(2)
         expect(hash[:days]).to eq(3)
@@ -76,20 +77,20 @@ describe "A better distance_of_time_in_words" do
 
   describe "real version" do
     it "debe hablar español" do
-      expect(distance_of_time_in_words(Time.now, Time.now + 1.days, true, :locale => :es)).to eq("un día")
-      expect(distance_of_time_in_words(Time.now, Time.now + 5.days, true, :locale => :es)).to eq("5 días")
+      expect(distance_of_time_in_words(START_TIME, START_TIME + 1.days, true, :locale => :es)).to eq("un día")
+      expect(distance_of_time_in_words(START_TIME, START_TIME + 5.days, true, :locale => :es)).to eq("5 días")
     end
 
     fragments = [
-      [Time.now, Time.now + 5.days + 3.minutes, "5 days and 3 minutes"],
-      [Time.now, Time.now + 1.minute, "1 minute"],
-      [Time.now, Time.now + 3.years, "3 years"],
-      [Time.now, Time.now + 10.years, "10 years"],
-      [Time.now, Time.now + 10.years, "10 years"],
-      [Time.now, Time.now + 3.hour, "3 hours"],
-      [Time.now, Time.now + 13.months, "1 year and 1 month"],
+      [START_TIME, START_TIME + 5.days + 3.minutes, "5 days and 3 minutes"],
+      [START_TIME, START_TIME + 1.minute, "1 minute"],
+      [START_TIME, START_TIME + 3.years, "3 years"],
+      [START_TIME, START_TIME + 10.years, "10 years"],
+      [START_TIME, START_TIME + 10.years, "10 years"],
+      [START_TIME, START_TIME + 3.hour, "3 hours"],
+      [START_TIME, START_TIME + 13.months, "1 year and 1 month"],
       # Any numeric sequence is merely coincidental.
-      [Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
+      [START_TIME, START_TIME + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
       ["2009-3-16".to_time, "2008-4-14".to_time, "11 months and 2 days"],
       ["2009-3-16".to_time + 1.minute, "2008-4-14".to_time, "11 months, 2 days, and 1 minute"],
       ["2009-4-14".to_time, "2008-3-16".to_time, "1 year and 29 days"],
@@ -104,26 +105,28 @@ describe "A better distance_of_time_in_words" do
 
     describe "accumulate on" do
       fragments = [
-        [Time.now,
-         Time.now + 10.minute,
+        [START_TIME,
+         START_TIME + 10.minute,
          :seconds,
          "600 seconds"],
-        [Time.now,
-         Time.now + 10.hour + 10.minute + 1.second,
+        [START_TIME,
+         START_TIME + 10.hour + 10.minute + 1.second,
          :minutes,
          "610 minutes and 1 second"],
-        [Time.now,
-         Time.now + 2.day + 10000.hour + 10.second,
+        [START_TIME,
+         START_TIME + 2.day + 10000.hour + 10.second,
          :hours,
          "10048 hours and 10 seconds"],
-        [Time.now,
-         Time.now + 2.day + 10000.hour + 10.second,
+        [START_TIME,
+         START_TIME + 2.day + 10000.hour + 10.second,
          :days,
          "418 days, 16 hours, and 10 seconds"],
-        [Time.now,
-         Time.now + 2.day + 10000.hour + 10.second,
+        [START_TIME,
+         START_TIME + 2.day + 10000.hour + 10.second,
          :months,
-         "13 months, 16 hours, and 10 seconds"]
+         "13 months, 22 days, 16 hours, and 10 seconds"],
+        ["2015-1-15".to_time, "2016-3-15".to_time, :months, "14 months"]
+
       ]
       fragments.each do |start, finish, accumulator, output|
         it "should be #{output}" do
@@ -155,75 +158,75 @@ describe "A better distance_of_time_in_words" do
   describe "with output options" do
     fragments = [
       # Any numeric sequence is merely coincidental.
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+      [START_TIME,
+       START_TIME + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
        { :words_connector => " - " },
        "1 year - 2 months - 3 days - 4 hours - 5 minutes, and 6 seconds"],
-      [Time.now,
-       Time.now + 5.minutes + 6.seconds,
+      [START_TIME,
+       START_TIME + 5.minutes + 6.seconds,
        { :two_words_connector => " - " },
        "5 minutes - 6 seconds"],
-      [Time.now,
-       Time.now + 4.hours +  5.minutes + 6.seconds,
+      [START_TIME,
+       START_TIME + 4.hours +  5.minutes + 6.seconds,
        { :last_word_connector => " - " },
        "4 hours, 5 minutes - 6 seconds"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+      [START_TIME,
+       START_TIME + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
        { :except => "minutes" },
        "1 year, 2 months, 3 days, 4 hours, and 6 seconds"],
-      [Time.now,
-       Time.now + 1.hour + 1.minute,
+      [START_TIME,
+       START_TIME + 1.hour + 1.minute,
        { :except => "minutes"}, "1 hour"],
-      [Time.now,
-       Time.now + 1.hour + 1.day + 1.minute,
+      [START_TIME,
+       START_TIME + 1.hour + 1.day + 1.minute,
        { :except => ["minutes", "hours"]},
        "1 day"],
-      [Time.now,
-       Time.now + 1.hour + 1.day + 1.minute,
+      [START_TIME,
+       START_TIME + 1.hour + 1.day + 1.minute,
        { :only => ["minutes", "hours"]},
        "1 hour and 1 minute"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+      [START_TIME,
+       START_TIME + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
        { :vague => true },
        "about 1 year"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+      [START_TIME,
+       START_TIME + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
        { :vague => "Yes please" },
        "about 1 year"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+      [START_TIME,
+       START_TIME + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
        { :vague => false },
        "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+      [START_TIME,
+       START_TIME + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
        { :vague => nil },
        "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"],
-      [Time.now,
-       Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+      [START_TIME,
+       START_TIME + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
        { :except => "minutes" },
        "1 year, 2 months, 3 days, 4 hours, and 6 seconds"],
-      [Time.now,
-        Time.now + 1.hour + 2.minutes + 3.seconds,
+      [START_TIME,
+        START_TIME + 1.hour + 2.minutes + 3.seconds,
         { :highest_measure_only => true },
         "1 hour"],
-      [Time.now,
-       Time.now + 1.hours + 2.minutes + 3.seconds,
+      [START_TIME,
+       START_TIME + 1.hours + 2.minutes + 3.seconds,
        { :highest_measures => 1 },
        "1 hour"],
-      [Time.now,
-       Time.now + 2.year + 3.months + 4.days + 5.hours + 6.minutes + 7.seconds,
+      [START_TIME,
+       START_TIME + 2.year + 3.months + 4.days + 5.hours + 6.minutes + 7.seconds,
        { :highest_measures => 3 },
        "2 years, 3 months, and 4 days"],
-      [Time.now,
-       Time.now + 2.year + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+      [START_TIME,
+       START_TIME + 2.year + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
        { :highest_measures => 2 },
        "2 years and 25 days"],
-      [Time.now,
-       Time.now + 4.days + 6.minutes + 7.seconds,
+      [START_TIME,
+       START_TIME + 4.days + 6.minutes + 7.seconds,
        { :highest_measures => 3 },
        "4 days, 6 minutes, and 7 seconds"],
-      [Time.now,
-       Time.now + 1.year + 2.weeks,
+      [START_TIME,
+       START_TIME + 1.year + 2.weeks,
        { :highest_measures => 3 },
        "1 year and 14 days"]
     ]
@@ -235,12 +238,12 @@ describe "A better distance_of_time_in_words" do
 
     describe "include_seconds" do
       it "is ignored if only seconds have passed" do
-        expect(distance_of_time_in_words(Time.now, Time.now + 1.second, false)).to eq("1 second")
+        expect(distance_of_time_in_words(START_TIME, START_TIME + 1.second, false)).to eq("1 second")
       end
 
       it "removes seconds in all other cases" do
-        expect(distance_of_time_in_words(Time.now,
-                                  Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
+        expect(distance_of_time_in_words(START_TIME,
+                                  START_TIME + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
                                   false)).to eq("1 year, 2 months, 3 days, 4 hours, and 5 minutes")
       end
     end # include_seconds
