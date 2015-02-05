@@ -21,4 +21,4 @@ nb:
         other: "%{count} måneder"
       years:
         one: 1 år
-        other: "%{count} år'
+        other: "%{count} år"
