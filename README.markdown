@@ -40,7 +40,7 @@ Oh, and did I mention it supports I18n? Oh yeah. Rock on!
 
 #### :locale
 
-You can pass in a locale and it'll output it in whatever language you want (provided you have translations, otherwise it'll default to English):
+You can pass in a locale and it'll output it in whatever language you want (provided you have translations, otherwise it'll default to your app's default locale (the `config.i18n.default_locale` you have set in `/config/application.rb`):
 
     >> distance_of_time_in_words(Time.now, Time.now + 1.minute, false, :locale => :es)
     => "1 minuto"
