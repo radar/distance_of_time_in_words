@@ -1,0 +1,24 @@
+de:
+  datetime:
+    dotiw:
+      seconds:
+        one: 1 Sekunde
+        other: "%{count} Sekunden"
+      minutes:
+        one: 1 Minute
+        other: "%{count} Minuten"
+      hours:
+        one: 1 Stunde
+        other: "%{count} Stunden"
+      days:
+        one: 1 Tag
+        other: "%{count} Tage"
+      weeks:
+        one: 1 Woche
+        other: "%{count} Wochen"
+      months:
+        one: 1 Monat
+        other: "%{count} Monate"
+      years:
+        one: 1 Jahr
+        other: "%{count} Jahre"
