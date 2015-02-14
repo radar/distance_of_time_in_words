@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'action_view'
 
 require 'i18n'
 
