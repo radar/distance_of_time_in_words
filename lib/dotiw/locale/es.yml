@@ -2,10 +2,10 @@ es:
   datetime:
     dotiw:
       seconds:
-        one: uno segundo
+        one: un segundo
         other: "%{count} segundos"
       minutes:
-        one: uno minuto
+        one: un minuto
         other: "%{count} minutos"
       hours:
         one: una hora
