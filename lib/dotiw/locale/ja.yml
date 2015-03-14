@@ -1,0 +1,24 @@
+ja:
+  datetime:
+    dotiw:
+      seconds:
+        one: "1秒"
+        other: "%{count}秒"
+      minutes:
+        one: "1分"
+        other: "%{count}分"
+      hours:
+        one: "1時間"
+        other: "%{count}時間"
+      days:
+        one: "1日間"
+        other: "%{count}日間"
+      weeks:
+        one: "1週間"
+        other: "%{count}週間"
+      months:
+        one: "1ヶ月"
+        other: "%{count}ヶ月"
+      years:
+        one: "1年間"
+        other: "%{count}年間"
