@@ -81,6 +81,11 @@ describe "A better distance_of_time_in_words" do
       expect(distance_of_time_in_words(START_TIME, START_TIME + 5.days, true, :locale => :es)).to eq("5 días")
     end
 
+    it "deve parlare l'italiano" do
+      expect(distance_of_time_in_words(START_TIME, START_TIME + 1.days, true, :locale => :it)).to eq("un giorno")
+      expect(distance_of_time_in_words(START_TIME, START_TIME + 5.days, true, :locale => :it)).to eq("5 giorni")
+    end
+
     fragments = [
       [START_TIME, START_TIME + 5.days + 3.minutes, "5 days and 3 minutes"],
       [START_TIME, START_TIME + 1.minute, "1 minute"],
