@@ -22,3 +22,4 @@ nb:
       years:
         one: 1 år
         other: "%{count} år"
+      less_than_x: "mindre enn %{distance}"
