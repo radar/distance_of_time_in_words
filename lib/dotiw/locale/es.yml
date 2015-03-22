@@ -22,3 +22,4 @@ es:
       years:
         one: un año
         other: "%{count} años"
+      less_than_x: "menos de %{distance}"

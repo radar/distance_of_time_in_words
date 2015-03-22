@@ -36,3 +36,4 @@ ru:
         few:   "%{count} года"
         many:  "%{count} лет"
         other: "%{count} года"
+      less_than_x: "меньше %{distance}"

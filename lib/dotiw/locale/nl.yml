@@ -1,0 +1,25 @@
+nl:
+  datetime:
+    dotiw:
+      seconds:
+        one: 1 seconde
+        other: "%{count} seconden"
+      minutes:
+        one: 1 minuut
+        other: "%{count} minuten"
+      hours:
+        one: 1 uur
+        other: "%{count} uur"
+      days:
+        one: 1 dag
+        other: "%{count} dagen"
+      weeks:
+        one: 1 week
+        other: "%{count} weken"
+      months:
+        one: 1 maand
+        other: "%{count} maanden"
+      years:
+        one: 1 jaar
+        other: "%{count} jaar"
+      less_than_x: "minder dan %{distance}"

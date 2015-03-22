@@ -77,8 +77,8 @@ describe "A better distance_of_time_in_words" do
 
   describe "real version" do
     it "debe hablar español" do
-      expect(distance_of_time_in_words(START_TIME, START_TIME + 1.days, true, :locale => :es)).to eq("un día")
-      expect(distance_of_time_in_words(START_TIME, START_TIME + 5.days, true, :locale => :es)).to eq("5 días")
+      expect(distance_of_time_in_words(START_TIME, START_TIME + 1.days, :locale => :es)).to eq("un día")
+      expect(distance_of_time_in_words(START_TIME, START_TIME + 5.days, :locale => :es)).to eq("5 días")
     end
 
     it "deve parlare l'italiano" do
@@ -233,7 +233,19 @@ describe "A better distance_of_time_in_words" do
       [START_TIME,
        START_TIME + 1.year + 2.weeks,
        { :highest_measures => 3 },
-       "1 year and 14 days"]
+       "1 year and 14 days"],
+      [START_TIME,
+       START_TIME + 1.days,
+       { :only => [:years, :months] },
+       "less than 1 month"],
+      [START_TIME,
+       START_TIME + 5.minutes,
+       { :except => [:hours, :minutes, :seconds] },
+       "less than 1 day"],
+      [START_TIME,
+       START_TIME + 1.days,
+       { :highest_measures => 1, :only => [:years, :months] },
+       "less than 1 month"]
     ]
     fragments.each do |start, finish, options, output|
       it "should be #{output}" do
