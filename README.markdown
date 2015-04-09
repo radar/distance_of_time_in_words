@@ -36,6 +36,20 @@ world*:
 
 Oh, and did I mention it supports I18n? Oh yeah. Rock on!
 
+## Install
+
+Install it as a gem:
+
+```ruby
+gem 'dotiw'
+```
+
+Or from GitHub:
+
+```ruby
+gem 'dotiw', github: 'radar/dotiw'
+```
+
 ### Options
 
 #### :locale
