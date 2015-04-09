@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version = DOTIW::VERSION
 
   s.authors = ["Ryan Bigg"]
-  s.date = %q{2010-12-23}
+  s.date = %q{2015-04-09}
   s.description = "Better distance_of_time_in_words for Rails"
   s.summary = "Better distance_of_time_in_words for Rails"
   s.email = "radarlistener@gmail.com"
