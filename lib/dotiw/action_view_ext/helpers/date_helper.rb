@@ -37,7 +37,7 @@ module ActionView
       alias_method :old_time_ago_in_words, :time_ago_in_words
 
       def time_ago_in_words(from_time, include_seconds_or_options = {})
-        distance_of_time_in_words(from_time, Time.now, include_seconds_or_options)
+        distance_of_time_in_words(from_time, Time.current, include_seconds_or_options)
       end
 
       private
