@@ -10,7 +10,7 @@ module DOTIW
       self.output     = ActiveSupport::OrderedHash.new
       self.options    = options
       self.distance   = distance
-      self.from_time  = from_time || Time.now
+      self.from_time  = from_time || Time.current
       self.to_time    = to_time   || (@to_time_not_given = true && self.from_time + self.distance.seconds)
       self.smallest, self.largest = [self.from_time, self.to_time].minmax
       self.to_time   += 1.hour if @to_time_not_given && self.smallest.dst? && !self.largest.dst?
