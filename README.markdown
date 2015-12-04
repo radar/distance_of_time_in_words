@@ -165,6 +165,10 @@ Indifferent means that you can access all keys by their `String` or `Symbol` ver
 If you want to calculate a distance of time in percent, use `distance_of_time_in_percent`. The first argument is the beginning time, the second argument the "current" time and the third argument is the end time. This method takes the same options as [`number_with_precision`](http://api.rubyonrails.org/classes/ActionView/Helpers/NumberHelper.html#method-i-number_with_precision).
 
     distance_of_time_in_percent("04-12-2009".to_time, "29-01-2010".to_time, "04-12-2010".to_time, options)
+
+## old\_distance\_of\_time\_in\_words and old\_time\_ago\_in\_words
+
+If you don't want to pass the `:vague` option, you still can use the old methods by appending the `old_` prefix.
     
 
 ## Contributors
