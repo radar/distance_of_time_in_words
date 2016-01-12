@@ -2,14 +2,14 @@
 
 dotiw is a gem for Rails that overrides the default `distance_of_time_in_words` and provides a more accurate output. Do you crave accuracy down to the second? So do I. That's why I made this gem. Take this for a totally kickass example:
 
-    >> distance_of_time_in_words(Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds, true)
-    => "1 year, 2 months, 3 days, 4 hours, 5 minutes, and 6 seconds"
-     
+    >> distance_of_time_in_words(Time.now, Time.now + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds, true)
+    => "1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds"
+
 Also if one of the measurement is zero it will not output it:
 
-    >> distance_of_time_in_words(Time.now, Time.now + 1.year + 2.months + 4.hours + 5.minutes + 6.seconds, true)
-    => "1 year, 2 months, 4 hours, 5 minutes, and 6 seconds"
-     
+    >> distance_of_time_in_words(Time.now, Time.now + 1.year + 2.months + 5.hours + 6.minutes + 7.seconds, true)
+    => "1 year, 2 months, 4 days, 6 minutes, and 7 seconds"
+
 Better than "about 1 year", am I right? Of course I am.
 
 "But Ryan!", you say, "What happens if the time is only in seconds but because of the default the seconds aren't shown? Won't it be blank?"
@@ -21,7 +21,7 @@ Better than "about 1 year", am I right? Of course I am.
 The third argument for this method is whether or not to include seconds. By default this is `false` (because in Rails' `distance_of_time_in_words` it is), you can turn it on though by passing `true` as the third argument:
 
     >> distance_of_time_in_words(Time.now, Time.now + 1.year + 1.second, true)
-    => "1 year, and 1 second" 
+    => "1 year, and 1 second"
 
 Yes this could just be merged into the options hash but I'm leaving it here to ensure "backwards-compatibility",
 because that's just an insanely radical thing to do. \m/
@@ -58,7 +58,7 @@ You can pass in a locale and it'll output it in whatever language you want (prov
 
     >> distance_of_time_in_words(Time.now, Time.now + 1.minute, false, :locale => :es)
     => "1 minuto"
-    
+
 This will also be passed to `to_sentence`
 
 #### :vague
@@ -95,7 +95,7 @@ Culling a whole group of measurements of time:
 
     >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.day + 1.minute, false, :except => [:minutes, :hours])
     => "1 day"
-    
+
 #### :highest\_measure\_only
 
 For times when Rails `distance_of_time_in_words` is not precise enough and `DOTIW` is too precise. For instance, if you only want to know the highest time part (measure) that elapsed between two dates.
@@ -125,7 +125,7 @@ Using something other than a comma:
 
     >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, :words_connector => ' - ')
     => "1 hour - 1 minute, and 1 second"
-    
+
 #### :two\_words\_connector
 
 **This is an option for `to_sentence`, defaults to ' and '**
@@ -135,7 +135,7 @@ Using something other than 'and':
     >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute, true, :two_words_connector => ' plus ')
     => "1 hour plus 1 minute"
 
-#### :last\_word\_connector 
+#### :last\_word\_connector
 
 **This is an option for `to_sentence`, defaults to ', and '**
 
@@ -155,17 +155,17 @@ If you have simply a number of seconds you can get the "stringified" version of 
 
 Don't like any format you're given? That's cool too! Here, have an indifferent hash version:
 
-    >> distance_of_time_in_words_hash(Time.now, Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds)
-    => {:days => 3, :seconds => 6, :minutes => 5, :years => 1, :hours => 4, :months => 2}
+    >> distance_of_time_in_words_hash(Time.now, Time.now + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds)
+    => {:days => 4, :weeks => 3, :seconds => 7, :minutes => 6, :years => 1, :hours => 5, :months => 2}
 
 Indifferent means that you can access all keys by their `String` or `Symbol` version.
-    
+
 ## distance\_of\_time\_in\_percent
 
 If you want to calculate a distance of time in percent, use `distance_of_time_in_percent`. The first argument is the beginning time, the second argument the "current" time and the third argument is the end time. This method takes the same options as [`number_with_precision`](http://api.rubyonrails.org/classes/ActionView/Helpers/NumberHelper.html#method-i-number_with_precision).
 
     distance_of_time_in_percent("04-12-2009".to_time, "29-01-2010".to_time, "04-12-2010".to_time, options)
-    
+
 
 ## Contributors
 
