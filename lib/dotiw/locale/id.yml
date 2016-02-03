@@ -1,0 +1,25 @@
+id:
+  datetime:
+    dotiw:
+      seconds:
+        one: 1 detik
+        other: "%{count} detik"
+      minutes:
+        one: 1 menit
+        other: "%{count} menit"
+      hours:
+        one: 1 jam
+        other: "%{count} jam"
+      days:
+        one: 1 hari
+        other: "%{count} hari"
+      weeks:
+        one: 1 minggu
+        other: "%{count} minggu"
+      months:
+        one: 1 bulan
+        other: "%{count} bulan"
+      years:
+        one: 1 tahun
+        other: "%{count} tahun"
+      less_than_x: "kurang dari %{distance}"
