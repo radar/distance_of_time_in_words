@@ -1,0 +1,23 @@
+da:
+  datetime:
+    dotiw:
+      seconds:
+        one: "1 sekund"
+        other: "%{count} sekunder"
+      minutes:
+        one: "1 minut"
+        other: "%{count} minutter"
+      hours:
+        one: "1 time"
+        other: "%{count} timer"
+      days:
+        one: "1 dag"
+        other: "%{count} dage"
+      weeks:
+        one: "1 uge"
+        other: "%{count} uger"
+      months:
+        one: "1 måned"
+        other: "%{count} måneder"
+      years: "%{count} år"
+      less_than_x: "mindre end %{distance}"
