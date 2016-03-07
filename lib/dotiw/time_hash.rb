@@ -2,7 +2,7 @@
 
 module DOTIW
   class TimeHash
-    TIME_FRACTIONS = [:seconds, :minutes, :hours, :days, :months, :years]
+    TIME_FRACTIONS = [:seconds, :minutes, :hours, :days, :weeks, :months, :years]
 
     attr_accessor :distance, :smallest, :largest, :from_time, :to_time
 
@@ -48,10 +48,12 @@ module DOTIW
             build_minutes
           elsif distance < 1.day
             build_hours
-          elsif distance < 28.days
+          elsif distance < 7.days
             build_days
-          else # greater than a month
-            build_years_months_days
+          elsif distance < 28.days
+            build_weeks
+          else # greater than a week
+            build_years_months_weeks_days
           end
         end
       end
@@ -76,28 +78,46 @@ module DOTIW
       output[:days], self.distance = distance.divmod(1.day) if output[:days].nil?
     end
 
+    def build_weeks
+      output[:weeks], self.distance = distance.divmod(1.week) if output[:weeks].nil?
+    end
+
     def build_months
-      build_years_months_days
+      build_years_months_weeks_days
 
       if (years = output.delete(:years)) > 0
         output[:months] += (years * 12)
       end
     end
 
-    def build_years_months_days
+    def build_years_months_weeks_days
       months = (largest.year - smallest.year) * 12 + (largest.month - smallest.month)
       years, months = months.divmod(12)
 
       days = largest.day - smallest.day
 
+      weeks, days = days.divmod(7)
+      
       # Will otherwise incorrectly say one more day if our range goes over a day.
       days -= 1 if largest.hour < smallest.hour
 
       if days < 0
-        # Convert the last month to days and add to total
+        # Convert a week to days and add to total
+        weeks -= 1
+        days += 7
+      end
+
+      if weeks < 0
+        # Convert the last month to a week and add to total
         months -= 1
         last_month = largest.advance(:months => -1)
-        days += Time.days_in_month(last_month.month, last_month.year)
+        days_in_month = Time.days_in_month(last_month.month, last_month.year)
+        weeks += days_in_month / 7
+        days += days_in_month % 7
+        if days >= 7
+          days -= 7
+          weeks += 1
+        end
       end
 
       if months < 0
@@ -108,6 +128,7 @@ module DOTIW
 
       output[:years]   = years
       output[:months]  = months
+      output[:weeks]   = weeks
       output[:days]    = days
 
       total_days, self.distance = distance.abs.divmod(1.day)
