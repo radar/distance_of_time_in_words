@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version = DOTIW::VERSION
 
   s.authors = ["Ryan Bigg"]
-  s.date = %q{2015-04-09}
+  s.date = %q{2016-03-08}
   s.description = "Better distance_of_time_in_words for Rails"
   s.summary = "Better distance_of_time_in_words for Rails"
   s.email = "radarlistener@gmail.com"
@@ -27,4 +27,3 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 end
-
