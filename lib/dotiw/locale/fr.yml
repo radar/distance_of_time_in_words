@@ -1,0 +1,25 @@
+fr:
+  datetime:
+    dotiw:
+      seconds:
+        one: 1 seconde
+        other: "%{count} secondes"
+      minutes:
+        one: 1 minute
+        other: "%{count} minutes"
+      hours:
+        one: 1 heure
+        other: "%{count} heures"
+      days:
+        one: 1 jour
+        other: "%{count} jours"
+      weeks:
+        one: 1 semaine
+        other: "%{count} semaines"
+      months:
+        one: 1 mois
+        other: "%{count} mois"
+      years:
+        one: 1 an
+        other: "%{count} ans"
+      less_than_x: "moins de %{distance}"
