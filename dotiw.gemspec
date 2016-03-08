@@ -7,12 +7,18 @@ require 'dotiw/version'
 Gem::Specification.new do |s|
   s.name = 'dotiw'
   s.version = DOTIW::VERSION
+  s.licenses = ["MIT"]
 
-  s.authors = ["Ryan Bigg"]
+  s.authors = ["Ryan Bigg", "Lauran Jansen"]
   s.date = %q{2016-03-08}
-  s.description = "Better distance_of_time_in_words for Rails"
+  s.description = "dotiw is a gem for Rails that overrides the
+              default distance_of_time_in_words and provides
+              a more accurate output. Do you crave accuracy
+              down to the second? So do I. That's why I made
+              this gem. - Ryan"
   s.summary = "Better distance_of_time_in_words for Rails"
-  s.email = "radarlistener@gmail.com"
+  s.email = ["radarlistener@gmail.com", "github@lauranjansen.com"]
+  s.homepage = "https://github.com/radar/dotiw"
 
   s.add_dependency "actionpack", ">= 3"
   s.add_dependency "i18n"
