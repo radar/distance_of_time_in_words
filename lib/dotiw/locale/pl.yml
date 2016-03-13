@@ -4,29 +4,36 @@ pl:
       seconds:
         one: "1 sekunda"
         few: "%{count} sekundy"
+        many: "%{count} sekund"
         other: "%{count} sekund"
       minutes:
         one: "1 minuta"
         few: "%{count} minuty"
+        many: "%{count} minut"
         other: "%{count} minut"
       hours:
         one: "1 godzina"
         few: "%{count} godziny"
+        many: "%{count} godzin"
         other: "%{count} godzin"
       days:
         one: "1 dzień"
         few: "%{count} dni"
+        many: "%{count} dni"
         other: "%{count} dni"
       weeks:
         one: "1 tydzień"
         few: "%{count} tygodnie"
+        many: "%{count} tygodni"
         other: "%{count} tygodni"
       months:
         one: "1 miesiąc"
         few: "%{count} miesiące"
+        many: "%{count} miesięcy"
         other: "%{count} miesięcy"
       years:
         one: "1 rok"
         few: "%{count} lata"
+        many: "%{count} lat"
         other: "%{count} lat"
       less_than_x: "mniej niż %{distance}"
