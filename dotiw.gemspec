@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.email = ["radarlistener@gmail.com", "github@lauranjansen.com"]
   s.homepage = "https://github.com/radar/dotiw"
 
-  s.add_dependency "actionpack", ">= 3"
+  s.add_dependency "actionpack", "> 3"
   s.add_dependency "i18n"
 
   s.add_development_dependency "rake"
