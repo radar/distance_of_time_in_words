@@ -9,8 +9,8 @@ end
 
 module DOTIW
   extend self
-  
-  autoload :VERSION, 'dotiw/version'
+
+  autoload :VERSION,  'dotiw/version'
   autoload :TimeHash, 'dotiw/time_hash'
 
   DEFAULT_I18N_SCOPE = :'datetime.dotiw'

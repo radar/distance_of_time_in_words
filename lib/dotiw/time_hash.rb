@@ -97,7 +97,7 @@ module DOTIW
       days = largest.day - smallest.day
 
       weeks, days = days.divmod(7)
-      
+
       # Will otherwise incorrectly say one more day if our range goes over a day.
       days -= 1 if largest.hour < smallest.hour
 
@@ -114,9 +114,16 @@ module DOTIW
         days_in_month = Time.days_in_month(last_month.month, last_month.year)
         weeks += days_in_month / 7
         days += days_in_month % 7
+
         if days >= 7
           days -= 7
           weeks += 1
+        end
+
+        if weeks < 0
+          months -= 1
+          weeks += 5
+          days -= (7 - 3)
         end
       end
 
