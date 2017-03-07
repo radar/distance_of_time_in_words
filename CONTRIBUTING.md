@@ -12,6 +12,8 @@ When filing an issue on the DOTIW project, please provide these details:
 In 99% of cases, this information is enough to determine the cause and solution
 to the problem that is being described.
 
+Avoid creating documentation issues, just submit a PR. See this [example of what NOT to do](https://github.com/radar/dotiw/issues/65).
+
 Please remember to format code using triple backticks (\`) so that it is neatly
 formatted when the issue is posted.
 
