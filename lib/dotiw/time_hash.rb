@@ -67,19 +67,19 @@ module DOTIW
     end
 
     def build_minutes
-      output[:minutes], self.distance = distance.divmod(1.minute)
+      output[:minutes], self.distance = distance.divmod(1.minute.to_i)
     end
 
     def build_hours
-      output[:hours], self.distance = distance.divmod(1.hour)
+      output[:hours], self.distance = distance.divmod(1.hour.to_i)
     end
 
     def build_days
-      output[:days], self.distance = distance.divmod(1.day) if output[:days].nil?
+      output[:days], self.distance = distance.divmod(1.day.to_i) if output[:days].nil?
     end
 
     def build_weeks
-      output[:weeks], self.distance = distance.divmod(1.week) if output[:weeks].nil?
+      output[:weeks], self.distance = distance.divmod(1.week.to_i) if output[:weeks].nil?
     end
 
     def build_months
@@ -97,7 +97,7 @@ module DOTIW
       days = largest.day - smallest.day
 
       weeks, days = days.divmod(7)
-      
+
       # Will otherwise incorrectly say one more day if our range goes over a day.
       days -= 1 if largest.hour < smallest.hour
 
@@ -131,7 +131,7 @@ module DOTIW
       output[:weeks]   = weeks
       output[:days]    = days
 
-      total_days, self.distance = distance.abs.divmod(1.day)
+      total_days, self.distance = distance.abs.divmod(1.day.to_i)
 
       [total_days, self.distance]
     end
