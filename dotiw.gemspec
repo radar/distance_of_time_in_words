@@ -20,13 +20,15 @@ Gem::Specification.new do |s|
   s.email = ["radarlistener@gmail.com", "github@lauranjansen.com"]
   s.homepage = "https://github.com/radar/dotiw"
 
-  s.add_dependency "actionpack", ">= 3"
+  s.add_dependency "actionpack", ">= 4"
   s.add_dependency "i18n"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "bundler"
   s.add_development_dependency "rspec", "~> 3.0"
   s.add_development_dependency "tzinfo"
+  s.add_development_dependency "appraisal"
+  s.add_development_dependency "pry"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
