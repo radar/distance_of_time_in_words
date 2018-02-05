@@ -1,7 +1,6 @@
 ko:
   datetime:
     dotiw:
-      less_than_x: "%{distance} 미만"
       seconds:
         one: 일 초
         other: "%{count} 초"
@@ -23,3 +22,4 @@ ko:
       years:
         one: 일년
         other: "%{count} 년"
+      less_than_x: "%{distance} 미만"
