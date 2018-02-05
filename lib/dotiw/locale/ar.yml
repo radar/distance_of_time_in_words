@@ -1,7 +1,6 @@
 ar:
   datetime:
     dotiw:
-      less_than_x: أقل من %{distance}
       seconds:
         one: ثانية
         two: ثانيتين
@@ -44,3 +43,4 @@ ar:
         few: "%{count} سنوات"
         many: "%{count} سنوات"
         other: "%{count} سنوات"
+      less_than_x: أقل من %{distance}
