@@ -1,0 +1,25 @@
+zh-CN:
+  datetime:
+    dotiw:
+      seconds:
+        one: 1秒
+        other: "%{count}秒"
+      minutes:
+        one: 1分鐘
+        other: "%{count}分鐘"
+      hours:
+        one: 1小時
+        other: "%{count}小時"
+      days:
+        one: 1天
+        other: "%{count}天"
+      months:
+        one: 1個月
+        other: "%{count}個月"
+      weeks:
+        one: 1週
+        other: "%{count}週"
+      years:
+        one: 1年
+        other: "%{count}年"
+      less_than_x: 少於%{distance}
