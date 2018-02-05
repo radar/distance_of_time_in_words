@@ -4,43 +4,22 @@ ko:
       less_than_x: "%{distance} 미만"
       seconds:
         one: 일 초
-        two: "%{count} 초"
-        few: "%{count} 초"
-        many: "%{count} 초"
         other: "%{count} 초"
       minutes:
         one: 일 분
-        two: "%{count} 분"
-        few: "%{count} 분"
-        many: "%{count} 분"
         other: "%{count} 분"
       hours:
         one: 한 시간
-        two: "%{count} 시간"
-        few: "%{count} 시간"
-        many: "%{count} 시간"
         other: "%{count} 시간"
       days:
         one: 하루
-        two: "%{count} 일"
-        few: "%{count} 일"
-        many: "%{count} 일"
         other: "%{count} 일"
       weeks:
         one: 일주
-        two: 이주
-        few: "%{count} 주"
-        many: "%{count} 주"
         other: "%{count} 주"
       months:
         one: 한 달
-        two: "%{count} 달"
-        few: "%{count} 달"
-        many: "%{count} 달"
         other: "%{count} 달"
       years:
         one: 일년
-        two: "%{count} 년"
-        few: "%{count} 년"
-        many: "%{count} 년"
         other: "%{count} 년"
