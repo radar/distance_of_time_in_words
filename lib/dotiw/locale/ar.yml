@@ -3,49 +3,42 @@ ar:
     dotiw:
       less_than_x: أقل من %{distance}
       seconds:
-        zero: "%{count} ثواني"
         one: ثانية
         two: ثانيتين
         few: "%{count} ثواني"
         many: "%{count} ثواني"
         other: "%{count} ثواني"
       minutes:
-        zero: "%{count} دقائق"
         one: دقيقة
         two: دقيقتين
         few: "%{count} دقائق"
         many: "%{count} دقائق"
         other: "%{count} دقائق"
       hours:
-        zero: "%{count} ساعات"
         one: ساعة
         two: ساعتين
         few: "%{count} ساعات"
         many: "%{count} ساعات"
         other: "%{count} ساعات"
       days:
-        zero: "%{count} أيام"
         one: يوم
         two: يومان
         few: "%{count} أيام"
         many: "%{count} أيام"
         other: "%{count} أيام"
       weeks:
-        zero: "%{count} أسابيع"
         one: أسبوع
         two: إسبوعين
         few: "%{count} أسابيع"
         many: "%{count} أسابيع"
         other: "%{count} أسابيع"
       months:
-        zero: "%{count} أشهر"
         one: شهر
         two: شهرين
         few: "%{count} أشهر"
         many: "%{count} أشهر"
         other: "%{count} أشهر"
       years:
-        zero: "%{count} سنوات"
         one: سنة
         two: سنتان
         few: "%{count} سنوات"
