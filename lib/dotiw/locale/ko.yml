@@ -1,0 +1,25 @@
+ko:
+  datetime:
+    dotiw:
+      seconds:
+        one: 일 초
+        other: "%{count} 초"
+      minutes:
+        one: 일 분
+        other: "%{count} 분"
+      hours:
+        one: 한 시간
+        other: "%{count} 시간"
+      days:
+        one: 하루
+        other: "%{count} 일"
+      weeks:
+        one: 일주
+        other: "%{count} 주"
+      months:
+        one: 한 달
+        other: "%{count} 달"
+      years:
+        one: 일년
+        other: "%{count} 년"
+      less_than_x: "%{distance} 미만"
