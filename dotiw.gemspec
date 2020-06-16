@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
               this gem. - Ryan"
   s.summary = "Better distance_of_time_in_words for Rails"
   s.email = ["radarlistener@gmail.com", "github@lauranjansen.com"]
-  s.homepage = "https://github.com/radar/dotiw"
+  s.homepage = "https://github.com/radar/distance_of_time_in_words"
 
   s.add_dependency "actionpack", ">= 4"
   s.add_dependency "i18n"
