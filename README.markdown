@@ -1,4 +1,6 @@
-# dotiw [![](https://travis-ci.org/radar/dotiw.svg)](https://travis-ci.org/radar/dotiw)
+# dotiw
+
+[![Build Status](https://travis-ci.org/radar/distance_of_time_in_words.svg?branch=master)](https://travis-ci.org/radar/distance_of_time_in_words)
 
 dotiw is a gem for Rails that overrides the default `distance_of_time_in_words` and provides a more accurate output. Do you crave accuracy down to the second? So do I. That's why I made this gem. Take this for a totally kick-ass example:
 
