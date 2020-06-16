@@ -1,3 +1,6 @@
+# dotiw.gemspec
+# -*- encoding: utf-8 -*-
+
 $LOAD_PATH.push File.expand_path('../lib', __FILE__)
 require 'dotiw/version'
 
@@ -12,9 +15,9 @@ Gem::Specification.new do |s|
               a more accurate output. Do you crave accuracy
               down to the second? So do I. That's why I made
               this gem. - Ryan"
-  s.summary = "Better distance_of_time_in_words for Rails"
-  s.email = ["radarlistener@gmail.com", "github@lauranjansen.com"]
-  s.homepage = "https://github.com/radar/distance_of_time_in_words"
+  s.summary = 'Better distance_of_time_in_words for Rails'
+  s.email = ['radarlistener@gmail.com', 'github@lauranjansen.com']
+  s.homepage = 'https://github.com/radar/distance_of_time_in_words'
 
   s.add_dependency 'actionpack', '>= 4'
   s.add_dependency 'i18n'
