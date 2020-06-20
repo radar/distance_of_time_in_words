@@ -2,7 +2,41 @@
 
 [![Build Status](https://travis-ci.org/radar/distance_of_time_in_words.svg?branch=master)](https://travis-ci.org/radar/distance_of_time_in_words)
 
-dotiw is a gem for Rails that overrides the default `distance_of_time_in_words` and provides a more accurate output. Do you crave accuracy down to the second? So do I. That's why I made this gem. Take this for a totally kick-ass example:
+The `dotiw` library that adds `distance_of_time_in_words` to any Ruby project, or overrides the default implementation in Rails with more accurate output.
+
+Do you crave accuracy down to the second? So do I. That's why I made this gem.
+
+## Install
+
+Add to your `Gemfile`.
+
+```ruby
+gem 'dotiw'
+```
+
+Run `bundle install`.
+
+### Pure Ruby
+
+```ruby
+require 'dotiw'
+
+include DOTIW::Methods
+```
+
+### Rails
+
+```ruby
+require 'dotiw'
+
+include ActionView::Helpers::DateHelper
+include ActionView::Helpers::TextHelper
+include ActionView::Helpers::NumberHelper
+```
+
+## distance\_of\_time\_in\_words
+
+Take this for a totally kick-ass example:
 
 ```ruby
 >> distance_of_time_in_words(Time.now, Time.now + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds, true)
@@ -46,16 +80,6 @@ world*:
 ```
 
 Oh, and did I mention it supports I18n? Oh yeah. Rock on!
-
-## Install
-
-Add to your `Gemfile`.
-
-```ruby
-gem 'dotiw'
-```
-
-Run `bundle install`.
 
 ### Options
 
@@ -144,7 +168,7 @@ When you want variable precision from `DOTIW`:
 
 #### :words_connector
 
-**This is an option for `to_sentence`, defaults to ', '**
+This is an option for `to_sentence`, defaults to ', '.
 
 Using something other than a comma:
 
@@ -155,7 +179,7 @@ Using something other than a comma:
 
 #### :two\_words\_connector
 
-**This is an option for `to_sentence`, defaults to ' and '**
+This is an option for `to_sentence`, defaults to ' and '.
 
 Using something other than 'and':
 
@@ -166,7 +190,7 @@ Using something other than 'and':
 
 #### :last\_word\_connector
 
-**This is an option for `to_sentence`, defaults to ', and '**
+This is an option for `to_sentence`, defaults to ', and '.
 
 Using something other than ', and':
 
@@ -197,16 +221,20 @@ Indifferent means that you can access all keys by their `String` or `Symbol` ver
 
 ## distance\_of\_time\_in\_percent
 
-If you want to calculate a distance of time in percent, use `distance_of_time_in_percent`. The first argument is the beginning time, the second argument the "current" time and the third argument is the end time. This method takes the same options as [`number_with_precision`](http://api.rubyonrails.org/classes/ActionView/Helpers/NumberHelper.html#method-i-number_with_precision).
+This method is only available with Rails ActionView.
+
+If you want to calculate a distance of time in percent, use `distance_of_time_in_percent`. The first argument is the beginning time, the second argument the "current" time and the third argument is the end time.
 
 ```ruby
 >> distance_of_time_in_percent("04-12-2009".to_time, "29-01-2010".to_time, "04-12-2010".to_time)
-"15%"
+=> '15%'
 ```
+
+This method takes the same options as [`number_with_precision`](http://api.rubyonrails.org/classes/ActionView/Helpers/NumberHelper.html#method-i-number_with_precision).
 
 ```ruby
 >> distance_of_time_in_percent("04-12-2009".to_time, "29-01-2010".to_time, "04-12-2010".to_time, precision: 1)
-=> "15.3%"
+=> '15.3%'
 ```
 
 ## Contributors
@@ -215,3 +243,4 @@ If you want to calculate a distance of time in percent, use `distance_of_time_in
 * [Derander](http://github.com/derander) - correct Spanish translations
 * [DBA](http://github.com/dba) - commits leading up to the 0.7 release
 * [Sija](http://github.com/Sija) - rails 4 support, v2.0 release
+* [dblock](http://github.com/dblock) - Ruby w/o Rails support
