@@ -2,45 +2,52 @@ ar:
   datetime:
     dotiw:
       seconds:
-        one: ثانية
+        zero: ثانية
+        one: ثانية واحدة
         two: ثانيتين
-        few: "%{count} ثواني"
-        many: "%{count} ثواني"
-        other: "%{count} ثواني"
+        few: "%{count} توانٍ"
+        many: "%{count} ثانية"
+        other: "%{count} ثانية"
       minutes:
-        one: دقيقة
+        zero: دقيقة
+        one: دقيقة واحدة
         two: دقيقتين
         few: "%{count} دقائق"
-        many: "%{count} دقائق"
-        other: "%{count} دقائق"
+        many: "%{count} دقيقة"
+        other: "%{count} دقيقة"
       hours:
-        one: ساعة
+        zero: ساعة
+        one: ساعة واحدة
         two: ساعتين
         few: "%{count} ساعات"
-        many: "%{count} ساعات"
-        other: "%{count} ساعات"
+        many: "%{count} ساعة"
+        other: "%{count} ساعة"
       days:
-        one: يوم
-        two: يومان
-        few: "%{count} أيام"
-        many: "%{count} أيام"
-        other: "%{count} أيام"
+        zero: يوم
+        one: يوم واحد
+        two: يومين
+        few: "%{count} أيام"        
+        many: "%{count} يومًا"
+        other: "%{count} يوم"
       weeks:
-        one: أسبوع
-        two: إسبوعين
+        zero: أسبوع
+        one: أسبوع واحدة
+        two: أسبوعين
         few: "%{count} أسابيع"
         many: "%{count} أسابيع"
-        other: "%{count} أسابيع"
+        other: "%{count} أسيوع"
       months:
-        one: شهر
+        zero: شهر
+        one: شهر واحد 
         two: شهرين
         few: "%{count} أشهر"
-        many: "%{count} أشهر"
-        other: "%{count} أشهر"
+        many: "%{count} شهراً"
+        other: "%{count} شهر"
       years:
-        one: سنة
-        two: سنتان
-        few: "%{count} سنوات"
-        many: "%{count} سنوات"
-        other: "%{count} سنوات"
-      less_than_x: أقل من %{distance}
+        zero: عام
+        one: عام واحد 
+        two: عامين
+        few: "%{count} أعوام"
+        many: "%{count} عاماً"
+        other: "%{count} عام"
+      less_than_x: "%{distance} أقل من"

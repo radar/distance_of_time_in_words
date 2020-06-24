@@ -9,8 +9,7 @@ Gem::Specification.new do |s|
   s.version = DOTIW::VERSION
   s.licenses = ['MIT']
 
-  s.authors = ['Ryan Bigg', 'Lauran Jansen']
-  s.date = '2016-03-08'
+  s.authors = ["Ryan Bigg", "Lauran Jansen"]
   s.description = "dotiw is a gem for Rails that overrides the
               default distance_of_time_in_words and provides
               a more accurate output. Do you crave accuracy

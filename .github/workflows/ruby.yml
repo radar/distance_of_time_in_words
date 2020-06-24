@@ -1,6 +1,14 @@
 name: Ruby
 
-on: [push]
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the master branch
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build:
@@ -12,11 +20,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Ruby 2.6
+    - name: Set up Ruby ${{ matrix.ruby_version }}
       uses: actions/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby_version }}
-      
+
     - name: Build and test with Rake
       run: |
         gem install bundler

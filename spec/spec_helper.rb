@@ -11,5 +11,4 @@ require 'dotiw'
 
 Time.zone = 'UTC'
 
-I18n.load_path << Dir[File.join(File.dirname(__FILE__), 'translations', '*')]
 I18n.locale = :en
