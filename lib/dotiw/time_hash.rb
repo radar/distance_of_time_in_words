@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DOTIW
   class TimeHash
     TIME_FRACTIONS = %i[seconds minutes hours days weeks months years].freeze
@@ -5,7 +7,7 @@ module DOTIW
     attr_reader :distance, :smallest, :largest, :from_time, :to_time
 
     def initialize(distance, from_time, to_time = nil, options = {})
-      @output     = ActiveSupport::OrderedHash.new
+      @output     = {}
       @options    = options
       @distance   = distance
       @from_time  = from_time || Time.current
@@ -36,6 +38,7 @@ module DOTIW
       if accumulate_on = options.delete(:accumulate_on)
         accumulate_on = accumulate_on.to_sym
         return build_time_hash if accumulate_on == :years
+
         TIME_FRACTIONS.index(accumulate_on).downto(0) { |i| send("build_#{TIME_FRACTIONS[i]}") }
       else
         while distance > 0

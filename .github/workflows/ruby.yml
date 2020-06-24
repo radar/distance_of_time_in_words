@@ -15,7 +15,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - ruby-version: 2.4.x
           - ruby-version: 2.5.x
           - ruby-version: 2.6.x
           - ruby-version: 2.4.x

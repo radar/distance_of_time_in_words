@@ -1,19 +1,24 @@
+# frozen_string_literal: true
+
 require 'i18n'
 
-# Rails hacks
-if defined?(ActionView::Helpers)
-  require 'dotiw/action_view_ext/helpers/date_helper'
-end
+require 'active_support'
+require 'active_support/core_ext'
 
 module DOTIW
-  extend self
+  extend ActiveSupport::Autoload
 
-  autoload :VERSION, 'dotiw/version'
-  autoload :TimeHash, 'dotiw/time_hash'
+  eager_autoload do
+    autoload :VERSION, 'dotiw/version'
+    autoload :TimeHash, 'dotiw/time_hash'
+    autoload :Methods, 'dotiw/methods'
+  end
+
+  extend self
 
   DEFAULT_I18N_SCOPE = :'datetime.dotiw'
 
-  def init_i18n
+  def init_i18n!
     I18n.load_path.unshift(*locale_files)
     I18n.reload!
   end
@@ -26,4 +31,11 @@ module DOTIW
   end
 end # DOTIW
 
-DOTIW.init_i18n
+DOTIW.init_i18n!
+
+begin
+  require 'action_view'
+  require_relative 'dotiw/action_view/helpers/date_helper'
+rescue LoadError
+  # TODO: don't rely on exception
+end
