@@ -1,8 +1,6 @@
-# encoding: utf-8
-
 module DOTIW
   class TimeHash
-    TIME_FRACTIONS = [:seconds, :minutes, :hours, :days, :weeks, :months, :years]
+    TIME_FRACTIONS = %i[seconds minutes hours days weeks months years].freeze
 
     attr_accessor :distance, :smallest, :largest, :from_time, :to_time
 
@@ -13,13 +11,13 @@ module DOTIW
       self.from_time  = from_time || Time.current
       self.to_time    = to_time   || (@to_time_not_given = true && self.from_time + self.distance.seconds)
       self.smallest, self.largest = [self.from_time, self.to_time].minmax
-      self.to_time   += 1.hour if @to_time_not_given && self.smallest.dst? && !self.largest.dst?
-      self.to_time   -= 1.hour if @to_time_not_given && !self.smallest.dst? && self.largest.dst?
+      self.to_time   += 1.hour if @to_time_not_given && smallest.dst? && !largest.dst?
+      self.to_time   -= 1.hour if @to_time_not_given && !smallest.dst? && largest.dst?
       self.smallest, self.largest = [self.from_time, self.to_time].minmax
       self.distance ||= begin
         d = largest - smallest
-        d -= 1.hour if self.smallest.dst? && !self.largest.dst?
-        d += 1.hour if !self.smallest.dst? && self.largest.dst?
+        d -= 1.hour if smallest.dst? && !largest.dst?
+        d += 1.hour if !smallest.dst? && largest.dst?
         d
       end
 
@@ -30,16 +28,15 @@ module DOTIW
       output
     end
 
-  private
+    private
+
     attr_accessor :options, :output
 
     def build_time_hash
       if accumulate_on = options.delete(:accumulate_on)
         accumulate_on = accumulate_on.to_sym
-        if accumulate_on == :years
-          return build_time_hash
-        end
-        TIME_FRACTIONS.index(accumulate_on).downto(0) { |i| self.send("build_#{TIME_FRACTIONS[i]}") }
+        return build_time_hash if accumulate_on == :years
+        TIME_FRACTIONS.index(accumulate_on).downto(0) { |i| send("build_#{TIME_FRACTIONS[i]}") }
       else
         while distance > 0
           if distance < 1.minute
@@ -110,7 +107,7 @@ module DOTIW
       if weeks < 0
         # Convert the last month to a week and add to total
         months -= 1
-        last_month = largest.advance(:months => -1)
+        last_month = largest.advance(months: -1)
         days_in_month = Time.days_in_month(last_month.month, last_month.year)
         weeks += days_in_month / 7
         days += days_in_month % 7

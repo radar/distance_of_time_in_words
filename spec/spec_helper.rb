@@ -1,7 +1,5 @@
-# encoding: utf-8
-
 ROOT_PATH = File.join(File.dirname(__FILE__), '..')
-$:.unshift ROOT_PATH unless $:.include? ROOT_PATH
+$LOAD_PATH.unshift ROOT_PATH unless $LOAD_PATH.include? ROOT_PATH
 
 # Files that are usually required by Rails, but in a testing context will not be.
 require 'erb'

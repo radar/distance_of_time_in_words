@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require 'i18n'
 
 # Rails hacks
@@ -9,7 +7,7 @@ end
 
 module DOTIW
   extend self
-  
+
   autoload :VERSION, 'dotiw/version'
   autoload :TimeHash, 'dotiw/time_hash'
 
@@ -20,7 +18,8 @@ module DOTIW
     I18n.reload!
   end
 
-protected
+  protected
+
   # Returns all locale files shipped with library
   def locale_files
     Dir[File.join(File.dirname(__FILE__), 'dotiw', 'locale', '**/*')]

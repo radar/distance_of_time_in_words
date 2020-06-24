@@ -31,7 +31,7 @@ module ActionView
         options[:precision] ||= 0
         distance = to_time - from_time
         result = ((current_time - from_time) / distance) * 100
-        number_with_precision(result, options).to_s + "%"
+        number_with_precision(result, options).to_s + '%'
       end
 
       alias_method :old_time_ago_in_words, :time_ago_in_words
@@ -41,9 +41,10 @@ module ActionView
       end
 
       private
+
       def display_time_in_words(hash, options = {})
         options.reverse_merge!(
-            :include_seconds => false
+          include_seconds: false
         ).symbolize_keys!
 
         include_seconds = options.delete(:include_seconds)
@@ -55,46 +56,44 @@ module ActionView
         # Remove all the values that are nil or excluded. Keep the required ones.
         hash.delete_if do |key, value|
           value.nil? || value.zero? ||
-              (options[:except] && options[:except].include?(key)) ||
-              (options[:only] && !options[:only].include?(key))
+            (options[:except] && options[:except].include?(key)) ||
+            (options[:only] && !options[:only].include?(key))
         end
 
         i18n_scope = options.delete(:scope) || DOTIW::DEFAULT_I18N_SCOPE
         if hash.empty?
           fractions = DOTIW::TimeHash::TIME_FRACTIONS
-          fractions = fractions & options[:only] if options[:only]
-          fractions = fractions - options[:except] if options[:except]
+          fractions &= options[:only] if options[:only]
+          fractions -= options[:except] if options[:except]
 
-          I18n.with_options :locale => options[:locale], :scope => i18n_scope do |locale|
+          I18n.with_options locale: options[:locale], scope: i18n_scope do |locale|
             # e.g. try to format 'less than 1 days', fallback to '0 days'
             return locale.translate :less_than_x,
-                                    :distance => locale.translate(fractions.first, :count => 1),
-                                    :default => locale.translate(fractions.first, :count => 0)
+                                    distance: locale.translate(fractions.first, count: 1),
+                                    default: locale.translate(fractions.first, count: 0)
           end
         end
 
         output = []
-        I18n.with_options :locale => options[:locale], :scope => i18n_scope do |locale|
-          output = hash.map { |key, value| locale.t(key, :count => value) }
+        I18n.with_options locale: options[:locale], scope: i18n_scope do |locale|
+          output = hash.map { |key, value| locale.t(key, count: value) }
         end
 
         options.delete(:except)
         options.delete(:only)
         highest_measures = options.delete(:highest_measures)
         highest_measures = 1 if options.delete(:highest_measure_only)
-        if highest_measures
-          output = output[0...highest_measures]
-        end
+        output = output[0...highest_measures] if highest_measures
 
         options[:words_connector] ||= I18n.translate :'datetime.dotiw.words_connector',
-                                                     :default => :'support.array.words_connector',
-                                                     :locale => options[:locale]
+                                                     default: :'support.array.words_connector',
+                                                     locale: options[:locale]
         options[:two_words_connector] ||= I18n.translate :'datetime.dotiw.two_words_connector',
-                                                         :default => :'support.array.two_words_connector',
-                                                         :locale => options[:locale]
+                                                         default: :'support.array.two_words_connector',
+                                                         locale: options[:locale]
         options[:last_word_connector] ||= I18n.translate :'datetime.dotiw.last_word_connector',
-                                                         :default => :'support.array.last_word_connector',
-                                                         :locale => options[:locale]
+                                                         default: :'support.array.last_word_connector',
+                                                         locale: options[:locale]
 
         output.to_sentence(options)
       end
