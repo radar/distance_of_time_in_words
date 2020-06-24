@@ -2,19 +2,19 @@ module DOTIW
   class TimeHash
     TIME_FRACTIONS = %i[seconds minutes hours days weeks months years].freeze
 
-    attr_accessor :distance, :smallest, :largest, :from_time, :to_time
+    attr_reader :distance, :smallest, :largest, :from_time, :to_time
 
-    def initialize(distance, from_time = nil, to_time = nil, options = {})
-      self.output     = ActiveSupport::OrderedHash.new
-      self.options    = options
-      self.distance   = distance
-      self.from_time  = from_time || Time.current
-      self.to_time    = to_time   || (@to_time_not_given = true && self.from_time + self.distance.seconds)
-      self.smallest, self.largest = [self.from_time, self.to_time].minmax
-      self.to_time   += 1.hour if @to_time_not_given && smallest.dst? && !largest.dst?
-      self.to_time   -= 1.hour if @to_time_not_given && !smallest.dst? && largest.dst?
-      self.smallest, self.largest = [self.from_time, self.to_time].minmax
-      self.distance ||= begin
+    def initialize(distance, from_time, to_time = nil, options = {})
+      @output     = ActiveSupport::OrderedHash.new
+      @options    = options
+      @distance   = distance
+      @from_time  = from_time || Time.current
+      @to_time    = to_time   || (@to_time_not_given = true && @from_time + distance.seconds)
+      @smallest, @largest = [@from_time, @to_time].minmax
+      @to_time   += 1.hour if @to_time_not_given && smallest.dst? && !largest.dst?
+      @to_time   -= 1.hour if @to_time_not_given && !smallest.dst? && largest.dst?
+      @smallest, @largest = [@from_time, @to_time].minmax
+      @distance ||= begin
         d = largest - smallest
         d -= 1.hour if smallest.dst? && !largest.dst?
         d += 1.hour if !smallest.dst? && largest.dst?
@@ -30,7 +30,7 @@ module DOTIW
 
     private
 
-    attr_accessor :options, :output
+    attr_reader :options, :output
 
     def build_time_hash
       if accumulate_on = options.delete(:accumulate_on)
@@ -60,23 +60,23 @@ module DOTIW
 
     def build_seconds
       output[:seconds] = distance.to_i
-      self.distance = 0
+      @distance = 0
     end
 
     def build_minutes
-      output[:minutes], self.distance = distance.divmod(1.minute.to_i)
+      output[:minutes], @distance = distance.divmod(1.minute.to_i)
     end
 
     def build_hours
-      output[:hours], self.distance = distance.divmod(1.hour.to_i)
+      output[:hours], @distance = distance.divmod(1.hour.to_i)
     end
 
     def build_days
-      output[:days], self.distance = distance.divmod(1.day.to_i) if output[:days].nil?
+      output[:days], @distance = distance.divmod(1.day.to_i) unless output[:days]
     end
 
     def build_weeks
-      output[:weeks], self.distance = distance.divmod(1.week.to_i) if output[:weeks].nil?
+      output[:weeks], @distance = distance.divmod(1.week.to_i) unless output[:weeks]
     end
 
     def build_months
@@ -128,9 +128,9 @@ module DOTIW
       output[:weeks]   = weeks
       output[:days]    = days
 
-      total_days, self.distance = distance.abs.divmod(1.day.to_i)
+      total_days, @distance = distance.abs.divmod(1.day.to_i)
 
-      [total_days, self.distance]
+      [total_days, @distance]
     end
   end # TimeHash
 end # DOTIW
