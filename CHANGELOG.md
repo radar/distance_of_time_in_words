@@ -1,5 +1,6 @@
 ## 5.1.0 (Next)
 
+* [#106](https://github.com/radar/distance_of_time_in_words/pull/106): Add Vietnamese language support - [@runlevel5 ](https://github.com/runlevel5).
 * Your contribution here.
 
 ## 5.0.0 (2020/05/07)

@@ -1,0 +1,22 @@
+seconds:
+  0.5.second: ít hơn 1 giây
+  1.second: 1 giây
+  3.seconds: 3 giây
+minutes:
+  1.minute: 1 phút
+  10.minutes: 10 phút
+hours:
+  1.hour: 1 giờ
+  2.hours: 2 giờ
+days:
+  1.day: 1 ngày
+  2.days: 2 ngày
+weeks:
+  1.week: 1 tuần
+  2.weeks: 2 tuần
+months:
+  1.month: 1 tháng
+  2.months: 2 tháng
+years:
+  1.year: 1 năm
+  2.years: 2 năm
