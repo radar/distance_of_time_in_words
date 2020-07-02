@@ -126,6 +126,17 @@ describe 'A better distance_of_time_in_words' do
       end
     end
 
+    [
+      [Time.at(1), Time.at(100), '1 minute'],
+      [DateTime.now, DateTime.now + 1.minute, '1 minute'],
+      [Date.new(2000, 1, 2), Date.new(2000, 1, 3), '1 day'],
+      [Time.at(DateTime.now), DateTime.now + 1.minute, '1 minute']
+    ].each do |start, finish, output|
+      it "should be #{output}" do
+        expect(distance_of_time_in_words(start, finish)).to eq(output)
+      end
+    end
+
     describe 'accumulate on' do
       [
         [START_TIME,
