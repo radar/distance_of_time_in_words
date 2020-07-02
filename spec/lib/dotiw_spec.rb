@@ -20,7 +20,7 @@ describe 'A better distance_of_time_in_words' do
   end
 
   describe 'distance of time' do
-    fragments = [
+    [
       [0.5.minutes, '30 seconds'],
       [4.5.minutes, '4 minutes and 30 seconds'],
       [5.minutes, '5 minutes'],
@@ -30,8 +30,7 @@ describe 'A better distance_of_time_in_words' do
       [4.weeks, '4 weeks'],
       [4.weeks + 2.days, '4 weeks and 2 days'],
       [24.weeks, '5 months, 2 weeks, and 1 day']
-    ]
-    fragments.each do |number, result|
+    ].each do |number, result|
       it "#{number} == #{result}" do
         expect(distance_of_time(number)).to eq(result)
       end
@@ -68,7 +67,8 @@ describe 'A better distance_of_time_in_words' do
       it 'should be happy with lots of measurements' do
         hash = distance_of_time_in_words_hash(
           START_TIME,
-          START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds)
+          START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds
+        )
         expect(hash[:years]).to eq(1)
         expect(hash[:months]).to eq(2)
         expect(hash[:weeks]).to eq(3)
@@ -91,7 +91,7 @@ describe 'A better distance_of_time_in_words' do
       expect(distance_of_time_in_words(START_TIME, START_TIME + 5.days, true, locale: :it)).to eq('5 giorni')
     end
 
-    fragments = [
+    [
       [START_TIME, START_TIME + 5.days + 3.minutes, '5 days and 3 minutes'],
       [START_TIME, START_TIME + 1.minute, '1 minute'],
       [START_TIME, START_TIME + 3.years, '3 years'],
@@ -106,15 +106,28 @@ describe 'A better distance_of_time_in_words' do
       ['2009-4-14'.to_time, '2008-3-16'.to_time, '1 year, 4 weeks, and 1 day'],
       ['2009-2-01'.to_time, '2009-3-01'.to_time, '1 month'],
       ['2008-2-01'.to_time, '2008-3-01'.to_time, '1 month']
-    ]
-    fragments.each do |start, finish, output|
+    ].each do |start, finish, output|
       it "should be #{output}" do
         expect(distance_of_time_in_words(start, finish, true)).to eq(output)
       end
     end
 
+    [
+      [Time.zone.now, Time.zone.now + 1.day - 1.minute, '23 hours and 59 minutes'],
+      [Time.zone.now, Time.zone.now + 15.days - 1.minute, '14 days, 23 hours, and 59 minutes'],
+      [Time.zone.now, Time.zone.now + 29.days - 1.minute, '28 days, 23 hours, and 59 minutes'],
+      [Time.zone.now, Time.zone.now + 30.days - 1.minute, '29 days, 23 hours, and 59 minutes'],
+      [Time.zone.now, Time.zone.now + 31.days - 1.minute, '30 days, 23 hours, and 59 minutes'],
+      [Time.zone.now, Time.zone.now + 32.days - 1.minute, '31 days, 23 hours, and 59 minutes'],
+      [Time.zone.now, Time.zone.now + 33.days - 1.minute, '32 days, 23 hours, and 59 minutes']
+    ].each do |start, finish, output|
+      it "should be #{output}" do
+        expect(distance_of_time_in_words(start, finish, accumulate_on: 'days')).to eq(output)
+      end
+    end
+
     describe 'accumulate on' do
-      fragments = [
+      [
         [START_TIME,
          START_TIME + 10.minute,
          :seconds,
@@ -140,9 +153,7 @@ describe 'A better distance_of_time_in_words' do
          :months,
          '13 months, 3 weeks, 1 day, 16 hours, and 10 seconds'],
         ['2015-1-15'.to_time, '2016-3-15'.to_time, :months, '14 months']
-
-      ]
-      fragments.each do |start, finish, accumulator, output|
+      ].each do |start, finish, accumulator, output|
         it "should be #{output}" do
           expect(distance_of_time_in_words(start, finish, true, accumulate_on: accumulator)).to eq(output)
         end
@@ -153,15 +164,14 @@ describe 'A better distance_of_time_in_words' do
       # A missing finish argument should default to zero, essentially returning
       # the equivalent of distance_of_time in order to be backwards-compatible
       # with the original rails distance_of_time_in_words helper.
-      fragments = [
+      [
         [5.minutes.to_i, '5 minutes'],
         [10.minutes.to_i, '10 minutes'],
         [1.hour.to_i, '1 hour'],
         [6.days.to_i, '6 days'],
         [4.weeks.to_i, '4 weeks'],
         [24.weeks.to_i, '5 months, 2 weeks, and 1 day']
-      ]
-      fragments.each do |start, output|
+      ].each do |start, output|
         it "should be #{output}" do
           expect(distance_of_time_in_words(start)).to eq(output)
         end
@@ -170,7 +180,7 @@ describe 'A better distance_of_time_in_words' do
   end
 
   describe 'with output options' do
-    fragments = [
+    [
       # Any numeric sequence is merely coincidental.
       [START_TIME,
        START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
@@ -239,32 +249,36 @@ describe 'A better distance_of_time_in_words' do
        START_TIME + 1.days,
        { highest_measures: 1, only: %i[years months] },
        'less than 1 month']
-    ]
-
-    if defined?(ActionView)
-      fragments += [
-        [START_TIME,
-         START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
-         { vague: true },
-         'about 1 year'],
-        [START_TIME,
-         START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
-         { vague: 'Yes please' },
-         'about 1 year'],
-        [START_TIME,
-         START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
-         { vague: false },
-         '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds'],
-        [START_TIME,
-         START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
-         { vague: nil },
-         '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds']
-      ]
-    end
-
-    fragments.each do |start, finish, options, output|
+    ].each do |start, finish, options, output|
       it "should be #{output}" do
         expect(distance_of_time_in_words(start, finish, true, options)).to eq(output)
+      end
+    end
+
+    if defined?(ActionView)
+      describe 'ActionView' do
+        [
+          [START_TIME,
+           START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+           { vague: true },
+           'about 1 year'],
+          [START_TIME,
+           START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+           { vague: 'Yes please' },
+           'about 1 year'],
+          [START_TIME,
+           START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+           { vague: false },
+           '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds'],
+          [START_TIME,
+           START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+           { vague: nil },
+           '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds']
+        ].each do |start, finish, options, output|
+          it "should be #{output}" do
+            expect(distance_of_time_in_words(start, finish, true, options)).to eq(output)
+          end
+        end
       end
     end
 
