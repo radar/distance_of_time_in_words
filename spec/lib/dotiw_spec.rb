@@ -109,6 +109,7 @@ describe 'A better distance_of_time_in_words' do
     ].each do |start, finish, output|
       it "should be #{output}" do
         expect(distance_of_time_in_words(start, finish, true)).to eq(output)
+        expect(distance_of_time_in_words(finish, start, true)).to eq(output)
       end
     end
 
