@@ -19,7 +19,7 @@ describe 'A better distance_of_time_in_words' do
     allow(Time.zone).to receive(:now).and_return(START_TIME)
   end
 
-  describe 'distance of time' do
+  describe '#distance_of_time' do
     [
       [0.5.minutes, '30 seconds'],
       [4.5.minutes, '4 minutes and 30 seconds'],
@@ -48,7 +48,7 @@ describe 'A better distance_of_time_in_words' do
     end
   end
 
-  describe 'hash version' do
+  describe '#distance_of_time_in_words_hash' do
     describe 'giving correct numbers of' do
       %i[years months weeks days minutes seconds].each do |name|
         describe name do
@@ -80,15 +80,44 @@ describe 'A better distance_of_time_in_words' do
     end
   end
 
-  describe 'real version' do
-    it 'debe hablar español' do
-      expect(distance_of_time_in_words(START_TIME, START_TIME + 1.days, locale: :es)).to eq('un día')
-      expect(distance_of_time_in_words(START_TIME, START_TIME + 5.days, locale: :es)).to eq('5 días')
-    end
+  describe '#distance_of_time_in_words' do
+    context 'locale' do
+      it 'includes known languages' do
+        expect(DOTIW.languages).to include :en
+        expect(DOTIW.languages).to include :ru
+      end
 
-    it "deve parlare l'italiano" do
-      expect(distance_of_time_in_words(START_TIME, START_TIME + 1.days, true, locale: :it)).to eq('un giorno')
-      expect(distance_of_time_in_words(START_TIME, START_TIME + 5.days, true, locale: :it)).to eq('5 giorni')
+      it 'includes all the languages in specs' do
+        languages = Dir[File.join(File.dirname(__FILE__), 'i18n', '*.yml')].map { |f| File.basename(f, '.yml') }
+        expect(DOTIW.languages.map(&:to_s).sort).to eq languages.sort
+      end
+
+      DOTIW.languages.each do |lang|
+        context lang do
+          YAML.safe_load(
+            File.read(
+              File.join(
+                File.dirname(__FILE__), 'i18n', "#{lang}.yml"
+              )
+            )
+          ).each_pair do |category, fixtures|
+            context category do
+              fixtures.each_pair do |k, v|
+                it v do
+                  expect(
+                    distance_of_time_in_words(
+                      START_TIME,
+                      START_TIME + eval(k),
+                      true,
+                      locale: lang
+                    )
+                  ).to eq(v)
+                end
+              end
+            end
+          end
+        end
+      end
     end
 
     [
@@ -145,7 +174,7 @@ describe 'A better distance_of_time_in_words' do
       end
     end
 
-    describe 'accumulate on' do
+    describe 'accumulate_on:' do
       [
         [START_TIME,
          START_TIME + 10.minute,
@@ -307,9 +336,13 @@ describe 'A better distance_of_time_in_words' do
       end
 
       it 'removes seconds in all other cases' do
-        expect(distance_of_time_in_words(START_TIME,
-                                         START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
-                                         false)).to eq('1 year, 2 months, 3 weeks, 4 days, 5 hours, and 6 minutes')
+        expect(
+          distance_of_time_in_words(
+            START_TIME,
+            START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+            false
+          )
+        ).to eq('1 year, 2 months, 3 weeks, 4 days, 5 hours, and 6 minutes')
       end
     end # include_seconds
   end

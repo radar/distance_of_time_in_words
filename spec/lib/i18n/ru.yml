@@ -1,0 +1,5 @@
+seconds:
+  0.5.seconds: меньше, чем 1 секунда
+  1.second: 1 секунда
+minutes:
+  1.minute: 1 минута
