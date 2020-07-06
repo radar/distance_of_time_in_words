@@ -1,4 +1,4 @@
-## 5.0.0 (Next)
+## 5.0.0 (2020/05/07)
 
 * [#105](https://github.com/radar/distance_of_time_in_words/pull/105): Support for Ruby w/o Rails - [@dblock](https://github.com/dblock).
 * [#108](https://github.com/radar/distance_of_time_in_words/pull/108): Fix negative weeks - [@ivanovaleksey](https://github.com/ivanovaleksey).
