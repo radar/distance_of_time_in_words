@@ -105,7 +105,14 @@ describe 'A better distance_of_time_in_words' do
       ['2009-3-16'.to_time + 1.minute, '2008-4-14'.to_time, '11 months, 2 days, and 1 minute'],
       ['2009-4-14'.to_time, '2008-3-16'.to_time, '1 year, 4 weeks, and 1 day'],
       ['2009-2-01'.to_time, '2009-3-01'.to_time, '1 month'],
-      ['2008-2-01'.to_time, '2008-3-01'.to_time, '1 month']
+      ['2008-2-01'.to_time, '2008-3-01'.to_time, '1 month'],
+      [Date.parse('31.03.2015').to_time, Time.parse('01.03.2016'), '10 months, 4 weeks, and 2 days'],
+      [Date.new(2014, 1, 31), Date.new(2014, 3, 1), '4 weeks and 1 day'],
+      ['2008-2-01'.to_time, '2008-3-01'.to_time, '1 month'],
+      ['2014-1-31'.to_time, '2014-3-01'.to_time, '4 weeks and 1 day'],
+      ['2014-1-31'.to_time, '2014-3-02'.to_time, '4 weeks and 2 days'],
+      ['2016-1-31'.to_time, '2016-3-01'.to_time, '4 weeks and 2 days'],
+      ['2016-1-31'.to_time, '2016-3-02'.to_time, '1 month']
     ].each do |start, finish, output|
       it "should be #{output}" do
         expect(distance_of_time_in_words(start, finish, true)).to eq(output)

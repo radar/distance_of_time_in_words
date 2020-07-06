@@ -118,6 +118,12 @@ module DOTIW
           days -= 7
           weeks += 1
         end
+
+        if weeks == -1
+          months -= 1
+          weeks = 4
+          days -= 4
+        end
       end
 
       if months < 0
