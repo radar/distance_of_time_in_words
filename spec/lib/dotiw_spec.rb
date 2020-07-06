@@ -1,9 +1,15 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'A better distance_of_time_in_words' do
-  include ActionView::Helpers::DateHelper
-  include ActionView::Helpers::TextHelper
-  include ActionView::Helpers::NumberHelper
+  if defined?(ActionView)
+    include ActionView::Helpers::DateHelper
+    include ActionView::Helpers::TextHelper
+    include ActionView::Helpers::NumberHelper
+  else
+    include DOTIW::Methods
+  end
 
   START_TIME = '01-08-2009'.to_time
 
@@ -17,13 +23,13 @@ describe 'A better distance_of_time_in_words' do
     fragments = [
       [0.5.minutes, '30 seconds'],
       [4.5.minutes, '4 minutes and 30 seconds'],
-      [5.minutes.to_i, '5 minutes'],
-      [10.minutes.to_i, '10 minutes'],
-      [1.hour.to_i, '1 hour'],
+      [5.minutes, '5 minutes'],
+      [10.minutes, '10 minutes'],
+      [1.hour, '1 hour'],
       [1.hour + 30.seconds, '1 hour and 30 seconds'],
-      [4.weeks.to_i, '4 weeks'],
+      [4.weeks, '4 weeks'],
       [4.weeks + 2.days, '4 weeks and 2 days'],
-      [24.weeks.to_i, '5 months, 2 weeks, and 1 day']
+      [24.weeks, '5 months, 2 weeks, and 1 day']
     ]
     fragments.each do |number, result|
       it "#{number} == #{result}" do
@@ -60,8 +66,9 @@ describe 'A better distance_of_time_in_words' do
       end
 
       it 'should be happy with lots of measurements' do
-        hash = distance_of_time_in_words_hash(START_TIME,
-                                              START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds)
+        hash = distance_of_time_in_words_hash(
+          START_TIME,
+          START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds)
         expect(hash[:years]).to eq(1)
         expect(hash[:months]).to eq(2)
         expect(hash[:weeks]).to eq(3)
@@ -194,22 +201,6 @@ describe 'A better distance_of_time_in_words' do
        '1 hour and 1 minute'],
       [START_TIME,
        START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
-       { vague: true },
-       'about 1 year'],
-      [START_TIME,
-       START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
-       { vague: 'Yes please' },
-       'about 1 year'],
-      [START_TIME,
-       START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
-       { vague: false },
-       '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds'],
-      [START_TIME,
-       START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
-       { vague: nil },
-       '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds'],
-      [START_TIME,
-       START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
        { except: 'minutes' },
        '1 year, 2 months, 3 weeks, 4 days, 5 hours, and 7 seconds'],
       [START_TIME,
@@ -249,6 +240,28 @@ describe 'A better distance_of_time_in_words' do
        { highest_measures: 1, only: %i[years months] },
        'less than 1 month']
     ]
+
+    if defined?(ActionView)
+      fragments += [
+        [START_TIME,
+         START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+         { vague: true },
+         'about 1 year'],
+        [START_TIME,
+         START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+         { vague: 'Yes please' },
+         'about 1 year'],
+        [START_TIME,
+         START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+         { vague: false },
+         '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds'],
+        [START_TIME,
+         START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+         { vague: nil },
+         '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds']
+      ]
+    end
+
     fragments.each do |start, finish, options, output|
       it "should be #{output}" do
         expect(distance_of_time_in_words(start, finish, true, options)).to eq(output)
@@ -268,17 +281,19 @@ describe 'A better distance_of_time_in_words' do
     end # include_seconds
   end
 
-  describe 'percentage of time' do
-    def time_in_percent(options = {})
-      distance_of_time_in_percent('04-12-2009'.to_time, '29-01-2010'.to_time, '04-12-2010'.to_time, options)
-    end
+  if defined?(ActionView)
+    describe 'percentage of time' do
+      def time_in_percent(options = {})
+        distance_of_time_in_percent('04-12-2009'.to_time, '29-01-2010'.to_time, '04-12-2010'.to_time, options)
+      end
 
-    it 'calculates 15%' do
-      expect(time_in_percent).to eq('15%')
-    end
+      it 'calculates 15%' do
+        expect(time_in_percent).to eq('15%')
+      end
 
-    it 'calculates 15.3%' do
-      expect(time_in_percent(precision: 1)).to eq('15.3%')
+      it 'calculates 15.3%' do
+        expect(time_in_percent(precision: 1)).to eq('15.3%')
+      end
     end
   end
 end

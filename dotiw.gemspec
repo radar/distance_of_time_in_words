@@ -1,4 +1,6 @@
-$LOAD_PATH.push File.expand_path('../lib', __FILE__)
+# frozen_string_literal: true
+
+$LOAD_PATH.push File.expand_path('lib', __dir__)
 require 'dotiw/version'
 
 Gem::Specification.new do |s|
@@ -16,8 +18,8 @@ Gem::Specification.new do |s|
   s.email = ['radarlistener@gmail.com', 'github@lauranjansen.com']
   s.homepage = 'https://github.com/radar/distance_of_time_in_words'
 
-  s.add_dependency 'actionpack', '>= 4'
   s.add_dependency 'i18n'
+  s.add_dependency 'activesupport'
 
   s.add_development_dependency 'appraisal'
   s.add_development_dependency 'bundler'
