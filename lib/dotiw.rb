@@ -23,11 +23,18 @@ module DOTIW
     I18n.reload!
   end
 
+  def languages
+    @languages ||= (locale_files.map { |path| path.split(%r{[/.]})[-2].to_sym })
+  end
+
+  def locale_files
+    files 'dotiw/locale', '*.yml'
+  end
+
   protected
 
-  # Returns all locale files shipped with library
-  def locale_files
-    Dir[File.join(File.dirname(__FILE__), 'dotiw', 'locale', '**/*')]
+  def files(directory, ext)
+    Dir[File.join File.dirname(__FILE__), directory, ext]
   end
 end # DOTIW
 
