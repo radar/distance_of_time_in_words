@@ -1,3 +1,7 @@
+## 5.1.0 (Next)
+
+* Your contribution here.
+
 ## 5.0.0 (2020/05/07)
 
 * [#105](https://github.com/radar/distance_of_time_in_words/pull/105): Support for Ruby w/o Rails - [@dblock](https://github.com/dblock).
