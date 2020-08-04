@@ -21,6 +21,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'i18n'
   s.add_dependency 'activesupport'
 
+  s.add_development_dependency 'actionpack', '>= 4'
+  s.add_development_dependency 'actionview', '>= 4'
   s.add_development_dependency 'appraisal'
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'pry'

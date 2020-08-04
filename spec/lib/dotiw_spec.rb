@@ -3,12 +3,12 @@
 require 'spec_helper'
 
 describe 'A better distance_of_time_in_words' do
+  include DOTIW::Methods
+
   if defined?(ActionView)
     include ActionView::Helpers::DateHelper
     include ActionView::Helpers::TextHelper
     include ActionView::Helpers::NumberHelper
-  else
-    include DOTIW::Methods
   end
 
   START_TIME = '01-08-2009'.to_time
@@ -326,6 +326,13 @@ describe 'A better distance_of_time_in_words' do
           it "should be #{output}" do
             expect(distance_of_time_in_words(start, finish, true, options)).to eq(output)
           end
+        end
+
+        it 'should be callable via ActionController::Base.helpers' do
+          end_time = START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds
+          expected = '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds'
+          actual = ActionController::Base.helpers.distance_of_time_in_words(START_TIME, end_time, true, { vague: false })
+          expect(actual).to eq(expected)
         end
       end
     end

@@ -6,11 +6,11 @@ module ActionView
       alias_method :_distance_of_time_in_words, :distance_of_time_in_words
       alias_method :_time_ago_in_words, :time_ago_in_words
 
-      include DOTIW::Methods
-
       def distance_of_time_in_words(from_time, to_time = 0, include_seconds_or_options = {}, options = {})
         return _distance_of_time_in_words(from_time, to_time, options) if options.delete(:vague)
-        super
+        dotiw_methods = Object.new
+        dotiw_methods.extend(DOTIW::Methods)
+        dotiw_methods.distance_of_time_in_words(from_time, to_time, include_seconds_or_options, options)
       end
 
       def distance_of_time_in_percent(from_time, current_time, to_time, options = {})
