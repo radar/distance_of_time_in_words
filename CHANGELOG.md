@@ -1,5 +1,6 @@
 ## 5.1.0 (Next)
 
+* [#111](https://github.com/radar/distance_of_time_in_words/pull/111): Fix: `NoMethodError` when calling `ActionController::Base.helpers.distance_of_time_in_words` - [@denisahearn](https://github.com/denisahearn).
 * [#106](https://github.com/radar/distance_of_time_in_words/pull/106): Add Vietnamese language support - [@runlevel5 ](https://github.com/runlevel5).
 * Your contribution here.
 

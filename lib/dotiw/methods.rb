@@ -2,6 +2,8 @@
 
 module DOTIW
   module Methods
+    extend self
+
     def distance_of_time_in_words_hash(from_time, to_time, options = {})
       from_time = from_time.to_time if !from_time.is_a?(Time) && from_time.respond_to?(:to_time)
       to_time = to_time.to_time if !to_time.is_a?(Time) && to_time.respond_to?(:to_time)
