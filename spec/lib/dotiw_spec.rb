@@ -7,6 +7,7 @@ describe 'A better distance_of_time_in_words' do
     include ActionView::Helpers::DateHelper
     include ActionView::Helpers::TextHelper
     include ActionView::Helpers::NumberHelper
+
     require 'action_controller'
   else
     include DOTIW::Methods
@@ -78,6 +79,12 @@ describe 'A better distance_of_time_in_words' do
         expect(hash[:minutes]).to eq(6)
         expect(hash[:seconds]).to eq(7)
       end
+    end
+  end
+
+  describe '#time_ago_in_words' do
+    it 'aliases to distance_of_time_in_words' do
+      expect(time_ago_in_words(Time.now - 3.days - 14.minutes)).to eq('3 days and 14 minutes')
     end
   end
 
@@ -329,11 +336,19 @@ describe 'A better distance_of_time_in_words' do
           end
         end
 
-        it 'should be callable via ActionController::Base.helpers' do
-          end_time = START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds
-          expected = '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds'
-          actual = ActionController::Base.helpers.distance_of_time_in_words(START_TIME, end_time, true, { vague: false })
-          expect(actual).to eq(expected)
+        context 'via ActionController::Base.helpers' do
+          it '#distance_of_time_in_words' do
+            end_time = START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds
+            expected = '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds'
+            actual = ActionController::Base.helpers.distance_of_time_in_words(START_TIME, end_time, true, { vague: false })
+            expect(actual).to eq(expected)
+          end
+
+          it '#time_ago_in_words' do
+            expected = '3 days and 14 minutes'
+            actual = ActionController::Base.helpers.time_ago_in_words(Time.now - 3.days - 14.minutes)
+            expect(actual).to eq(expected)
+          end
         end
       end
     end
