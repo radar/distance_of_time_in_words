@@ -9,6 +9,7 @@ describe 'A better distance_of_time_in_words' do
     include ActionView::Helpers::DateHelper
     include ActionView::Helpers::TextHelper
     include ActionView::Helpers::NumberHelper
+    require 'action_controller'
   end
 
   START_TIME = '01-08-2009'.to_time
