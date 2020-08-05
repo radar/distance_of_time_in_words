@@ -8,11 +8,13 @@ module DOTIW
 
       DOTIW::TimeHash.new(nil, from_time, to_time, options).to_hash
     end
+    module_function :distance_of_time_in_words_hash
 
     def distance_of_time(seconds, options = {})
       options[:include_seconds] ||= true
       _display_time_in_words DOTIW::TimeHash.new(seconds, nil, nil, options).to_hash, options
     end
+    module_function :distance_of_time
 
     def distance_of_time_in_words(from_time, to_time = 0, include_seconds_or_options = {}, options = {})
       if include_seconds_or_options.is_a?(Hash)
@@ -25,10 +27,12 @@ module DOTIW
       hash = distance_of_time_in_words_hash(from_time, to_time, options)
       _display_time_in_words(hash, options)
     end
+    module_function :distance_of_time_in_words
 
     def time_ago_in_words(from_time, include_seconds_or_options = {})
       distance_of_time_in_words(from_time, Time.current, include_seconds_or_options)
     end
+    module_function :time_ago_in_words
 
     private
 
@@ -87,5 +91,7 @@ module DOTIW
 
       output.to_sentence(options)
     end
+    module_function :_display_time_in_words
+
   end
 end # DOTIW
