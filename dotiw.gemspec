@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.version = DOTIW::VERSION
   s.licenses = ['MIT']
 
-  s.authors = ["Ryan Bigg", "Lauran Jansen"]
+  s.authors = ['Ryan Bigg', 'Lauran Jansen']
   s.description = "dotiw is a gem for Rails that overrides the
               default distance_of_time_in_words and provides
               a more accurate output. Do you crave accuracy
@@ -18,8 +18,8 @@ Gem::Specification.new do |s|
   s.email = ['radarlistener@gmail.com', 'github@lauranjansen.com']
   s.homepage = 'https://github.com/radar/distance_of_time_in_words'
 
-  s.add_dependency 'i18n'
   s.add_dependency 'activesupport'
+  s.add_dependency 'i18n'
 
   s.add_development_dependency 'appraisal'
   s.add_development_dependency 'bundler'
