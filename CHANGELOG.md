@@ -1,3 +1,7 @@
+## 5.2.0 (Next)
+
+* Your contribution here.
+
 ## 5.1.0 (2020/08/05)
 
 * [#111](https://github.com/radar/distance_of_time_in_words/pull/111): Fix: `NoMethodError` when calling `ActionController::Base.helpers.distance_of_time_in_words` - [@denisahearn](https://github.com/denisahearn).
