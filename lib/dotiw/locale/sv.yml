@@ -1,0 +1,26 @@
+sv:
+  datetime:
+    dotiw:
+      seconds:
+        one: 1 sekund
+        other: "%{count} sekunder"
+      minutes:
+        one: 1 minut
+        other: "%{count} minuter"
+      hours:
+        one: 1 timme
+        other: "%{count} timmar"
+      days:
+        one: 1 dag
+        other: "%{count} dagar"
+      weeks:
+        one: 1 vecka
+        other: "%{count} veckor"
+      months:
+        one: 1 månad
+        other: "%{count} månader"
+      years:
+        one: 1 år
+        other: "%{count} år"
+      less_than_x: "mindre än %{distance}"
+

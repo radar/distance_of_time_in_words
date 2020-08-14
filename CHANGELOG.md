@@ -1,6 +1,7 @@
 ## 5.2.0 (Next)
 
 * Your contribution here.
+* [#112](https://github.com/radar/distance_of_time_in_words/pull/112): Add Swedish language support - [@davidwessman](https://github.com/davidwessman).
 
 ## 5.1.0 (2020/08/05)
 
