@@ -23,4 +23,26 @@ sv:
         one: 1 år
         other: "%{count} år"
       less_than_x: "mindre än %{distance}"
-
+    dotiw_compact:
+      seconds:
+        one: 1s
+        other: "%{count}s"
+      minutes:
+        one: 1m
+        other: "%{count}m"
+      hours:
+        one: 1t
+        other: "%{count}t"
+      days:
+        one: 1d
+        other: "%{count}d"
+      weeks:
+        one: 1v
+        other: "%{count}v"
+      months:
+        one: 1m
+        other: "%{count}m"
+      years:
+        one: 1å
+        other: "%{count}å"
+      less_than_x: "<%{distance}"

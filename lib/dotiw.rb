@@ -17,6 +17,7 @@ module DOTIW
   extend self
 
   DEFAULT_I18N_SCOPE = :'datetime.dotiw'
+  DEFAULT_I18N_SCOPE_COMPACT = :'datetime.dotiw_compact'
 
   def init_i18n!
     I18n.load_path.unshift(*locale_files)

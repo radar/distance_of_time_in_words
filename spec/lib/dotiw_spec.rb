@@ -23,18 +23,19 @@ describe 'A better distance_of_time_in_words' do
 
   describe '#distance_of_time' do
     [
-      [0.5.minutes, '30 seconds'],
-      [4.5.minutes, '4 minutes and 30 seconds'],
-      [5.minutes, '5 minutes'],
-      [10.minutes, '10 minutes'],
-      [1.hour, '1 hour'],
-      [1.hour + 30.seconds, '1 hour and 30 seconds'],
-      [4.weeks, '4 weeks'],
-      [4.weeks + 2.days, '4 weeks and 2 days'],
-      [24.weeks, '5 months, 2 weeks, and 1 day']
-    ].each do |number, result|
+      [0.5.minutes, "30 seconds", "30s"],
+      [4.5.minutes, "4 minutes and 30 seconds", "4m30s"],
+      [5.minutes.to_i, "5 minutes", "5m"],
+      [10.minutes.to_i, "10 minutes", "10m"],
+      [1.hour.to_i, "1 hour", "1h"],
+      [1.hour + 30.seconds, "1 hour and 30 seconds", "1h30s"],
+      [4.weeks.to_i, "4 weeks", "4w"],
+      [4.weeks + 2.days, "4 weeks and 2 days", "4w2d"],
+      [24.weeks.to_i, "5 months, 2 weeks, and 1 day", "5mo2w1d"]
+    ].each do |number, result, compact_result|
       it "#{number} == #{result}" do
         expect(distance_of_time(number)).to eq(result)
+        expect(distance_of_time(number, compact: true)).to eq(compact_result)
       end
     end
 

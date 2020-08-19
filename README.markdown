@@ -235,6 +235,22 @@ This method takes the same options as [`number_with_precision`](http://api.rubyo
 => '15.3%'
 ```
 
+## :compact
+
+Pressed for space? Try `compact: true`.
+
+```ruby
+>> distance_of_time_in_words(Time.now, Time.now + 2.year + 1.day + 1.second, compact: true)
+=> "2y1d"
+```
+
+Pairs well with `words_connector`, `last_word_connector`, and `two_words_connector` if you can spare just a little more room:
+
+```ruby
+>> distance_of_time_in_words(Time.now, Time.now + 5.years + 1.day + 23.seconds, words_connector: " ", last_word_connector: " ", two_words_connector: " ", compact: true)
+=> "5y 1d 23s"
+```
+
 ## Contributors
 
 * [chendo](http://github.com/chendo) - for talking through it with me and drawing on the whiteboard

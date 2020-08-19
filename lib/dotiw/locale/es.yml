@@ -23,3 +23,38 @@ es:
         one: un año
         other: "%{count} años"
       less_than_x: "menos de %{distance}"
+    dotiw_compact:
+      seconds:
+        one: 1s
+        other: "%{count}s"
+      minutes:
+        one: 1m
+        other: "%{count}m"
+      hours:
+        one: 1h
+        other: "%{count}h"
+      days:
+        one: 1d
+        other: "%{count}d"
+      weeks:
+        one: 1s
+        other: "%{count}s"
+      months:
+        one: 1me
+        other: "%{count}me"
+      years:
+        one: 1a
+        other: "%{count}a"
+      less_than_x: "<%{distance}"
+      words_connector: ""
+      two_words_connector: ""
+      last_word_connector: ""
+      about_x_years:
+        one: ~1a
+        any: "~%{count}a"
+      over_x_years:
+        one: ">1a"
+        other: ">%{count}a"
+      almost_x_years:
+        one: ~1a
+        any: "~%{count}a"

@@ -13,7 +13,7 @@ module DOTIW
 
     def distance_of_time(seconds, options = {})
       options[:include_seconds] ||= true
-      _display_time_in_words DOTIW::TimeHash.new(seconds, nil, nil, options).to_hash, options
+      _display_time_in_words DOTIW::TimeHash.new(seconds, nil, nil, options_with_scope(options)).to_hash, options
     end
 
     def distance_of_time_in_words(from_time, to_time = 0, include_seconds_or_options = {}, options = {})
@@ -24,6 +24,7 @@ module DOTIW
       end
       return distance_of_time(from_time, options) if to_time == 0
 
+      options = options_with_scope(options)
       hash = distance_of_time_in_words_hash(from_time, to_time, options)
       _display_time_in_words(hash, options)
     end
@@ -33,6 +34,11 @@ module DOTIW
     end
 
     private
+
+    def options_with_scope(options)
+      options.merge!({:scope => DOTIW::DEFAULT_I18N_SCOPE_COMPACT}) if options.delete(:compact)
+      options
+    end
 
     def _display_time_in_words(hash, options = {})
       options.reverse_merge!(
@@ -77,13 +83,13 @@ module DOTIW
       highest_measures = 1 if options.delete(:highest_measure_only)
       output = output[0...highest_measures] if highest_measures
 
-      options[:words_connector] ||= I18n.translate :'datetime.dotiw.words_connector',
+      options[:words_connector] ||= I18n.translate :"#{i18n_scope}.words_connector",
                                                    default: :'support.array.words_connector',
                                                    locale: options[:locale]
-      options[:two_words_connector] ||= I18n.translate :'datetime.dotiw.two_words_connector',
+      options[:two_words_connector] ||= I18n.translate :"#{i18n_scope}.two_words_connector",
                                                        default: :'support.array.two_words_connector',
                                                        locale: options[:locale]
-      options[:last_word_connector] ||= I18n.translate :'datetime.dotiw.last_word_connector',
+      options[:last_word_connector] ||= I18n.translate :"#{i18n_scope}.last_word_connector",
                                                        default: :'support.array.last_word_connector',
                                                        locale: options[:locale]
 
