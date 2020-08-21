@@ -23,3 +23,38 @@ id:
         one: 1 tahun
         other: "%{count} tahun"
       less_than_x: "kurang dari %{distance}"
+    dotiw_compact:
+      seconds:
+        one: 1d
+        other: "%{count}d"
+      minutes:
+        one: 1m
+        other: "%{count}m"
+      hours:
+        one: 1j
+        other: "%{count}j"
+      days:
+        one: 1h
+        other: "%{count}h"
+      weeks:
+        one: 1mi
+        other: "%{count}mi"
+      months:
+        one: 1b
+        other: "%{count}b"
+      years:
+        one: 1t
+        other: "%{count}t"
+      less_than_x: "<%{distance}"
+      words_connector: ""
+      two_words_connector: ""
+      last_word_connector: ""
+      about_x_years:
+        one: ~1t
+        any: "~%{count}t"
+      over_x_years:
+        one: ">1t"
+        other: ">%{count}t"
+      almost_x_years:
+        one: ~1t
+        any: "~%{count}t"

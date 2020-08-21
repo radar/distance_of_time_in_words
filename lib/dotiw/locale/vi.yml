@@ -23,3 +23,26 @@ vi:
         one: 1 năm
         other: "%{count} năm"
       less_than_x: "ít hơn %{distance}"
+    dotiw_compact:
+      seconds:
+        one: 1 giây
+        other: "%{count}giây"
+      minutes:
+        one: 1 phút
+        other: "%{count}phút"
+      hours:
+        one: 1 giờ
+        other: "%{count}giờ"
+      days:
+        one: 1 ngày
+        other: "%{count}ngày"
+      weeks:
+        one: 1 tuần
+        other: "%{count}tuần"
+      months:
+        one: 1 tháng
+        other: "%{count}tháng"
+      years:
+        one: 1 năm
+        other: "%{count}năm"
+      less_than_x: "< %{distance}"

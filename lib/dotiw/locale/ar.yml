@@ -26,7 +26,7 @@ ar:
         zero: يوم
         one: يوم واحد
         two: يومين
-        few: "%{count} أيام"        
+        few: "%{count} أيام"
         many: "%{count} يومًا"
         other: "%{count} يوم"
       weeks:
@@ -38,16 +38,67 @@ ar:
         other: "%{count} أسيوع"
       months:
         zero: شهر
-        one: شهر واحد 
+        one: شهر واحد
         two: شهرين
         few: "%{count} أشهر"
         many: "%{count} شهراً"
         other: "%{count} شهر"
       years:
         zero: عام
-        one: عام واحد 
+        one: عام واحد
         two: عامين
         few: "%{count} أعوام"
         many: "%{count} عاماً"
         other: "%{count} عام"
       less_than_x: "%{distance} أقل من"
+  dotiw_compact:
+    seconds:
+      zero: ثانية
+      one: ثانية واحدة
+      two: ثانيتين
+      few: "%{count}توانٍ"
+      many: "%{count}ثانية"
+      other: "%{count}ثانية"
+    minutes:
+      zero: دقيقة
+      one: دقيقة واحدة
+      two: دقيقتين
+      few: "%{count}دقائق"
+      many: "%{count}دقيقة"
+      other: "%{count}دقيقة"
+    hours:
+      zero: ساعة
+      one: ساعة واحدة
+      two: ساعتين
+      few: "%{count}ساعات"
+      many: "%{count}ساعة"
+      other: "%{count}ساعة"
+    days:
+      zero: يوم
+      one: يوم واحد
+      two: يومين
+      few: "%{count}أيام"
+      many: "%{count}يومًا"
+      other: "%{count}يوم"
+    weeks:
+      zero: أسبوع
+      one: أسبوع واحدة
+      two: أسبوعين
+      few: "%{count}أسابيع"
+      many: "%{count}أسابيع"
+      other: "%{count}أسيوع"
+    months:
+      zero: شهر
+      one: شهر واحد
+      two: شهرين
+      few: "%{count}أشهر"
+      many: "%{count}شهراً"
+      other: "%{count}شهر"
+    years:
+      zero: عام
+      one: عام واحد
+      two: عامين
+      few: "%{count}أعوام"
+      many: "%{count}عاماً"
+      other: "%{count}عام"
+    less_than_x: "%{distance}>"

@@ -15,6 +15,7 @@ module ActionView
 
       def distance_of_time_in_percent(from_time, current_time, to_time, options = {})
         options[:precision] ||= 0
+        options = options_with_scope(options)
         distance = to_time - from_time
         result = ((current_time - from_time) / distance) * 100
         number_with_precision(result, options).to_s + '%'

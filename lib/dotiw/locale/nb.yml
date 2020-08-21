@@ -23,3 +23,38 @@ nb:
         one: 1 år
         other: "%{count} år"
       less_than_x: "mindre enn %{distance}"
+    dotiw_compact:
+      seconds:
+        one: 1s
+        other: "%{count}s"
+      minutes:
+        one: 1m
+        other: "%{count}m"
+      hours:
+        one: 1t
+        other: "%{count}t"
+      days:
+        one: 1d
+        other: "%{count}d"
+      weeks:
+        one: 1u
+        other: "%{count}u"
+      months:
+        one: 1må
+        other: "%{count}må"
+      years:
+        one: 1å
+        other: "%{count}å"
+      less_than_x: "<%{distance}"
+      words_connector: ""
+      two_words_connector: ""
+      last_word_connector: ""
+      about_x_years:
+        one: ~1å
+        any: "~%{count}å"
+      over_x_years:
+        one: ">1å"
+        other: ">%{count}å"
+      almost_x_years:
+        one: ~1å
+        any: "~%{count}å"

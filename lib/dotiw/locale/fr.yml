@@ -23,3 +23,38 @@ fr:
         one: 1 an
         other: "%{count} ans"
       less_than_x: "moins de %{distance}"
+    dotiw_compact:
+      seconds:
+        one: 1s
+        other: "%{count}s"
+      minutes:
+        one: 1m
+        other: "%{count}m"
+      hours:
+        one: 1h
+        other: "%{count}h"
+      days:
+        one: 1j
+        other: "%{count}j"
+      weeks:
+        one: 1se
+        other: "%{count}se"
+      months:
+        one: 1mo
+        other: "%{count}mo"
+      years:
+        one: 1a
+        other: "%{count}a"
+      less_than_x: "<%{distance}"
+      words_connector: ""
+      two_words_connector: ""
+      last_word_connector: ""
+      about_x_years:
+        one: ~1a
+        any: "~%{count}a"
+      over_x_years:
+        one: ">1a"
+        other: ">%{count}a"
+      almost_x_years:
+        one: ~1a
+        any: "~%{count}a"

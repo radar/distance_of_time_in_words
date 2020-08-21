@@ -23,3 +23,38 @@ nl:
         one: 1 jaar
         other: "%{count} jaar"
       less_than_x: "minder dan %{distance}"
+    dotiw_compact:
+      seconds:
+        one: 1s
+        other: "%{count}s"
+      minutes:
+        one: 1m
+        other: "%{count}m"
+      hours:
+        one: 1u
+        other: "%{count}u"
+      days:
+        one: 1d
+        other: "%{count}d"
+      weeks:
+        one: 1w
+        other: "%{count}w"
+      months:
+        one: 1ma
+        other: "%{count}ma"
+      years:
+        one: 1j
+        other: "%{count}j"
+      less_than_x: "<%{distance}"
+      words_connector: ""
+      two_words_connector: ""
+      last_word_connector: ""
+      about_x_years:
+        one: ~1j
+        any: "~%{count}j"
+      over_x_years:
+        one: ">1j"
+        other: ">%{count}j"
+      almost_x_years:
+        one: ~1j
+        any: "~%{count}j"

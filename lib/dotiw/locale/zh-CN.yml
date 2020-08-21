@@ -23,3 +23,26 @@ zh-CN:
         one: 1 年
         other: "%{count} 年"
       less_than_x: "小于 %{distance}"
+    dotiw_compact:
+      seconds:
+        one: 1秒
+        other: "%{count}秒"
+      minutes:
+        one: 1分钟
+        other: "%{count}分钟"
+      hours:
+        one: 1小时
+        other: "%{count}小时"
+      days:
+        one: 1天
+        other: "%{count}天"
+      weeks:
+        one: 1周
+        other: "%{count}周"
+      months:
+        one: 1月
+        other: "%{count}月"
+      years:
+        one: 1年
+        other: "%{count}年"
+      less_than_x: "小于 %{distance}"
