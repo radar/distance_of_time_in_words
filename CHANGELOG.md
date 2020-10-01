@@ -3,6 +3,7 @@
 * Your contribution here.
 * [#94](https://github.com/radar/distance_of_time_in_words/pull/94): Add :compact formatting option - [@booty](https://github.com/booty).
 * [#112](https://github.com/radar/distance_of_time_in_words/pull/112): Add Swedish language support - [@davidwessman](https://github.com/davidwessman).
+* [#114](https://github.com/radar/distance_of_time_in_words/pull/114): Add Traditional Chinese (Taiwan) language support - [@sibevin](https://github.com/sibevin).
 
 ## 5.1.0 (2020/08/05)
 

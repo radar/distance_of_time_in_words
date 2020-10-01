@@ -1,0 +1,60 @@
+zh-TW:
+  datetime:
+    dotiw:
+      seconds:
+        one: 1 秒
+        other: "%{count} 秒"
+      minutes:
+        one: 1 分鐘
+        other: "%{count} 分鐘"
+      hours:
+        one: 1 小時
+        other: "%{count} 小時"
+      days:
+        one: 1 天
+        other: "%{count} 天"
+      weeks:
+        one: 1 週
+        other: "%{count} 週"
+      months:
+        one: 1 月
+        other: "%{count} 月"
+      years:
+        one: 1 年
+        other: "%{count} 年"
+      less_than_x: "小於 %{distance}"
+    dotiw_compact:
+      seconds:
+        one: 1秒
+        other: "%{count}秒"
+      minutes:
+        one: 1分鐘
+        other: "%{count}分鐘"
+      hours:
+        one: 1小時
+        other: "%{count}小時"
+      days:
+        one: 1天
+        other: "%{count}天"
+      weeks:
+        one: 1週
+        other: "%{count}週"
+      months:
+        one: 1月
+        other: "%{count}月"
+      years:
+        one: 1年
+        other: "%{count}年"
+      less_than_x: "小於%{distance}"
+      words_connector: ""
+      two_words_connector: ""
+      last_word_connector: ""
+      about_x_years:
+        one: 約1年
+        any: "約%{count}年"
+      over_x_years:
+        one: "大於1年"
+        other: "大於%{count}年"
+      almost_x_years:
+        one: 將近1年
+        any: "將近%{count}年"
