@@ -1,3 +1,7 @@
+## 5.3.0 (Next)
+
+* Your contribution here.
+
 ## 5.2.0 (2020/10/03)
 
 * [#94](https://github.com/radar/distance_of_time_in_words/pull/94): Add :compact formatting option - [@booty](https://github.com/booty).
