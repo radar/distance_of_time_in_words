@@ -34,6 +34,12 @@ module DOTIW
 
     attr_reader :options, :output
 
+    ONE_MINUTE = 1.minute.freeze
+    ONE_HOUR = 1.hour.freeze
+    ONE_DAY = 1.day.freeze
+    ONE_WEEK = 7.days.freeze
+    FOUR_WEEKS = 28.days.freeze
+
     def build_time_hash
       if accumulate_on = options.delete(:accumulate_on)
         accumulate_on = accumulate_on.to_sym
@@ -42,15 +48,15 @@ module DOTIW
         TIME_FRACTIONS.index(accumulate_on).downto(0) { |i| send("build_#{TIME_FRACTIONS[i]}") }
       else
         while distance > 0
-          if distance < 1.minute
+          if distance < ONE_MINUTE
             build_seconds
-          elsif distance < 1.hour
+          elsif distance < ONE_HOUR
             build_minutes
-          elsif distance < 1.day
+          elsif distance < ONE_DAY
             build_hours
-          elsif distance < 7.days
+          elsif distance < ONE_WEEK
             build_days
-          elsif distance < 28.days
+          elsif distance < FOUR_WEEKS
             build_weeks
           else # greater than a week
             build_years_months_weeks_days
@@ -67,19 +73,19 @@ module DOTIW
     end
 
     def build_minutes
-      output[:minutes], @distance = distance.divmod(1.minute.to_i)
+      output[:minutes], @distance = distance.divmod(ONE_MINUTE.to_i)
     end
 
     def build_hours
-      output[:hours], @distance = distance.divmod(1.hour.to_i)
+      output[:hours], @distance = distance.divmod(ONE_HOUR.to_i)
     end
 
     def build_days
-      output[:days], @distance = distance.divmod(1.day.to_i) unless output[:days]
+      output[:days], @distance = distance.divmod(ONE_DAY.to_i) unless output[:days]
     end
 
     def build_weeks
-      output[:weeks], @distance = distance.divmod(1.week.to_i) unless output[:weeks]
+      output[:weeks], @distance = distance.divmod(ONE_WEEK.to_i) unless output[:weeks]
     end
 
     def build_months
@@ -137,7 +143,7 @@ module DOTIW
       output[:weeks]   = weeks
       output[:days]    = days
 
-      total_days, @distance = distance.abs.divmod(1.day.to_i)
+      total_days, @distance = distance.abs.divmod(ONE_DAY.to_i)
 
       [total_days, @distance]
     end
