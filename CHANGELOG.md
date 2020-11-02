@@ -1,6 +1,7 @@
 ## 5.3.0 (Next)
 
 * Your contribution here.
+* [#115](https://github.com/radar/distance_of_time_in_words/pull/115): Use constants for time durations (2x faster, 3.5x less memory) - [@krzysiek1507](https://github.com/krzysiek1507)
 
 ## 5.2.0 (2020/10/03)
 
