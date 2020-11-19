@@ -350,6 +350,32 @@ describe 'A better distance_of_time_in_words' do
             actual = ActionController::Base.helpers.time_ago_in_words(Time.now - 3.days - 14.minutes)
             expect(actual).to eq(expected)
           end
+
+          describe '#distance_of_time_in_words_to_now' do
+            context 'without options' do
+              it 'shows detailed duration' do
+                expected = '3 days and 14 minutes'
+                actual = ActionController::Base.helpers.distance_of_time_in_words_to_now(Time.now - 3.days - 14.minutes)
+                expect(actual).to eq(expected)
+              end
+            end
+
+            context 'with vague option true' do
+              it 'shows vague duration' do
+                expected = '3 days'
+                actual = ActionController::Base.helpers.distance_of_time_in_words_to_now(Time.now - 3.days - 14.minutes, false, vague: true)
+                expect(actual).to eq(expected)
+              end
+            end
+
+            context 'with vague option false' do
+              it 'shows detailed duration' do
+                expected = '3 days and 14 minutes'
+                actual = ActionController::Base.helpers.distance_of_time_in_words_to_now(Time.now - 3.days - 14.minutes, false, vague: false)
+                expect(actual).to eq(expected)
+              end
+            end
+          end
         end
       end
     end
