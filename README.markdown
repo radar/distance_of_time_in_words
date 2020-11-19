@@ -69,11 +69,14 @@ Yes this could just be merged into the options hash but I'm leaving it here to e
 
 The last argument is an optional options hash that can be used to manipulate behavior and (which uses `to_sentence`).
 
-Don't like having to pass in `Time.now` all the time? Then use `time_ago_in_words` which also will *rock your
+Don't like having to pass in `Time.now` all the time? Then use `time_ago_in_words` or `distance_of_time_in_words_to_now` which also will *rock your
 world*:
 
 ```ruby
 >> time_ago_in_words(Time.now + 3.days + 1.second)
+=> "3 days, and 1 second"
+
+>> distance_of_time_in_words_to_now(Time.now + 3.days + 1.second)
 => "3 days, and 1 second"
 ```
 
