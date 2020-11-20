@@ -17,6 +17,8 @@ module DOTIW
     end
 
     def distance_of_time_in_words(from_time, to_time = 0, include_seconds_or_options = {}, options = {})
+      raise ArgumentError.new("nil can't be converted to a Time value") if from_time.nil? || to_time.nil?
+
       if include_seconds_or_options.is_a?(Hash)
         options = include_seconds_or_options
       else
