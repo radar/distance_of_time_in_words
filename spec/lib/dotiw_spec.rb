@@ -101,6 +101,11 @@ describe 'A better distance_of_time_in_words' do
         expect(DOTIW.languages.map(&:to_s).sort).to eq languages.sort
       end
 
+      it 'raises ArgumentError when nil is passed for time' do
+        expect { distance_of_time_in_words(nil) }.to raise_error(ArgumentError)
+        expect { distance_of_time_in_words(nil, nil) }.to raise_error(ArgumentError)
+      end
+
       DOTIW.languages.each do |lang|
         context lang do
           YAML.safe_load(
@@ -352,6 +357,12 @@ describe 'A better distance_of_time_in_words' do
           end
 
           describe '#distance_of_time_in_words_to_now' do
+            context 'with nil' do
+              it 'raises ArgumentError when nil is passed for time' do
+                expect { ActionController::Base.helpers.distance_of_time_in_words_to_now(nil) }.to raise_error(ArgumentError)
+              end
+            end
+
             context 'without options' do
               it 'shows detailed duration' do
                 expected = '3 days and 14 minutes'
