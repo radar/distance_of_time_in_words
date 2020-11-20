@@ -8,7 +8,7 @@ module DOTIW
 
     def initialize(distance, from_time, to_time = nil, options = {})
       @output     = {}
-      @options    = options
+      @options    = options.dup
       @distance   = distance
       @from_time  = from_time || Time.current
       @to_time    = to_time   || (@to_time_not_given = true && @from_time + distance.seconds)
@@ -41,7 +41,7 @@ module DOTIW
     FOUR_WEEKS = 28.days.freeze
 
     def build_time_hash
-      if accumulate_on = options.delete(:accumulate_on)
+      if accumulate_on = options[:accumulate_on]
         accumulate_on = accumulate_on.to_sym
         return build_time_hash if accumulate_on == :years
 
