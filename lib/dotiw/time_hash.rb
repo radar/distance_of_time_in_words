@@ -147,5 +147,5 @@ module DOTIW
 
       [total_days, @distance]
     end
-  end # TimeHash
-end # DOTIW
+  end
+end

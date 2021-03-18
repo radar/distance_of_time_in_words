@@ -37,7 +37,7 @@ module DOTIW
   def files(directory, ext)
     Dir[File.join File.dirname(__FILE__), directory, ext]
   end
-end # DOTIW
+end
 
 DOTIW.init_i18n!
 
