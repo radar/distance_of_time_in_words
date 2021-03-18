@@ -3,18 +3,20 @@
 module ActionView
   module Helpers
     module DateHelper
-      alias_method :_distance_of_time_in_words, :distance_of_time_in_words
-      alias_method :_time_ago_in_words, :time_ago_in_words
+      alias _distance_of_time_in_words distance_of_time_in_words
+      alias _time_ago_in_words time_ago_in_words
 
       include DOTIW::Methods
 
       def distance_of_time_in_words(from_time, to_time = 0, include_seconds_or_options = {}, options = {})
         return _distance_of_time_in_words(from_time, to_time, options) if options[:vague]
+
         DOTIW::Methods.distance_of_time_in_words(from_time, to_time, include_seconds_or_options, options.except(:vague))
       end
 
       def distance_of_time_in_words_to_now(to_time = 0, include_seconds_or_options = {}, options = {})
         return _distance_of_time_in_words(Time.now, to_time, options) if options[:vague]
+
         DOTIW::Methods.distance_of_time_in_words(Time.now, to_time, include_seconds_or_options, options.except(:vague))
       end
 
@@ -25,6 +27,6 @@ module ActionView
         result = ((current_time - from_time) / distance) * 100
         number_with_precision(result, options).to_s + '%'
       end
-    end # DateHelper
-  end # Helpers
-end # ActionView
+    end
+  end
+end

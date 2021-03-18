@@ -23,15 +23,15 @@ describe 'A better distance_of_time_in_words' do
 
   describe '#distance_of_time' do
     [
-      [0.5.minutes, "30 seconds", "30s"],
-      [4.5.minutes, "4 minutes and 30 seconds", "4m30s"],
-      [5.minutes.to_i, "5 minutes", "5m"],
-      [10.minutes.to_i, "10 minutes", "10m"],
-      [1.hour.to_i, "1 hour", "1h"],
-      [1.hour + 30.seconds, "1 hour and 30 seconds", "1h30s"],
-      [4.weeks.to_i, "4 weeks", "4w"],
-      [4.weeks + 2.days, "4 weeks and 2 days", "4w2d"],
-      [24.weeks.to_i, "5 months, 2 weeks, and 1 day", "5mo2w1d"]
+      [0.5.minutes, '30 seconds', '30s'],
+      [4.5.minutes, '4 minutes and 30 seconds', '4m30s'],
+      [5.minutes.to_i, '5 minutes', '5m'],
+      [10.minutes.to_i, '10 minutes', '10m'],
+      [1.hour.to_i, '1 hour', '1h'],
+      [1.hour + 30.seconds, '1 hour and 30 seconds', '1h30s'],
+      [4.weeks.to_i, '4 weeks', '4w'],
+      [4.weeks + 2.days, '4 weeks and 2 days', '4w2d'],
+      [24.weeks.to_i, '5 months, 2 weeks, and 1 day', '5mo2w1d']
     ].each do |number, result, compact_result|
       it "#{number} == #{result}" do
         expect(distance_of_time(number)).to eq(result)
@@ -143,7 +143,8 @@ describe 'A better distance_of_time_in_words' do
       [START_TIME, START_TIME + 3.hour, '3 hours'],
       [START_TIME, START_TIME + 13.months, '1 year and 1 month'],
       # Any numeric sequence is merely coincidental.
-      [START_TIME, START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds, '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds'],
+      [START_TIME, START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+       '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds'],
       ['2009-3-16'.to_time, '2008-4-14'.to_time, '11 months and 2 days'],
       ['2009-3-16'.to_time + 1.minute, '2008-4-14'.to_time, '11 months, 2 days, and 1 minute'],
       ['2009-4-14'.to_time, '2008-3-16'.to_time, '1 year, 4 weeks, and 1 day'],
@@ -220,7 +221,7 @@ describe 'A better distance_of_time_in_words' do
           expect(distance_of_time_in_words(start, finish, true, accumulate_on: accumulator)).to eq(output)
         end
       end
-    end # :accumulate_on
+    end
 
     describe 'without finish time' do
       # A missing finish argument should default to zero, essentially returning
@@ -346,7 +347,8 @@ describe 'A better distance_of_time_in_words' do
           it '#distance_of_time_in_words' do
             end_time = START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds
             expected = '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds'
-            actual = ActionController::Base.helpers.distance_of_time_in_words(START_TIME, end_time, true, { vague: false })
+            actual = ActionController::Base.helpers.distance_of_time_in_words(START_TIME, end_time, true,
+                                                                              { vague: false })
             expect(actual).to eq(expected)
           end
 
@@ -359,7 +361,9 @@ describe 'A better distance_of_time_in_words' do
           describe '#distance_of_time_in_words_to_now' do
             context 'with nil' do
               it 'raises ArgumentError when nil is passed for time' do
-                expect { ActionController::Base.helpers.distance_of_time_in_words_to_now(nil) }.to raise_error(ArgumentError)
+                expect do
+                  ActionController::Base.helpers.distance_of_time_in_words_to_now(nil)
+                end.to raise_error(ArgumentError)
               end
             end
 
@@ -374,7 +378,9 @@ describe 'A better distance_of_time_in_words' do
             context 'with vague option true' do
               it 'shows vague duration' do
                 expected = '3 days'
-                actual = ActionController::Base.helpers.distance_of_time_in_words_to_now(Time.now - 3.days - 14.minutes, false, vague: true)
+                actual = ActionController::Base.helpers.distance_of_time_in_words_to_now(
+                  Time.now - 3.days - 14.minutes, false, vague: true
+                )
                 expect(actual).to eq(expected)
               end
             end
@@ -382,7 +388,9 @@ describe 'A better distance_of_time_in_words' do
             context 'with vague option false' do
               it 'shows detailed duration' do
                 expected = '3 days and 14 minutes'
-                actual = ActionController::Base.helpers.distance_of_time_in_words_to_now(Time.now - 3.days - 14.minutes, false, vague: false)
+                actual = ActionController::Base.helpers.distance_of_time_in_words_to_now(
+                  Time.now - 3.days - 14.minutes, false, vague: false
+                )
                 expect(actual).to eq(expected)
               end
             end
@@ -405,7 +413,7 @@ describe 'A better distance_of_time_in_words' do
           )
         ).to eq('1 year, 2 months, 3 weeks, 4 days, 5 hours, and 6 minutes')
       end
-    end # include_seconds
+    end
   end
 
   if defined?(ActionView)

@@ -3,6 +3,7 @@
 * [#115](https://github.com/radar/distance_of_time_in_words/pull/115): Use constants for time durations (2x faster, 3.5x less memory) - [@krzysiek1507](https://github.com/krzysiek1507).
 * [#117](https://github.com/radar/distance_of_time_in_words/pull/117): Support `#distance_of_time_in_words_to_now` with `vague: true` - [@joshuapinter](https://github.com/joshuapinter).
 * [#118](https://github.com/radar/distance_of_time_in_words/pull/118): Raise `ArgumentError` when `nil` is passed for time, to match original `distance_of_time_in_words` - [@joshuapinter](https://github.com/joshuapinter).
+* [#119](https://github.com/radar/distance_of_time_in_words/pull/119): Do not mutate input options - [@dblock](https://github.com/dblock).
 * Your contribution here.
 
 ## 5.2.0 (2020/10/03)
