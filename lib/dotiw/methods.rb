@@ -43,7 +43,7 @@ module DOTIW
 
     def options_with_scope(options)
       if options.key?(:compact)
-        options.merge({ scope: DOTIW::DEFAULT_I18N_SCOPE_COMPACT })
+        options.merge(scope: DOTIW::DEFAULT_I18N_SCOPE_COMPACT)
       else
         options
       end
