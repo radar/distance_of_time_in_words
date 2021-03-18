@@ -12,8 +12,11 @@ module DOTIW
     end
 
     def distance_of_time(seconds, options = {})
-      options[:include_seconds] ||= true
-      _display_time_in_words DOTIW::TimeHash.new(seconds, nil, nil, options_with_scope(options)).to_hash, options
+      options = options_with_scope(options).reverse_merge(
+        include_seconds: true
+      )
+      options.delete(:compact)
+      _display_time_in_words DOTIW::TimeHash.new(seconds, nil, nil, options).to_hash, options
     end
 
     def distance_of_time_in_words(from_time, to_time = 0, include_seconds_or_options = {}, options = {})
@@ -22,6 +25,7 @@ module DOTIW
       if include_seconds_or_options.is_a?(Hash)
         options = include_seconds_or_options
       else
+        options = options.dup
         options[:include_seconds] ||= !!include_seconds_or_options
       end
       return distance_of_time(from_time, options) if to_time == 0
@@ -38,12 +42,15 @@ module DOTIW
     private
 
     def options_with_scope(options)
-      options.merge!({:scope => DOTIW::DEFAULT_I18N_SCOPE_COMPACT}) if options.delete(:compact)
-      options
+      if options.key?(:compact)
+        options.merge({:scope => DOTIW::DEFAULT_I18N_SCOPE_COMPACT})
+      else
+        options
+      end
     end
 
     def _display_time_in_words(hash, options = {})
-      options.reverse_merge!(
+      options = options.reverse_merge(
         include_seconds: false
       ).symbolize_keys!
 
@@ -95,7 +102,7 @@ module DOTIW
                                                        default: :'support.array.last_word_connector',
                                                        locale: options[:locale]
 
-      output.to_sentence(options)
+      output.to_sentence(options.except(:accumulate_on))
     end
   end
 end # DOTIW
