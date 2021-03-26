@@ -135,32 +135,33 @@ describe 'A better distance_of_time_in_words' do
     end
 
     [
-      [START_TIME, START_TIME + 5.days + 3.minutes, '5 days and 3 minutes'],
-      [START_TIME, START_TIME + 1.minute, '1 minute'],
-      [START_TIME, START_TIME + 3.years, '3 years'],
-      [START_TIME, START_TIME + 10.years, '10 years'],
-      [START_TIME, START_TIME + 8.months, '8 months'],
-      [START_TIME, START_TIME + 3.hour, '3 hours'],
-      [START_TIME, START_TIME + 13.months, '1 year and 1 month'],
+      [START_TIME, START_TIME + 5.days + 3.minutes, '5 days and 3 minutes', '5d3m'],
+      [START_TIME, START_TIME + 1.minute, '1 minute', '1m'],
+      [START_TIME, START_TIME + 3.years, '3 years', '3y'],
+      [START_TIME, START_TIME + 10.years, '10 years', '10y'],
+      [START_TIME, START_TIME + 8.months, '8 months', '8mo'],
+      [START_TIME, START_TIME + 3.hour, '3 hours', '3h'],
+      [START_TIME, START_TIME + 13.months, '1 year and 1 month', '1y1mo'],
       # Any numeric sequence is merely coincidental.
       [START_TIME, START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
-       '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds'],
-      ['2009-3-16'.to_time, '2008-4-14'.to_time, '11 months and 2 days'],
-      ['2009-3-16'.to_time + 1.minute, '2008-4-14'.to_time, '11 months, 2 days, and 1 minute'],
-      ['2009-4-14'.to_time, '2008-3-16'.to_time, '1 year, 4 weeks, and 1 day'],
-      ['2009-2-01'.to_time, '2009-3-01'.to_time, '1 month'],
-      ['2008-2-01'.to_time, '2008-3-01'.to_time, '1 month'],
-      [Date.parse('31.03.2015').to_time, Time.parse('01.03.2016'), '10 months, 4 weeks, and 2 days'],
-      [Date.new(2014, 1, 31), Date.new(2014, 3, 1), '4 weeks and 1 day'],
-      ['2008-2-01'.to_time, '2008-3-01'.to_time, '1 month'],
-      ['2014-1-31'.to_time, '2014-3-01'.to_time, '4 weeks and 1 day'],
-      ['2014-1-31'.to_time, '2014-3-02'.to_time, '4 weeks and 2 days'],
-      ['2016-1-31'.to_time, '2016-3-01'.to_time, '4 weeks and 2 days'],
-      ['2016-1-31'.to_time, '2016-3-02'.to_time, '1 month']
-    ].each do |start, finish, output|
+       '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds', '1y2mo3w4d5h6m7s'],
+      ['2009-3-16'.to_time, '2008-4-14'.to_time, '11 months and 2 days', '11mo2d'],
+      ['2009-3-16'.to_time + 1.minute, '2008-4-14'.to_time, '11 months, 2 days, and 1 minute', '11mo2d1m'],
+      ['2009-4-14'.to_time, '2008-3-16'.to_time, '1 year, 4 weeks, and 1 day', '1y4w1d'],
+      ['2009-2-01'.to_time, '2009-3-01'.to_time, '1 month', '1mo'],
+      ['2008-2-01'.to_time, '2008-3-01'.to_time, '1 month', '1mo'],
+      [Date.parse('31.03.2015').to_time, Time.parse('01.03.2016'), '10 months, 4 weeks, and 2 days', '10mo4w2d'],
+      [Date.new(2014, 1, 31), Date.new(2014, 3, 1), '4 weeks and 1 day', '4w1d'],
+      ['2008-2-01'.to_time, '2008-3-01'.to_time, '1 month', '1mo'],
+      ['2014-1-31'.to_time, '2014-3-01'.to_time, '4 weeks and 1 day', '4w1d'],
+      ['2014-1-31'.to_time, '2014-3-02'.to_time, '4 weeks and 2 days', '4w2d'],
+      ['2016-1-31'.to_time, '2016-3-01'.to_time, '4 weeks and 2 days', '4w2d'],
+      ['2016-1-31'.to_time, '2016-3-02'.to_time, '1 month', '1mo']
+    ].each do |start, finish, output, compact_result|
       it "should be #{output}" do
         expect(distance_of_time_in_words(start, finish, true)).to eq(output)
         expect(distance_of_time_in_words(finish, start, true)).to eq(output)
+        expect(distance_of_time_in_words(start, finish, true, compact: true)).to eq(compact_result)
       end
     end
 

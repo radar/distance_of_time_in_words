@@ -102,7 +102,7 @@ module DOTIW
                                                        default: :'support.array.last_word_connector',
                                                        locale: options[:locale]
 
-      output.to_sentence(options.except(:accumulate_on))
+      output.to_sentence(options.except(:accumulate_on, :compact))
     end
   end
 end
