@@ -1,5 +1,6 @@
 ## 5.3.1 (Next)
 
+* [#124](https://github.com/radar/distance_of_time_in_words/pull/124): Fixes compact formatting for distance_of_time_in_words - [@rposborne](https://github.com/rposborne).
 * Your contribution here.
 
 ## 5.3.0 (2021/03/18)
