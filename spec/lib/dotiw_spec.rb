@@ -320,7 +320,34 @@ describe 'A better distance_of_time_in_words' do
     end
 
     if defined?(ActionView)
-      describe 'ActionView' do
+      describe 'ActionView without include seconds argument' do
+        [
+          [START_TIME,
+          START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+          { vague: true },
+          'about 1 year'],
+          [START_TIME,
+          START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+          { vague: 'Yes please' },
+          'about 1 year'],
+          [START_TIME,
+          START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+          { vague: false },
+          '1 year, 2 months, 3 weeks, 4 days, 5 hours, and 6 minutes'],
+          [START_TIME,
+          START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
+          { vague: nil },
+          '1 year, 2 months, 3 weeks, 4 days, 5 hours, and 6 minutes']
+        ].each do |start, finish, options, output|
+          it "should be #{output}" do
+            expect(distance_of_time_in_words(start, finish, options)).to eq(output)
+          end
+        end
+      end
+    end
+
+    if defined?(ActionView)
+      describe 'ActionView with include seconds argument' do
         [
           [START_TIME,
            START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
@@ -343,7 +370,7 @@ describe 'A better distance_of_time_in_words' do
             expect(distance_of_time_in_words(start, finish, true, options)).to eq(output)
           end
         end
-
+  
         context 'via ActionController::Base.helpers' do
           it '#distance_of_time_in_words' do
             end_time = START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds
