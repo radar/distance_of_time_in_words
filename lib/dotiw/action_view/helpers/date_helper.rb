@@ -9,13 +9,21 @@ module ActionView
       include DOTIW::Methods
 
       def distance_of_time_in_words(from_time, to_time = 0, include_seconds_or_options = {}, options = {})
-        return _distance_of_time_in_words(from_time, to_time, options) if options[:vague]
+        unless [true, false].include? include_seconds_or_options
+          options = include_seconds_or_options
+          include_seconds_or_options = nil
+        end
+        return _distance_of_time_in_words(from_time, to_time, options.except(:vague)) if options[:vague]
 
         DOTIW::Methods.distance_of_time_in_words(from_time, to_time, include_seconds_or_options, options.except(:vague))
       end
 
       def distance_of_time_in_words_to_now(to_time = 0, include_seconds_or_options = {}, options = {})
-        return _distance_of_time_in_words(Time.now, to_time, options) if options[:vague]
+        unless [true, false].include? include_seconds_or_options
+          options = include_seconds_or_options
+          include_seconds_or_options = nil
+        end
+        return _distance_of_time_in_words(Time.now, to_time, options.except(:vague)) if options[:vague]
 
         DOTIW::Methods.distance_of_time_in_words(Time.now, to_time, include_seconds_or_options, options.except(:vague))
       end
