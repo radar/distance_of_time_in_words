@@ -9,7 +9,7 @@ module ActionView
       include DOTIW::Methods
 
       def distance_of_time_in_words(from_time, to_time = 0, include_seconds_or_options = {}, options = {})
-        unless [true, false].include? include_seconds_or_options
+        unless ([true, false].include? include_seconds_or_options) || options.present?
           options = include_seconds_or_options
           include_seconds_or_options = nil
         end
@@ -19,7 +19,7 @@ module ActionView
       end
 
       def distance_of_time_in_words_to_now(to_time = 0, include_seconds_or_options = {}, options = {})
-        unless [true, false].include? include_seconds_or_options
+        unless ([true, false].include? include_seconds_or_options) || options.present?
           options = include_seconds_or_options
           include_seconds_or_options = nil
         end
