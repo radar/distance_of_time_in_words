@@ -9,23 +9,25 @@ module ActionView
       include DOTIW::Methods
 
       def distance_of_time_in_words(from_time, to_time = 0, include_seconds_or_options = {}, options = {})
-        unless ([true, false].include? include_seconds_or_options) || options.present?
+        if include_seconds_or_options.is_a?(Hash)
           options = include_seconds_or_options
-          include_seconds_or_options = nil
+        else
+          options[:include_seconds] ||= !!include_seconds_or_options
         end
         return _distance_of_time_in_words(from_time, to_time, options.except(:vague)) if options[:vague]
 
-        DOTIW::Methods.distance_of_time_in_words(from_time, to_time, include_seconds_or_options, options.except(:vague))
+        DOTIW::Methods.distance_of_time_in_words(from_time, to_time, options.except(:vague))
       end
 
       def distance_of_time_in_words_to_now(to_time = 0, include_seconds_or_options = {}, options = {})
-        unless ([true, false].include? include_seconds_or_options) || options.present?
+        if include_seconds_or_options.is_a?(Hash)
           options = include_seconds_or_options
-          include_seconds_or_options = nil
+        else
+          options[:include_seconds] ||= !!include_seconds_or_options
         end
         return _distance_of_time_in_words(Time.now, to_time, options.except(:vague)) if options[:vague]
 
-        DOTIW::Methods.distance_of_time_in_words(Time.now, to_time, include_seconds_or_options, options.except(:vague))
+        DOTIW::Methods.distance_of_time_in_words(Time.now, to_time, options.except(:vague))
       end
 
       def distance_of_time_in_percent(from_time, current_time, to_time, options = {})
