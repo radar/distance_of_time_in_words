@@ -396,32 +396,93 @@ describe 'A better distance_of_time_in_words' do
             end
 
             context 'without options' do
-              it 'shows detailed duration' do
+              it 'shows detailed duration without seconds' do
                 expected = '3 days and 14 minutes'
                 actual = ActionController::Base.helpers.distance_of_time_in_words_to_now(Time.now - 3.days - 14.minutes)
                 expect(actual).to eq(expected)
               end
             end
 
-            context 'with vague option true' do
+            context 'with seconds false and vague option true' do
               it 'shows vague duration' do
                 expected = '3 days'
                 actual = ActionController::Base.helpers.distance_of_time_in_words_to_now(
-                  Time.now - 3.days - 14.minutes, false, vague: true
+                  Time.now - 3.days - 14.minutes - 20.seconds, false, vague: true
                 )
                 expect(actual).to eq(expected)
               end
             end
 
-            context 'with vague option false' do
-              it 'shows detailed duration' do
-                expected = '3 days and 14 minutes'
+            context 'with seconds true and vague option true' do
+              it 'shows vague duration' do
+                expected = '3 days'
                 actual = ActionController::Base.helpers.distance_of_time_in_words_to_now(
-                  Time.now - 3.days - 14.minutes, false, vague: false
+                  Time.now - 3.days - 14.minutes - 20.seconds, true, vague: true
                 )
                 expect(actual).to eq(expected)
               end
             end
+
+            context 'with seconds false and vague option false' do
+              it 'shows detailed duration without seconds' do
+                expected = '3 days and 14 minutes'
+                actual = ActionController::Base.helpers.distance_of_time_in_words_to_now(
+                  Time.now - 3.days - 14.minutes - 20.seconds, false, vague: false
+                )
+                expect(actual).to eq(expected)
+              end
+            end
+
+            context 'with seconds true and vague option false' do
+              it 'shows detailed duration with seconds' do
+                expected = '3 days, 14 minutes, and 20 seconds'
+                actual = ActionController::Base.helpers.distance_of_time_in_words_to_now(
+                  Time.now - 3.days - 14.minutes - 20.seconds, true, vague: false
+                )
+                expect(actual).to eq(expected)
+              end
+            end
+
+            context 'without seconds and vague option false' do
+              it 'shows detailed duration without seconds' do
+                expected = '3 days and 14 minutes'
+                actual = ActionController::Base.helpers.distance_of_time_in_words_to_now(
+                  Time.now - 3.days - 14.minutes - 20.seconds, vague: false
+                )
+                expect(actual).to eq(expected)
+              end
+            end
+
+            context 'without seconds and vague option true' do
+              it 'shows vague duration' do
+                expected = '3 days'
+                actual = ActionController::Base.helpers.distance_of_time_in_words_to_now(
+                  Time.now - 3.days - 14.minutes - 20.seconds, vague: true
+                )
+                expect(actual).to eq(expected)
+              end
+            end
+
+            context 'with options include_seconds true and vague option false' do
+              it 'shows detailed duration with seconds' do
+                expected = '3 days, 14 minutes, and 20 seconds'
+                actual = ActionController::Base.helpers.distance_of_time_in_words_to_now(
+                  Time.now - 3.days - 14.minutes - 20.seconds, {include_seconds: true, vague: false}
+                )
+                expect(actual).to eq(expected)
+              end
+            end
+
+            context 'with options include_seconds false and vague option true' do
+              it 'shows vague duration' do
+                expected = '3 days'
+                actual = ActionController::Base.helpers.distance_of_time_in_words_to_now(
+                  Time.now - 3.days - 14.minutes - 20.seconds, {include_seconds: false, vague: true}
+                )
+                expect(actual).to eq(expected)
+              end
+            end
+
           end
         end
       end
