@@ -1,6 +1,6 @@
 ## 5.3.2 (Next)
 
-* Your contribution here.
+* [#126](https://github.com/radar/distance_of_time_in_words/pull/126): Fixes `#distance_of_time_in_words_to_now` with `vague: true` when supplied without include_seconds argument - [@mozcomp](https://github.com/mozcomp)
 
 ## 5.3.1 (2021/03/26)
 
