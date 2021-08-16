@@ -32,14 +32,13 @@ module ActionView
 
       private
       def merge_options(include_seconds_or_options, options)
-        merged_options = options.dup
         if include_seconds_or_options.is_a?(Hash)
-          merged_options.merge!(include_seconds_or_options)
+          options.merge(include_seconds_or_options)
         else
-          merged_options.merge!(include_seconds: !!include_seconds_or_options)
+          options.merge(include_seconds: !!include_seconds_or_options)
         end
       end
-
+      
     end
   end
 end
