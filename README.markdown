@@ -65,7 +65,8 @@ The third argument for this method is whether or not to include seconds. By defa
 => "1 year, and 1 second"
 ```
 
-Yes this could just be merged into the options hash but I'm leaving it here to ensure "backwards-compatibility", because that's just an insanely radical thing to do.  
+Yes this could just be merged into the options hash but I'm leaving it here to ensure "backwards-compatibility", because that's just an insanely radical thing to do. \m/
+
 Alternatively this can be included in the options hash as `include_seconds: true` removing this argument altogether.
 
 The last argument is an optional options hash that can be used to manipulate behavior and (which uses `to_sentence`).
