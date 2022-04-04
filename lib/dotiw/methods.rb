@@ -20,7 +20,9 @@ module DOTIW
     end
 
     def distance_of_time_in_words(from_time, to_time = 0, include_seconds_or_options = {}, options = {})
-      raise ArgumentError, "nil can't be converted to a Time value" if from_time.nil? || to_time.nil?
+      from_time = normalize_distance_of_time_argument_to_time(from_time)
+      to_time = normalize_distance_of_time_argument_to_time(to_time)
+      from_time, to_time = to_time, from_time if from_time > to_time
 
       if include_seconds_or_options.is_a?(Hash)
         options = include_seconds_or_options
@@ -28,7 +30,8 @@ module DOTIW
         options = options.dup
         options[:include_seconds] ||= !!include_seconds_or_options
       end
-      return distance_of_time(from_time, options) if to_time == 0
+
+      return distance_of_time(to_time.to_i, options) if from_time.to_i == 0
 
       options = options_with_scope(options)
       hash = distance_of_time_in_words_hash(from_time, to_time, options)
@@ -40,6 +43,16 @@ module DOTIW
     end
 
     private
+
+    def normalize_distance_of_time_argument_to_time(value)
+      if value.is_a?(Numeric)
+        Time.at(value)
+      elsif value.respond_to?(:to_time)
+        value.to_time
+      else
+        raise ArgumentError, "#{value.inspect} can't be converted to a Time value"
+      end
+    end
 
     def options_with_scope(options)
       if options.key?(:compact)
