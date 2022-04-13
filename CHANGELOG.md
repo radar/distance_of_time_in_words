@@ -1,6 +1,7 @@
 ## 5.3.3 (Next)
 
 * Your contribution here.
+* [#128](https://github.com/radar/distance_of_time_in_words/pull/128): Adds support for numeric values for both the `from_time` and `to_time` arguments in the `#distance_of_time_in_words` helper - [@bjedrocha](https://github.com/bjedrocha).
 
 ## 5.3.2 (2021/11/08)
 

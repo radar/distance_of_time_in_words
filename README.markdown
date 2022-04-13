@@ -58,6 +58,22 @@ Better than "about 1 year", am I right? Of course I am.
 => "1 second"
 ```
 
+It also supports numeric arguments like the original Rails version:
+
+```ruby
+>> distance_of_time_in_words(0, 150)
+=> "2 minutes and 30 seconds"
+```
+
+as an alternative to:
+
+```ruby
+>> distance_of_time_in_words(Time.now, Time.now + 2.5.minutes)
+=> "2 minutes and 30 seconds"
+```
+
+This is useful if you're just interested in "stringifying" the length of time. Alternatively, you can use the `#distance_of_time` helper as described [below](#distance\_of\_time).
+
 The third argument for this method is whether or not to include seconds. By default this is `false` (because in Rails' `distance_of_time_in_words` it is), you can turn it on though by passing `true` as the third argument:
 
 ```ruby

@@ -101,11 +101,6 @@ describe 'A better distance_of_time_in_words' do
         expect(DOTIW.languages.map(&:to_s).sort).to eq languages.sort
       end
 
-      it 'raises ArgumentError when nil is passed for time' do
-        expect { distance_of_time_in_words(nil) }.to raise_error(ArgumentError)
-        expect { distance_of_time_in_words(nil, nil) }.to raise_error(ArgumentError)
-      end
-
       DOTIW.languages.each do |lang|
         context lang do
           YAML.safe_load(
@@ -238,6 +233,38 @@ describe 'A better distance_of_time_in_words' do
       ].each do |start, output|
         it "should be #{output}" do
           expect(distance_of_time_in_words(start)).to eq(output)
+        end
+      end
+    end
+
+    describe 'with mixed inputs' do
+      # Further backwards compatability with the original rails
+      # distance_of_time_in_words helper.
+      [
+        [0, 2.5.minutes.to_i, '2 minutes and 30 seconds'],
+        [10.minutes.to_i, 0, '10 minutes'],
+        [0, 24.weeks.to_i, '5 months, 2 weeks, and 1 day'],
+        [0, 0, 'less than 1 second'],
+      ].each do |start, finish, output|
+        it "should be #{output}" do
+          expect(distance_of_time_in_words(start, finish)).to eq(output)
+        end
+      end
+
+      context "of which one or both can't be converted to a Time value" do
+        let(:invalid_inputs) do
+          [
+            [nil, 5.minutes],
+            [nil, double(:does_not_respond_to_time)],
+            [nil],
+            [nil, nil],
+          ]
+        end
+
+        it "should raise an ArgumentError" do
+          invalid_inputs.each do |start, finish|
+            expect { distance_of_time_in_words(start, finish) }.to raise_error(ArgumentError)
+          end
         end
       end
     end
