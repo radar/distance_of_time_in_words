@@ -341,6 +341,10 @@ describe 'A better distance_of_time_in_words' do
        { highest_measures: 1, only: %i[years months] },
        'less than 1 month'],
       [START_TIME,
+       START_TIME + 1.days,
+       { highest_measures: {} },
+       '1 day'],
+      [START_TIME,
        START_TIME + 1.year + 1.minute,
        { highest_measures: { remainder: :ceiling } },
        '2 years'],
@@ -349,12 +353,12 @@ describe 'A better distance_of_time_in_words' do
        { highest_measures: { count: 2, remainder: :round } },
        '1 day and 3 hours'],
       [START_TIME,
-        START_TIME + 6.day + 23.hours + 30.minute,
-        { highest_measures: { count: 2, remainder: :round } },
-        '1 week'],
+       START_TIME + 6.day + 23.hours + 30.minute,
+       { highest_measures: { count: 2, remainder: :round } },
+       '1 week'],
       [START_TIME,
        START_TIME + 1.day,
-       { highest_measures: { remainder: :round }, only: :months },
+       { highest_measures: { remainder: :ceiling }, only: :months },
        'less than 1 month']
     ].each do |start, finish, options, output|
       it "should be #{output}" do
