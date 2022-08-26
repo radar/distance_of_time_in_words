@@ -156,9 +156,9 @@ module DOTIW
         end
       end
 
-      output = []
+      phrases = []
       I18n.with_options locale: options[:locale], scope: i18n_scope do |locale|
-        output = hash.map { |key, value| locale.t(key, count: value) }
+        phrases = hash.map { |key, value| locale.t(key, count: value) }
       end
 
       options[:words_connector] ||= I18n.translate :"#{i18n_scope}.words_connector",
@@ -171,7 +171,7 @@ module DOTIW
                                                        default: :'support.array.last_word_connector',
                                                        locale: options[:locale]
 
-      output.to_sentence(options.except(:accumulate_on, :compact))
+      phrases.to_sentence(options.except(:accumulate_on, :compact))
     end
 
     def _accumulate_upwards!(hash, smallest_unit_index)
