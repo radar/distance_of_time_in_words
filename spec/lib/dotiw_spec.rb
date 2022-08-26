@@ -339,6 +339,22 @@ describe 'A better distance_of_time_in_words' do
       [START_TIME,
        START_TIME + 1.days,
        { highest_measures: 1, only: %i[years months] },
+       'less than 1 month'],
+      [START_TIME,
+       START_TIME + 1.year + 1.minute,
+       { highest_measures: { remainder: :ceiling } },
+       '2 years'],
+      [START_TIME,
+       START_TIME + 1.day + 2.hours + 30.minutes,
+       { highest_measures: { count: 2, remainder: :round } },
+       '1 day and 3 hours'],
+      [START_TIME,
+        START_TIME + 1.day + 23.hours + 1.minute,
+        { highest_measures: { count: 2, remainder: :ceiling } },
+        '2 days'],
+      [START_TIME,
+       START_TIME + 1.day,
+       { highest_measures: { remainder: :round }, only: :months },
        'less than 1 month']
     ].each do |start, finish, options, output|
       it "should be #{output}" do
@@ -397,7 +413,7 @@ describe 'A better distance_of_time_in_words' do
             expect(distance_of_time_in_words(start, finish, true, options)).to eq(output)
           end
         end
-  
+
         context 'via ActionController::Base.helpers' do
           it '#distance_of_time_in_words' do
             end_time = START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds

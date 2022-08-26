@@ -44,6 +44,21 @@ module DOTIW
 
     private
 
+    # How many of each unit is necessary to round up to one of the next-largest unit. Note that for
+    # simplicity of implementation, we only check one unit when seeing if we should round up. This
+    # means that rounding up days to weeks, for instance, cannot draw the line at 3 days and 12
+    # hours, but instead either 3 or 4 (whole) days. Let's not even talk about weeks rounding up to
+    # months.
+    ROUNDING_THRESHOLDS = {
+      seconds: 30,
+      minutes: 30,
+      hours: 12,
+      days: 4,
+      weeks: 2,
+      months: 6,
+      years: Float::INFINITY,
+    }
+
     def normalize_distance_of_time_argument_to_time(value)
       if value.is_a?(Numeric)
         Time.at(value)
@@ -67,18 +82,22 @@ module DOTIW
         include_seconds: false
       ).symbolize_keys!
 
+      discarded_hash = {}
+
       include_seconds = options.delete(:include_seconds)
-      hash.delete(:seconds) if !include_seconds && hash[:minutes]
+      discarded_hash[:seconds] = hash.delete(:seconds) if !include_seconds && hash[:minutes]
 
       options[:except] = Array.wrap(options[:except]).map!(&:to_sym) if options[:except]
       options[:only] = Array.wrap(options[:only]).map!(&:to_sym) if options[:only]
 
-      # Remove all the values that are nil or excluded. Keep the required ones.
-      hash.delete_if do |key, value|
-        value.nil? || value.zero? ||
-          options[:except]&.include?(key) ||
-          (options[:only] && !options[:only].include?(key))
+      DOTIW::TimeHash::TIME_FRACTIONS.each do |fraction|
+        if options[:except]&.include?(fraction) || (options[:only] && !options[:only].include?(fraction))
+          discarded_hash[fraction] = hash.delete fraction
+        end
       end
+
+      hash.delete_if { |key, value| value.nil? || value.zero? }
+      discarded_hash.delete_if { |key, value| value.nil? || value.zero? }
 
       i18n_scope = options.delete(:scope) || DOTIW::DEFAULT_I18N_SCOPE
       if hash.empty?
@@ -94,16 +113,43 @@ module DOTIW
         end
       end
 
+      options.delete(:except)
+      options.delete(:only)
+
+      highest_measures = options.delete(:highest_measures)
+      highest_measures = 1 if options.delete(:highest_measure_only)
+      highest_measures = { count: highest_measures } if highest_measures.is_a?(Integer)
+      highest_measures = highest_measures.reverse_merge(count: 1, remainder: :floor) if highest_measures
+
+      if highest_measures
+        high_entries, low_entries = hash.to_a.partition.with_index { |_, index| index < highest_measures[:count] }
+        hash = high_entries.to_h
+        discarded_hash.merge! low_entries.to_h
+
+        smallest_unit_index = DOTIW::TimeHash::TIME_FRACTIONS.index high_entries.last[0]
+        smallest_unit = DOTIW::TimeHash::TIME_FRACTIONS[smallest_unit_index]
+        case highest_measures[:remainder]
+        when :ceiling
+          # We already filtered out zeroes, so non-empty also means non-zero.
+          if !discarded_hash.empty?
+            hash[smallest_unit] += 1
+            # TODO: we need to accumulate this added unit upwards
+          end
+        when :round
+          if smallest_unit_index > 0
+            next_smallest_unit = DOTIW::TimeHash::TIME_FRACTIONS[smallest_unit_index - 1]
+            if discarded_hash.fetch(next_smallest_unit, 0) >= ROUNDING_THRESHOLDS[next_smallest_unit]
+              hash[smallest_unit] += 1
+              # same treatment here as ceiling.
+            end
+          end
+        end
+      end
+
       output = []
       I18n.with_options locale: options[:locale], scope: i18n_scope do |locale|
         output = hash.map { |key, value| locale.t(key, count: value) }
       end
-
-      options.delete(:except)
-      options.delete(:only)
-      highest_measures = options.delete(:highest_measures)
-      highest_measures = 1 if options.delete(:highest_measure_only)
-      output = output[0...highest_measures] if highest_measures
 
       options[:words_connector] ||= I18n.translate :"#{i18n_scope}.words_connector",
                                                    default: :'support.array.words_connector',
