@@ -59,6 +59,16 @@ module DOTIW
       years: Float::INFINITY,
     }
 
+    ACCUMULATE_UPWARDS = {
+      seconds: 60,
+      minutes: 60,
+      hours: 24,
+      days: 7,
+      weeks: 4, # !!!
+      months: 12,
+      years: Float::INFINITY,
+    }
+
     def normalize_distance_of_time_argument_to_time(value)
       if value.is_a?(Numeric)
         Time.at(value)
@@ -133,14 +143,14 @@ module DOTIW
           # We already filtered out zeroes, so non-empty also means non-zero.
           if !discarded_hash.empty?
             hash[smallest_unit] += 1
-            # TODO: we need to accumulate this added unit upwards
+            _accumulate_upwards! hash, smallest_unit_index
           end
         when :round
           if smallest_unit_index > 0
             next_smallest_unit = DOTIW::TimeHash::TIME_FRACTIONS[smallest_unit_index - 1]
             if discarded_hash.fetch(next_smallest_unit, 0) >= ROUNDING_THRESHOLDS[next_smallest_unit]
               hash[smallest_unit] += 1
-              # same treatment here as ceiling.
+              _accumulate_upwards! hash, smallest_unit_index
             end
           end
         end
@@ -162,6 +172,18 @@ module DOTIW
                                                        locale: options[:locale]
 
       output.to_sentence(options.except(:accumulate_on, :compact))
+    end
+
+    def _accumulate_upwards!(hash, smallest_unit_index)
+      DOTIW::TimeHash::TIME_FRACTIONS[smallest_unit_index..].each_with_index do |fraction, index|
+        if hash.fetch(fraction, 0) >= ACCUMULATE_UPWARDS[fraction]
+          hash.delete fraction
+          next_fraction = DOTIW::TimeHash::TIME_FRACTIONS[smallest_unit_index + index + 1]
+          hash[next_fraction] = hash.fetch(next_fraction, 0) + 1
+        else
+          break
+        end
+      end
     end
   end
 end
