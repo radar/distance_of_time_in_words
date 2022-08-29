@@ -189,7 +189,7 @@ module DOTIW
     end
 
     def _rollup!(hash, smallest_measure_index)
-      DOTIW::TimeHash::TIME_FRACTIONS[smallest_measure_index..].each_with_index do |fraction, index|
+      DOTIW::TimeHash::TIME_FRACTIONS[smallest_measure_index..-1].each_with_index do |fraction, index|
         if hash.fetch(fraction, 0) >= ROLLUP_THRESHOLDS[fraction]
           hash.delete fraction
           next_fraction = DOTIW::TimeHash::TIME_FRACTIONS[smallest_measure_index + index + 1]
