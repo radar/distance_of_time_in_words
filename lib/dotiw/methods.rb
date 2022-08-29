@@ -44,11 +44,11 @@ module DOTIW
 
     private
 
-    # How many of each unit is necessary to round up to one of the next-largest unit. Note that for
-    # simplicity of implementation, we only check one unit when seeing if we should round up. This
-    # means that rounding up days to weeks, for instance, cannot draw the line at 3 days and 12
-    # hours, but instead either 3 or 4 (whole) days. Let's not even talk about weeks rounding up to
-    # months.
+    # How many of each measure is necessary to round up to one of the next-largest measure. Note
+    # that for simplicity of implementation, we only check one measure when seeing if we should
+    # round up. This means that rounding up days to weeks, for instance, cannot draw the line at 3
+    # days and 12 hours, but instead either 3 or 4 (whole) days. Let's not even talk about weeks
+    # rounding up to months.
     ROUNDING_THRESHOLDS = {
       seconds: 30,
       minutes: 30,
@@ -59,7 +59,7 @@ module DOTIW
       years: Float::INFINITY,
     }
 
-    ACCUMULATE_UPWARDS = {
+    ROLLUP_THRESHOLDS = {
       seconds: 60,
       minutes: 60,
       hours: 24,
@@ -138,21 +138,21 @@ module DOTIW
         hash = high_entries.to_h
         discarded_hash.merge! low_entries.to_h
 
-        smallest_unit_index = DOTIW::TimeHash::TIME_FRACTIONS.index high_entries.last[0]
-        smallest_unit = DOTIW::TimeHash::TIME_FRACTIONS[smallest_unit_index]
+        smallest_measure_index = DOTIW::TimeHash::TIME_FRACTIONS.index high_entries.last[0]
+        smallest_measure = DOTIW::TimeHash::TIME_FRACTIONS[smallest_measure_index]
         case highest_measures[:remainder]
         when :ceiling
           # We already filtered out zeroes, so non-empty also means non-zero.
           if !discarded_hash.empty?
-            hash[smallest_unit] += 1
-            _accumulate_upwards! hash, smallest_unit_index
+            hash[smallest_measure] += 1
+            _rollup! hash, smallest_measure_index
           end
         when :round
-          if smallest_unit_index > 0
-            next_smallest_unit = DOTIW::TimeHash::TIME_FRACTIONS[smallest_unit_index - 1]
-            if discarded_hash.fetch(next_smallest_unit, 0) >= ROUNDING_THRESHOLDS[next_smallest_unit]
-              hash[smallest_unit] += 1
-              _accumulate_upwards! hash, smallest_unit_index
+          if smallest_measure_index > 0
+            next_smallest_measure = DOTIW::TimeHash::TIME_FRACTIONS[smallest_measure_index - 1]
+            if discarded_hash.fetch(next_smallest_measure, 0) >= ROUNDING_THRESHOLDS[next_smallest_measure]
+              hash[smallest_measure] += 1
+              _rollup! hash, smallest_measure_index
             end
           end
         end
@@ -176,11 +176,11 @@ module DOTIW
       phrases.to_sentence(options.except(:accumulate_on, :compact))
     end
 
-    def _accumulate_upwards!(hash, smallest_unit_index)
-      DOTIW::TimeHash::TIME_FRACTIONS[smallest_unit_index..].each_with_index do |fraction, index|
-        if hash.fetch(fraction, 0) >= ACCUMULATE_UPWARDS[fraction]
+    def _rollup!(hash, smallest_measure_index)
+      DOTIW::TimeHash::TIME_FRACTIONS[smallest_measure_index..].each_with_index do |fraction, index|
+        if hash.fetch(fraction, 0) >= ROLLUP_THRESHOLDS[fraction]
           hash.delete fraction
-          next_fraction = DOTIW::TimeHash::TIME_FRACTIONS[smallest_unit_index + index + 1]
+          next_fraction = DOTIW::TimeHash::TIME_FRACTIONS[smallest_measure_index + index + 1]
           hash[next_fraction] = hash.fetch(next_fraction, 0) + 1
         else
           break
