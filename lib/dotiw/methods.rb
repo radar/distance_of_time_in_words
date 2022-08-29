@@ -88,6 +88,8 @@ module DOTIW
     end
 
     def _display_time_in_words(hash, options = {})
+      hash = hash.dup
+
       options = options.reverse_merge(
         include_seconds: false
       ).symbolize_keys!
