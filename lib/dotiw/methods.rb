@@ -134,24 +134,7 @@ module DOTIW
         hash = high_entries.to_h
         discarded_hash.merge! low_entries.to_h
 
-        smallest_measure_index = DOTIW::TimeHash::TIME_FRACTIONS.index high_entries.last[0]
-        smallest_measure = DOTIW::TimeHash::TIME_FRACTIONS[smallest_measure_index]
-        case highest_measures[:remainder]
-        when :ceiling
-          # We already filtered out zeroes, so non-empty also means non-zero.
-          if !discarded_hash.empty?
-            hash[smallest_measure] += 1
-            _rollup! hash, smallest_measure_index
-          end
-        when :round
-          if smallest_measure_index > 0
-            next_smallest_measure = DOTIW::TimeHash::TIME_FRACTIONS[smallest_measure_index - 1]
-            if discarded_hash.fetch(next_smallest_measure, 0) >= ROUNDING_THRESHOLDS[next_smallest_measure]
-              hash[smallest_measure] += 1
-              _rollup! hash, smallest_measure_index
-            end
-          end
-        end
+        _maybe_round! hash, discarded_hash, highest_measures[:remainder]
       end
 
       phrases = []
@@ -179,6 +162,30 @@ module DOTIW
       highest_measures = highest_measures.reverse_merge(count: 1, remainder: :floor) if highest_measures
 
       highest_measures
+    end
+
+    def _maybe_round!(hash, discarded_hash, remainder)
+      smallest_measure_index = DOTIW::TimeHash::TIME_FRACTIONS.index hash.to_a.last[0]
+      smallest_measure = DOTIW::TimeHash::TIME_FRACTIONS[smallest_measure_index]
+
+      case remainder
+      when :ceiling
+        # We already filtered out zeroes, so non-empty also means non-zero.
+        if !discarded_hash.empty?
+          hash[smallest_measure] += 1
+          _rollup! hash, smallest_measure_index
+        end
+      when :round
+        # If our smallest measure is already the smallest possible measure, there is no next
+        # smallest measure to inspect to see if we need to round up.
+        return if smallest_measure_index == 0
+
+        next_smallest_measure = DOTIW::TimeHash::TIME_FRACTIONS[smallest_measure_index - 1]
+        if discarded_hash.fetch(next_smallest_measure, 0) >= ROUNDING_THRESHOLDS[next_smallest_measure]
+          hash[smallest_measure] += 1
+          _rollup! hash, smallest_measure_index
+        end
+      end
     end
 
     def _rollup!(hash, smallest_measure_index)
