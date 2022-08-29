@@ -353,9 +353,9 @@ describe 'A better distance_of_time_in_words' do
        { highest_measures: { max: 2, remainder: :round } },
        '1 day and 3 hours'],
       [START_TIME,
-       START_TIME + 6.day + 23.hours + 30.minute,
-       { highest_measures: { max: 2, remainder: :round } },
-       '1 week'],
+       START_TIME + 1.day + 23.hours + 59.minutes + 59.seconds,
+       { highest_measures: { max: 3, remainder: :round } },
+       '2 days'],
       [START_TIME,
        START_TIME + 1.day,
        { highest_measures: { remainder: :ceiling }, only: :months },
@@ -366,7 +366,7 @@ describe 'A better distance_of_time_in_words' do
        { highest_measures: { remainder: :round } },
        '1 week'],
       [START_TIME,
-      # Simplistic rounding: in some months, 15 days is less than half, but we always round it up.
+       # Simplistic rounding: in some months, 15 days is less than half, but we always round it up.
        START_TIME + 1.month + 14.days,
        { highest_measures: { remainder: :round } },
        '2 months'],
