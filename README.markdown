@@ -164,6 +164,8 @@ Culling a whole group of measurements of time:
 
 #### :highest\_measure\_only
 
+> **Deprecated**. Use `highest_measures: 1` instead.
+
 For times when Rails `distance_of_time_in_words` is not precise enough and `DOTIW` is too precise. For instance, if you only want to know the highest time part (measure) that elapsed between two dates.
 
 ```ruby
@@ -187,6 +189,24 @@ When you want variable precision from `DOTIW`:
 ```ruby
 >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, highest_measures: 2)
 => "1 hour and 1 minute"
+```
+
+You can also specify what to do with the extra time with the `remainder` option:
+
+```ruby
+>> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute + 1.second, true, highest_measures: { max: 2, remainder: :ceiling })
+=> "1 hour and 2 minutes"
+```
+
+Valid options for `remainder` are `:floor` (default), `:ceiling` and `:round`. Note that `:round` is best-effort and makes some simplifying assumptions:
+
+```ruby
+# Only the next-largest unit is examined, which can unexpectedly round down in some situations.
+>> distance_of_time_in_words(Time.now, Time.now + 1.week + 3.days + 23.hours, true, highest_measures: { remainder: :round })
+=> "1 week"
+# The variability of some measures (like months) is ignored and the shortest duration of that measure is used.
+>> distance_of_time_in_words(Time.now, Time.now + 1.month + 14.days, true, highest_measures: { remainder: :round })
+=> "2 months"
 ```
 
 #### :words_connector
