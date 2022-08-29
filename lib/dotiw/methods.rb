@@ -130,7 +130,7 @@ module DOTIW
 
       highest_measures = _compute_highest_measures! options
       if highest_measures
-        high_entries, low_entries = hash.to_a.partition.with_index { |_, index| index < highest_measures[:count] }
+        high_entries, low_entries = hash.to_a.partition.with_index { |_, index| index < highest_measures[:max] }
         hash = high_entries.to_h
         discarded_hash.merge! low_entries.to_h
 
@@ -158,8 +158,8 @@ module DOTIW
     def _compute_highest_measures!(options)
       highest_measures = options.delete(:highest_measures)
       highest_measures = 1 if options.delete(:highest_measure_only)
-      highest_measures = { count: highest_measures } if highest_measures.is_a?(Integer)
-      highest_measures = highest_measures.reverse_merge(count: 1, remainder: :floor) if highest_measures
+      highest_measures = { max: highest_measures } if highest_measures.is_a?(Integer)
+      highest_measures = highest_measures.reverse_merge(max: 1, remainder: :floor) if highest_measures
 
       highest_measures
     end
