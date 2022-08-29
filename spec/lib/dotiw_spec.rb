@@ -359,7 +359,17 @@ describe 'A better distance_of_time_in_words' do
       [START_TIME,
        START_TIME + 1.day,
        { highest_measures: { remainder: :ceiling }, only: :months },
-       'less than 1 month']
+       'less than 1 month'],
+      [START_TIME,
+       # Simplistic rounding: one would expect this to round up to a second week.
+       START_TIME + 1.week + 3.days + 23.hours,
+       { highest_measures: { remainder: :round } },
+       '1 week'],
+      [START_TIME,
+      # Simplistic rounding: in some months, 15 days is less than half, but we always round it up.
+       START_TIME + 1.month + 14.days,
+       { highest_measures: { remainder: :round } },
+       '2 months'],
     ].each do |start, finish, options, output|
       it "should be #{output}" do
         expect(distance_of_time_in_words(start, finish, true, options)).to eq(output)
