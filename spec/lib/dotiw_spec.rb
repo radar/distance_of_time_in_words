@@ -165,7 +165,7 @@ describe 'A better distance_of_time_in_words' do
       [Time.zone.now, Time.zone.now + 15.days - 1.minute, '14 days, 23 hours, and 59 minutes'],
       [Time.zone.now, Time.zone.now + 29.days - 1.minute, '28 days, 23 hours, and 59 minutes'],
       [Time.zone.now, Time.zone.now + 30.days - 1.minute, '29 days, 23 hours, and 59 minutes'],
-      [Time.zone.now, Time.zone.now + 31.days - 1.minute, '30 days, 23 hours, and 59 minutes'],
+      [Time.zone.now, Time.zone.now + 31.day - 1.minute, '30 days, 23 hours, and 59 minutes'],
       [Time.zone.now, Time.zone.now + 32.days - 1.minute, '31 days, 23 hours, and 59 minutes'],
       [Time.zone.now, Time.zone.now + 33.days - 1.minute, '32 days, 23 hours, and 59 minutes']
     ].each do |start, finish, output|
@@ -329,7 +329,7 @@ describe 'A better distance_of_time_in_words' do
        { highest_measures: 3 },
        '1 year and 2 weeks'],
       [START_TIME,
-       START_TIME + 1.days,
+       START_TIME + 1.day,
        { only: %i[years months] },
        'less than 1 month'],
       [START_TIME,
@@ -337,12 +337,16 @@ describe 'A better distance_of_time_in_words' do
        { except: %i[hours minutes seconds] },
        'less than 1 day'],
       [START_TIME,
-       START_TIME + 1.days,
+       START_TIME + 1.day,
        { highest_measures: 1, only: %i[years months] },
        'less than 1 month'],
       [START_TIME,
-       START_TIME + 1.days,
+       START_TIME + 1.day + 1.hour,
        { highest_measures: {} },
+       '1 day'],
+      [START_TIME,
+       START_TIME + 1.day + 1.hour,
+       { highest_measures: { remainder: :floor} },
        '1 day'],
       [START_TIME,
        START_TIME + 1.year + 1.minute,
@@ -374,6 +378,12 @@ describe 'A better distance_of_time_in_words' do
       it "should be #{output}" do
         expect(distance_of_time_in_words(start, finish, true, options)).to eq(output)
       end
+    end
+
+    it "raises ArgumentError when an unrecognized value is passed for highest_measure.remainder" do
+      expect do
+        distance_of_time_in_words(START_TIME, START_TIME + 1.day, true, { highest_measures: { remainder: :oops }})
+      end.to raise_error(ArgumentError)
     end
 
     if defined?(ActionView)

@@ -169,6 +169,8 @@ module DOTIW
       smallest_measure = DOTIW::TimeHash::TIME_FRACTIONS[smallest_measure_index]
 
       case remainder
+      when :floor
+        # Nothing to do.
       when :ceiling
         # We already filtered out zeroes, so non-empty also means non-zero.
         if !discarded_hash.empty?
@@ -185,6 +187,8 @@ module DOTIW
           hash[smallest_measure] += 1
           _rollup! hash, smallest_measure_index
         end
+      else
+        raise ArgumentError, "unrecognized remainder value #{remainder.inspect}"
       end
     end
 
