@@ -1,10 +1,7 @@
-## 5.4.1 (Next)
-
-* Your contribution here.
-
-## 5.4.0 (2022/08/29)
+## Next
 
 * [#131](https://github.com/radar/distance_of_time_in_words/pull/131): Deprecates `highest_measure_only`. Adds alternate form of `highest_measures` option to permit rounding up whatever part of the duration was previously silently discarded - [@seansfkelley](https://github.com/seansfkelley).
+* Your contribution here.
 
 ## 5.3.3 (2022/04/25)
 
