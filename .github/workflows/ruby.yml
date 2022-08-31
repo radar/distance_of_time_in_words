@@ -1,12 +1,6 @@
 name: Ruby
 
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+on: [push, pull_request]
 
 jobs:
   build:
@@ -15,6 +9,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - ruby-version: 3.1
+          - ruby-version: 3.0
           - ruby-version: 2.5
           - ruby-version: 2.6
           - ruby-version: 2.4
