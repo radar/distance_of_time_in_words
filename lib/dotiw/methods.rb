@@ -44,6 +44,31 @@ module DOTIW
 
     private
 
+    # How many of each measure is necessary to round up to one of the next-largest measure. Note
+    # that for simplicity of implementation, we only check one measure when seeing if we should
+    # round up. This means that rounding up days to weeks, for instance, cannot draw the line at 3
+    # days and 12 hours, but instead either 3 or 4 (whole) days. Let's not even talk about weeks
+    # rounding up to months.
+    ROUNDING_THRESHOLDS = {
+      seconds: 30,
+      minutes: 30,
+      hours: 12,
+      days: 4,
+      weeks: 2,
+      months: 6,
+      years: Float::INFINITY,
+    }
+
+    ROLLUP_THRESHOLDS = {
+      seconds: 60,
+      minutes: 60,
+      hours: 24,
+      days: 7,
+      weeks: 4, # !!!
+      months: 12,
+      years: Float::INFINITY,
+    }
+
     def normalize_distance_of_time_argument_to_time(value)
       if value.is_a?(Numeric)
         Time.at(value)
@@ -63,22 +88,28 @@ module DOTIW
     end
 
     def _display_time_in_words(hash, options = {})
+      hash = hash.dup
+
       options = options.reverse_merge(
         include_seconds: false
       ).symbolize_keys!
 
+      discarded_hash = {}
+
       include_seconds = options.delete(:include_seconds)
-      hash.delete(:seconds) if !include_seconds && hash[:minutes]
+      discarded_hash[:seconds] = hash.delete(:seconds) if !include_seconds && hash[:minutes]
 
       options[:except] = Array.wrap(options[:except]).map!(&:to_sym) if options[:except]
       options[:only] = Array.wrap(options[:only]).map!(&:to_sym) if options[:only]
 
-      # Remove all the values that are nil or excluded. Keep the required ones.
-      hash.delete_if do |key, value|
-        value.nil? || value.zero? ||
-          options[:except]&.include?(key) ||
-          (options[:only] && !options[:only].include?(key))
+      DOTIW::TimeHash::TIME_FRACTIONS.each do |fraction|
+        if options[:except]&.include?(fraction) || (options[:only] && !options[:only].include?(fraction))
+          discarded_hash[fraction] = hash.delete fraction
+        end
       end
+
+      hash.delete_if { |key, value| value.nil? || value.zero? }
+      discarded_hash.delete_if { |key, value| value.nil? || value.zero? }
 
       i18n_scope = options.delete(:scope) || DOTIW::DEFAULT_I18N_SCOPE
       if hash.empty?
@@ -94,16 +125,22 @@ module DOTIW
         end
       end
 
-      output = []
-      I18n.with_options locale: options[:locale], scope: i18n_scope do |locale|
-        output = hash.map { |key, value| locale.t(key, count: value) }
-      end
-
       options.delete(:except)
       options.delete(:only)
-      highest_measures = options.delete(:highest_measures)
-      highest_measures = 1 if options.delete(:highest_measure_only)
-      output = output[0...highest_measures] if highest_measures
+
+      highest_measures = _compute_highest_measures! options
+      if highest_measures
+        high_entries, low_entries = hash.to_a.partition.with_index { |_, index| index < highest_measures[:max] }
+        hash = high_entries.to_h
+        discarded_hash.merge! low_entries.to_h
+
+        _maybe_round! hash, discarded_hash, highest_measures[:remainder]
+      end
+
+      phrases = []
+      I18n.with_options locale: options[:locale], scope: i18n_scope do |locale|
+        phrases = hash.map { |key, value| locale.t(key, count: value) }
+      end
 
       options[:words_connector] ||= I18n.translate :"#{i18n_scope}.words_connector",
                                                    default: :'support.array.words_connector',
@@ -115,7 +152,56 @@ module DOTIW
                                                        default: :'support.array.last_word_connector',
                                                        locale: options[:locale]
 
-      output.to_sentence(options.except(:accumulate_on, :compact))
+      phrases.to_sentence(options.except(:accumulate_on, :compact))
+    end
+
+    def _compute_highest_measures!(options)
+      highest_measures = options.delete(:highest_measures)
+      highest_measures = 1 if options.delete(:highest_measure_only)
+      highest_measures = { max: highest_measures } if highest_measures.is_a?(Integer)
+      highest_measures = highest_measures.reverse_merge(max: 1, remainder: :floor) if highest_measures
+
+      highest_measures
+    end
+
+    def _maybe_round!(hash, discarded_hash, remainder)
+      smallest_measure_index = DOTIW::TimeHash::TIME_FRACTIONS.index hash.to_a.last[0]
+      smallest_measure = DOTIW::TimeHash::TIME_FRACTIONS[smallest_measure_index]
+
+      case remainder
+      when :floor
+        # Nothing to do.
+      when :ceiling
+        # We already filtered out zeroes, so non-empty also means non-zero.
+        if !discarded_hash.empty?
+          hash[smallest_measure] += 1
+          _rollup! hash, smallest_measure_index
+        end
+      when :round
+        # If our smallest measure is already the smallest possible measure, there is no next
+        # smallest measure to inspect to see if we need to round up.
+        return if smallest_measure_index == 0
+
+        next_smallest_measure = DOTIW::TimeHash::TIME_FRACTIONS[smallest_measure_index - 1]
+        if discarded_hash.fetch(next_smallest_measure, 0) >= ROUNDING_THRESHOLDS[next_smallest_measure]
+          hash[smallest_measure] += 1
+          _rollup! hash, smallest_measure_index
+        end
+      else
+        raise ArgumentError, "unrecognized remainder value #{remainder.inspect}"
+      end
+    end
+
+    def _rollup!(hash, smallest_measure_index)
+      DOTIW::TimeHash::TIME_FRACTIONS[smallest_measure_index..-1].each_with_index do |fraction, index|
+        if hash.fetch(fraction, 0) >= ROLLUP_THRESHOLDS[fraction]
+          hash.delete fraction
+          next_fraction = DOTIW::TimeHash::TIME_FRACTIONS[smallest_measure_index + index + 1]
+          hash[next_fraction] = hash.fetch(next_fraction, 0) + 1
+        else
+          break
+        end
+      end
     end
   end
 end
