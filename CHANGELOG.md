@@ -5,7 +5,8 @@
 * [#135](https://github.com/radar/distance_of_time_in_words/pull/135): Add support for Ruby 3.2 - [@KinWang-2013](https://github.com/KinWang-2013).
 * [#135](https://github.com/radar/distance_of_time_in_words/pull/135): Remove support for Ruby 2.4, 2.5 and 2.6 - [@KinWang-2013](https://github.com/KinWang-2013).
 * [#135](https://github.com/radar/distance_of_time_in_words/pull/135): Add support for Ruby 2.7 - [@KinWang-2013](https://github.com/KinWang-2013).
-* [#135](https://github.com/radar/distance_of_time_in_words/pull/135): Add test for Rails versions with Ruby 3.1 - [@KinWang-2013](https://github.com/KinWang-2013).
+* [#135](https://github.com/radar/distance_of_time_in_words/pull/135): Add test for Rails versions with Ruby 3.2 - [@KinWang-2013](https://github.com/KinWang-2013).
+* [#135](https://github.com/radar/distance_of_time_in_words/pull/135): Remove suport for Rails 4 - [@KinWang-2013](https://github.com/KinWang-2013).
 * Your contribution here.
 
 ## 5.3.3 (2022/04/25)
