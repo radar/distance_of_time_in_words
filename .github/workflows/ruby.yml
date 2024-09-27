@@ -22,11 +22,11 @@ jobs:
           - ruby-version: 3.2
             gemfile: gemfiles/rails_6.0.gemfile
           - ruby-version: 3.2
-            gemfile: gemfile/rails_7.0.gemfile
+            gemfile: gemfiles/rails_7.0.gemfile
           - ruby-version: 3.2
-            gemfile: gemfile/rails_7.1.gemfile
+            gemfile: gemfiles/rails_7.1.gemfile
           - ruby-version: 3.2
-            gemfile: gemfile/rails_7.2.gemfile
+            gemfile: gemfiles/rails_7.2.gemfile
     steps:
       - uses: actions/checkout@v2
       - name: Set up Ruby
