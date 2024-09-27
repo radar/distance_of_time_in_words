@@ -2,6 +2,7 @@
 
 * [#131](https://github.com/radar/distance_of_time_in_words/pull/131): Deprecates `highest_measure_only`. Adds alternate form of `highest_measures` option to permit rounding up whatever part of the duration was previously silently discarded - [@seansfkelley](https://github.com/seansfkelley).
 * [#133](https://github.com/radar/distance_of_time_in_words/pull/133): Test on Ruby 3.0 and 3.1 - [@dblock](https://github.com/dblock).
+* [#135](https://github.com/radar/distance_of_time_in_words/pull/135): Add support for Ruby 2.7 and 3.2, removed support for ruby 2.4, 2.5, 2.6 and Rails 4 - [@KinWang-2013](https://github.com/KinWang-2013).
 * Your contribution here.
 
 ## 5.3.3 (2022/04/25)
