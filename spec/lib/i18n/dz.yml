@@ -1,0 +1,21 @@
+seconds:
+  1.second: སྐར་ཆ་ ༡
+  3.seconds: སྐར་ཆ་ 3
+minutes:
+  1.minute: སྐར་མ་ ༡
+  20.minutes: སྐར་མ་ 20
+hours:
+  1.hour: ཆུ་ཚོད་ ༡
+  5.hours: ཆུ་ཚོད་ 5
+days:
+  1.day: ཉིནམ་ ༡
+  6.days: ཉིནམ་ 6
+weeks:
+  1.week: བདུན༌ཕྲག་ ༡
+  2.weeks: བདུན༌ཕྲག་ 2
+months:
+  1.month: ཟླཝ་ ༡
+  9.months: ཟླཝ་ 9
+years:
+  1.year: ལོ་ ༡
+  3.years: ལོ་ 3

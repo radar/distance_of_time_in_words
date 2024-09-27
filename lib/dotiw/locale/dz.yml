@@ -1,0 +1,60 @@
+dz:
+  datetime:
+    dotiw:
+      seconds:
+        one: སྐར་ཆ་ ༡
+        other: "སྐར་ཆ་ %{count}"
+      minutes:
+        one: སྐར་མ་ ༡
+        other: "སྐར་མ་ %{count}"
+      hours:
+        one: ཆུ་ཚོད་ ༡
+        other: "ཆུ་ཚོད་ %{count}"
+      days:
+        one: ཉིནམ་ ༡
+        other: "ཉིནམ་ %{count}"
+      weeks:
+        one: བདུན༌ཕྲག་ ༡
+        other: "བདུན༌ཕྲག་ %{count}"
+      months:
+        one: ཟླཝ་ ༡
+        other: "ཟླཝ་ %{count}"
+      years:
+        one: ལོ་ ༡
+        other: "ལོ་ %{count}"
+      less_than_x: "%{distance} ་ལས་ཉུངམ་"
+    dotiw_compact:
+      seconds:
+        one: སྐར་ཆ་ ༡
+        other: "སྐར་ཆ་ %{count}"
+      minutes:
+        one: སྐར་མ་ ༡
+        other: "སྐར་མ་ %{count}"
+      hours:
+        one: ཆུ་ཚོད་ ༡
+        other: "ཆུ་ཚོད་ %{count}"
+      days:
+        one: ཉིནམ་ ༡
+        other: "ཉིནམ་ %{count}"
+      weeks:
+        one: བདུན༌ཕྲག་ ༡
+        other: "བདུན༌ཕྲག་ %{count}"
+      months:
+        one: ཟླཝ་ ༡
+        other: "ཟླཝ་ %{count}"
+      years:
+        one: ལོ་ ༡
+        other: "ལོ་ %{count}"
+      less_than_x: "%{distance} ་ལས་ཉུངམ"
+      words_connector: ""
+      two_words_connector: " དང་ "
+      last_word_connector: " དང་ "
+      about_x_years:
+        one: ལོ་ ༡ ་དེ་ཅིག
+        any: "ལོ་ %{count} ་དེ་ཅིག"
+      over_x_years:
+        one: "ལོ་ ༡ ་ལས་ལྷགཔ་ཅིག"
+        other: "ལོ་ %{count} ་ལས་ལྷགཔ་ཅིག"
+      almost_x_years:
+        one: ལོ་ ༡ ་མ་ལྷགཔ་ཅིག
+        any: "ལོ་ %{count} ་མ་ལྷགཔ་ཅིག"
