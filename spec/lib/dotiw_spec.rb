@@ -113,12 +113,18 @@ describe 'A better distance_of_time_in_words' do
             context category do
               fixtures.each_pair do |k, v|
                 it v do
+                  options = {
+                    locale: lang
+                  }
+
+                  options[:compact] = true if category.split.include?('compact')
+
                   expect(
                     distance_of_time_in_words(
                       START_TIME,
                       START_TIME + eval(k),
                       true,
-                      locale: lang
+                      options
                     )
                   ).to eq(v)
                 end

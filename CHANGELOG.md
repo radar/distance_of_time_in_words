@@ -5,6 +5,7 @@
 * [#134](https://github.com/radar/distance_of_time_in_words/pull/134): Add support for Dzongkha, the National language of Bhutan - [@KinWang-2013](https://github.com/KinWang-2013).
 * [#135](https://github.com/radar/distance_of_time_in_words/pull/135): Add support for Ruby 2.7 and 3.2, removed support for ruby 2.4, 2.5, 2.6 and Rails 4 - [@KinWang-2013](https://github.com/KinWang-2013).
 * [#136](https://github.com/radar/distance_of_time_in_words/pull/136): Add support for Rails 7 - [@KinWang-2013](https://github.com/KinWang-2013).
+* [#139](https://github.com/radar/distance_of_time_in_words/pull/139): Fix bug with pluralization of Russian translations for numbers ending in 1 - [bitberry-dev](https://github.com/bitberry-dev).
 * Your contribution here.
 
 ## 5.3.3 (2022/04/25)
