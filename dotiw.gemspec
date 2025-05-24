@@ -27,6 +27,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 3.0'
   s.add_development_dependency 'tzinfo', '~> 1.2.7'
+  s.add_development_dependency 'mutex_m'
+  s.add_development_dependency 'base64'
+  s.add_development_dependency 'bigdecimal'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
