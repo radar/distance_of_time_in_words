@@ -3,3 +3,21 @@ seconds:
   1.second: 1 секунда
 minutes:
   1.minute: 1 минута
+compact seconds:
+  1.second: 1с
+  11.seconds: 11с
+  21.seconds: 21с
+compact minutes:
+  1.minute: 1м
+  11.minutes: 11м
+  21.minutes: 21м
+compact hours:
+  1.hour: 1ч
+  11.hours: 11ч
+  21.hours: 21ч
+compact days:
+  1.day: 1д
+compact years:
+  1.year: 1г
+  11.years: 11г
+  21.years: 21г

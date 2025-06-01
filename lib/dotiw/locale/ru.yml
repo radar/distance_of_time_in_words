@@ -39,22 +39,22 @@ ru:
       less_than_x: "меньше, чем %{distance}"
     dotiw_compact:
       seconds:
-        one: 1с
+        one: "%{count}с"
         other: "%{count}с"
       minutes:
-        one: 1м
+        one: "%{count}м"
         other: "%{count}м"
       hours:
-        one: 1ч
+        one: "%{count}ч"
         other: "%{count}ч"
       days:
-        one: 1д
+        one: "%{count}д"
         other: "%{count}д"
       weeks:
-        one: 1н
+        one: "%{count}н"
         other: "%{count}н"
       months:
-        one: 1ме
+        one: "%{count}ме"
         other: "%{count}ме"
       years:
         one:   "%{count}г"
@@ -66,11 +66,11 @@ ru:
       two_words_connector: ""
       last_word_connector: ""
       about_x_years:
-        one: ~1г
+        one: "~%{count}г"
         any: "~%{count}г"
       over_x_years:
-        one: ">1г"
+        one: ">%{count}г"
         other: ">%{count}г"
       almost_x_years:
-        one: ~1г
+        one: "~%{count}г"
         any: "~%{count}г"
