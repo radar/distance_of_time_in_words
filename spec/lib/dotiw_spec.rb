@@ -13,10 +13,12 @@ describe 'A better distance_of_time_in_words' do
     include DOTIW::Methods
   end
 
-  START_TIME = '01-08-2009'.to_time
+  START_TIME = '01-08-2009'.to_time(:utc)
 
   before do
     I18n.locale = :en
+    ActiveSupport.to_time_preserves_timezone = :zone
+
     allow(Time).to receive(:now).and_return(START_TIME)
     allow(Time.zone).to receive(:now).and_return(START_TIME)
   end
