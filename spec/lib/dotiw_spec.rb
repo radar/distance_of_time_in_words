@@ -219,7 +219,8 @@ describe 'A better distance_of_time_in_words' do
          START_TIME + 2.day + 10_000.hour + 10.second,
          :months,
          '13 months, 3 weeks, 1 day, 16 hours, and 10 seconds'],
-        ['2015-1-15'.to_time, '2016-3-15'.to_time, :months, '14 months']
+        ['2015-1-15'.to_time, '2016-3-15'.to_time, :months, '14 months'],
+        ['2015-1-15'.to_time, '2016-3-15'.to_time, :years, '1 year and 2 months']
       ].each do |start, finish, accumulator, output|
         it "should be #{output}" do
           expect(distance_of_time_in_words(start, finish, true, accumulate_on: accumulator)).to eq(output)

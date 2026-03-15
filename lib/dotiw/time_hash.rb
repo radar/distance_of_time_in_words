@@ -43,8 +43,6 @@ module DOTIW
     def build_time_hash
       if accumulate_on = options[:accumulate_on]
         accumulate_on = accumulate_on.to_sym
-        return build_time_hash if accumulate_on == :years
-
         TIME_FRACTIONS.index(accumulate_on).downto(0) { |i| send("build_#{TIME_FRACTIONS[i]}") }
       else
         while distance > 0
@@ -91,9 +89,13 @@ module DOTIW
     def build_months
       build_years_months_weeks_days
 
-      if (years = output.delete(:years)) > 0
+      if options[:accumulate_on]&.to_sym == :months && (years = output.delete(:years)) > 0
         output[:months] += (years * 12)
       end
+    end
+
+    def build_years
+      build_years_months_weeks_days
     end
 
     def build_years_months_weeks_days
