@@ -44,7 +44,11 @@ Pushed git commits and tags.
 Pushed dotiw 5.5.1 to rubygems.org.
 ```
 
-Create a [GitHub release](https://github.com/radar/distance_of_time_in_words/releases/new) for the tag `v5.5.1`, using the CHANGELOG entries for this version as the release notes.
+Create a GitHub release for the tag using the `gh` CLI, passing the CHANGELOG entries for this version as the release notes.
+
+```
+gh release create v5.5.1 --title "5.5.1" --notes "$(sed -n '/^## 5.5.1/,/^## /p' CHANGELOG.md | sed '$d')"
+```
 
 ## Prepare for the Next Version
 
