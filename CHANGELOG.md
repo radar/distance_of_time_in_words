@@ -1,13 +1,19 @@
-## 5.4.0 (Next)
+## Next (Next)
+
+* [#145](https://github.com/radar/distance_of_time_in_words/pull/145): Add `dotiw/core` require path to use dotiw without overriding the Rails date helpers, `DOTIW.distance_of_time_in_words` shortcut - [@ermolaev](https://github.com/ermolaev).
+* Your contribution here.
+
+## 5.5.0 (2026/03/15)
 
 * [#131](https://github.com/radar/distance_of_time_in_words/pull/131): Deprecates `highest_measure_only`. Adds alternate form of `highest_measures` option to permit rounding up whatever part of the duration was previously silently discarded - [@seansfkelley](https://github.com/seansfkelley).
 * [#133](https://github.com/radar/distance_of_time_in_words/pull/133): Test on Ruby 3.0 and 3.1 - [@dblock](https://github.com/dblock).
 * [#134](https://github.com/radar/distance_of_time_in_words/pull/134): Add support for Dzongkha, the National language of Bhutan - [@KinWang-2013](https://github.com/KinWang-2013).
 * [#135](https://github.com/radar/distance_of_time_in_words/pull/135): Add support for Ruby 2.7 and 3.2, removed support for ruby 2.4, 2.5, 2.6 and Rails 4 - [@KinWang-2013](https://github.com/KinWang-2013).
 * [#136](https://github.com/radar/distance_of_time_in_words/pull/136): Add support for Rails 7 - [@KinWang-2013](https://github.com/KinWang-2013).
-* [#139](https://github.com/radar/distance_of_time_in_words/pull/139): Fix bug with pluralization of Russian translations for numbers ending in 1 - [bitberry-dev](https://github.com/bitberry-dev).
-* [#145](https://github.com/radar/distance_of_time_in_words/pull/145): Add `dotiw/core` require path to use dotiw without overriding the Rails date helpers, `DOTIW.distance_of_time_in_words` shortcut - [@ermolaev](https://github.com/ermolaev).
-* Your contribution here.
+* [#139](https://github.com/radar/distance_of_time_in_words/pull/139): Fix bug with pluralization of Russian translations for numbers ending in 1 - [@bitberry-dev](https://github.com/bitberry-dev).
+* [#140](https://github.com/radar/distance_of_time_in_words/pull/140): Add Ruby 3.3 and 3.4 support, added logger - [@dblock](https://github.com/dblock).
+* [#141](https://github.com/radar/distance_of_time_in_words/pull/141): Fix flaky time calculation test by explicitly setting timezone - [@bitberry-dev](https://github.com/bitberry-dev).
+* Fix bug when accumulating on years - [@radar](https://github.com/radar).
 
 ## 5.3.3 (2022/04/25)
 
