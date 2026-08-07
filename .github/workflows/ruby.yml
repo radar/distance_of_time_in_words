@@ -29,6 +29,8 @@ jobs:
             gemfile: gemfiles/rails_7.1.gemfile
           - ruby-version: 3.4
             gemfile: gemfiles/rails_7.2.gemfile
+          - ruby-version: 3.4
+            gemfile: gemfiles/rails_8.0.gemfile
     steps:
       - uses: actions/checkout@v2
       - name: Set up Ruby
