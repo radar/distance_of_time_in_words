@@ -41,7 +41,9 @@ module DOTIW
     FOUR_WEEKS = 28.days.freeze
 
     def build_time_hash
-      if accumulate_on = options[:accumulate_on]
+      if (max_unit = options[:max_unit])
+        build_max_unit(max_unit.to_sym)
+      elsif accumulate_on = options[:accumulate_on]
         accumulate_on = accumulate_on.to_sym
         TIME_FRACTIONS.index(accumulate_on).downto(0) { |i| send("build_#{TIME_FRACTIONS[i]}") }
       else
@@ -84,6 +86,44 @@ module DOTIW
 
     def build_weeks
       output[:weeks], @distance = distance.divmod(ONE_WEEK.to_i) unless output[:weeks]
+    end
+
+    # Expresses the entire distance as a single number in the given unit, discarding
+    # (flooring) any remainder smaller than that unit, unlike +accumulate_on+ which keeps
+    # showing the smaller units below the target.
+    def build_max_unit(unit)
+      case unit
+      when :seconds
+        output[:seconds] = distance.to_i
+      when :minutes
+        output[:minutes] = (distance / ONE_MINUTE).floor
+      when :hours
+        output[:hours] = (distance / ONE_HOUR).floor
+      when :days
+        output[:days] = (distance / ONE_DAY).floor
+      when :weeks
+        output[:weeks] = (distance / ONE_WEEK).floor
+      when :months
+        output[:months] = whole_months_between(smallest, largest)
+      when :years
+        output[:years] = whole_years_between(smallest, largest)
+      else
+        raise ArgumentError, "unrecognized max_unit #{unit.inspect}"
+      end
+
+      @distance = 0
+    end
+
+    def whole_months_between(from, to)
+      months = (to.year - from.year) * 12 + (to.month - from.month)
+      months -= 1 if to.advance(months: -months) < from
+      months
+    end
+
+    def whole_years_between(from, to)
+      years = to.year - from.year
+      years -= 1 if to.advance(years: -years) < from
+      years
     end
 
     def build_months

@@ -152,7 +152,7 @@ module DOTIW
                                                        default: :'support.array.last_word_connector',
                                                        locale: options[:locale]
 
-      phrases.to_sentence(options.except(:accumulate_on, :compact))
+      phrases.to_sentence(options.except(:accumulate_on, :max_unit, :compact))
     end
 
     def _compute_highest_measures!(options)

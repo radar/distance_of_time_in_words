@@ -228,6 +228,55 @@ describe 'A better distance_of_time_in_words' do
       end
     end
 
+    describe 'max_unit:' do
+      [
+        [START_TIME,
+         START_TIME + 10.minute,
+         :seconds,
+         { seconds: 600 },
+         '600 seconds'],
+        [START_TIME,
+         START_TIME + 10.hour + 10.minute + 1.second,
+         :minutes,
+         { minutes: 610 },
+         '610 minutes'],
+        [START_TIME,
+         START_TIME + 2.day + 10_000.hour + 10.second,
+         :hours,
+         { hours: 10_048 },
+         '10048 hours'],
+        [START_TIME,
+         START_TIME + 2.day + 10_000.hour + 10.second,
+         :days,
+         { days: 418 },
+         '418 days'],
+        [START_TIME,
+         START_TIME + 2.day + 10_000.hour + 10.second,
+         :weeks,
+         { weeks: 59 },
+         '59 weeks'],
+        ['2015-1-15'.to_time, '2016-3-15'.to_time, :months, { months: 14 }, '14 months'],
+        ['2015-1-15'.to_time, '2016-3-15'.to_time, :years, { years: 1 }, '1 year']
+      ].each do |start, finish, unit, hash, output|
+        it "should be #{output}" do
+          expect(distance_of_time_in_words_hash(start, finish, max_unit: unit)).to eq(hash)
+          expect(distance_of_time_in_words(start, finish, true, max_unit: unit)).to eq(output)
+        end
+      end
+
+      it 'floors and discards any remainder smaller than the unit' do
+        expect(
+          distance_of_time_in_words_hash(START_TIME, START_TIME + 1.year - 1.day, max_unit: :years)
+        ).to eq(years: 0)
+      end
+
+      it 'raises for an unrecognized unit' do
+        expect do
+          distance_of_time_in_words_hash(START_TIME, START_TIME + 1.day, max_unit: :fortnights)
+        end.to raise_error(ArgumentError, /unrecognized max_unit/)
+      end
+    end
+
     describe 'without finish time' do
       # A missing finish argument should default to zero, essentially returning
       # the equivalent of distance_of_time in order to be backwards-compatible
