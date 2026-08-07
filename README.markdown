@@ -147,6 +147,25 @@ Specifies the maximum output unit which will accumulate all the surplus. Say you
 => "121 minutes and 10 seconds"
 ```
 
+Note that units below `accumulate_on` are still shown separately. If you want the entire distance expressed as a single number in one unit, use `:max_unit` instead.
+
+#### :max_unit
+
+Expresses the entire distance as a single number in the given unit, discarding (flooring) any remainder smaller than that unit. Unlike `:accumulate_on`, no other units are shown in the output.
+
+```ruby
+>> distance_of_time_in_words(Time.now, Time.now + 1.day, true, max_unit: :seconds)
+=> "86400 seconds"
+
+>> distance_of_time_in_words(Time.now, Time.now + 3.days + 2.hours, true, max_unit: :hours)
+=> "74 hours"
+
+>> distance_of_time_in_words_hash(Time.now, Time.now + 3.days + 2.hours, max_unit: :hours)
+=> {hours: 74}
+```
+
+Valid units are `:seconds`, `:minutes`, `:hours`, `:days`, `:weeks`, `:months` and `:years`.
+
 #### :only
 
 Only want a specific measurement of time? No problem!

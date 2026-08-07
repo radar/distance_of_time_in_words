@@ -3,6 +3,7 @@
 * [#145](https://github.com/radar/distance_of_time_in_words/pull/145): Add `dotiw/core` require path to use dotiw without overriding the Rails date helpers, `DOTIW.distance_of_time_in_words` shortcut - [@ermolaev](https://github.com/ermolaev).
 * [#146](https://github.com/radar/distance_of_time_in_words/pull/146): Add support for Rails 8 - [@dblock](https://github.com/dblock).
 * [#147](https://github.com/radar/distance_of_time_in_words/pull/147): Add support for Rails 8.1, drop the `tzinfo ~> 1.2.7` development pin - [@ermolaev](https://github.com/ermolaev).
+* [#148](https://github.com/radar/distance_of_time_in_words/pull/148): Add `max_unit` option to express the entire distance as a single number in one unit - [@dblock](https://github.com/dblock).
 * Your contribution here.
 
 ## 5.5.0 (2026/03/15)
