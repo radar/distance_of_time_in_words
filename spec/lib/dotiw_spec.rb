@@ -51,6 +51,21 @@ describe 'A better distance_of_time_in_words' do
         expect(distance_of_time(1.2.minute, include_seconds: true, except: 'seconds')).to eq('1 minute')
       end
     end
+
+    describe 'regression for #137' do
+      # https://github.com/radar/distance_of_time_in_words/issues/137
+      # Reported that hours were seemingly substituted for minutes, e.g. (3.days + 4.hours)
+      # rendering as "3 days and 3 hours" on Rails 7.1.4.1.
+      [
+        [(3.days + 4.hours).to_f, '3 days and 4 hours'],
+        [(4.days + 1.hour).to_f, '4 days and 1 hour'],
+        [(6.days + 23.hours).to_f, '6 days and 23 hours']
+      ].each do |seconds, output|
+        it "should be #{output}" do
+          expect(distance_of_time(seconds, locale: :en)).to eq(output)
+        end
+      end
+    end
   end
 
   describe '#distance_of_time_in_words_hash' do
