@@ -32,6 +32,23 @@ include ActionView::Helpers::TextHelper
 include ActionView::Helpers::NumberHelper
 ```
 
+### Rails, without overriding the built-in helpers
+
+Requiring `dotiw` replaces the Rails implementation of `distance_of_time_in_words`
+and `time_ago_in_words`. If you would rather keep the built-in Rails helpers and
+call dotiw explicitly, require `dotiw/core` instead:
+
+```ruby
+gem 'dotiw', require: 'dotiw/core'
+```
+
+This loads `DOTIW::Methods` and the dotiw translations, but leaves
+`ActionView::Helpers::DateHelper` untouched:
+
+```ruby
+DOTIW.distance_of_time_in_words(from_time, to_time, highest_measures: 1)
+```
+
 ## distance\_of\_time\_in\_words
 
 Take this for a totally kick-ass example:
