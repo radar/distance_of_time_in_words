@@ -5,6 +5,7 @@
 * [#147](https://github.com/radar/distance_of_time_in_words/pull/147): Add support for Rails 8.1, drop the `tzinfo ~> 1.2.7` development pin - [@ermolaev](https://github.com/ermolaev).
 * [#148](https://github.com/radar/distance_of_time_in_words/pull/148): Add `max_unit` option to express the entire distance as a single number in one unit - [@dblock](https://github.com/dblock).
 * [#79](https://github.com/radar/distance_of_time_in_words/issues/79): Speed up `distance_of_time_in_words` by avoiding `I18n.with_options`/`ActiveSupport::OptionMerger` allocation for translations, using `I18n.translate` directly instead - [@dblock](https://github.com/dblock).
+* [#149](https://github.com/radar/distance_of_time_in_words/pull/149): Add a regression test and a Rails 7.1.4.1/Ruby 3.3.4 CI appraisal for [#137](https://github.com/radar/distance_of_time_in_words/issues/137) - [@dblock](https://github.com/dblock).
 * Your contribution here.
 
 ## 5.5.0 (2026/03/15)
