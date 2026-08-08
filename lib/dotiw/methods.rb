@@ -117,12 +117,13 @@ module DOTIW
         fractions &= options[:only] if options[:only]
         fractions -= options[:except] if options[:except]
 
-        I18n.with_options locale: options[:locale], scope: i18n_scope do |locale|
-          # e.g. try to format 'less than 1 days', fallback to '0 days'
-          return locale.translate :less_than_x,
-                                  distance: locale.translate(fractions.first, count: 1),
-                                  default: locale.translate(fractions.first, count: 0)
-        end
+        locale = options[:locale]
+        # e.g. try to format 'less than 1 days', fallback to '0 days'
+        return I18n.translate :less_than_x,
+                              locale: locale,
+                              scope: i18n_scope,
+                              distance: I18n.translate(fractions.first, locale: locale, scope: i18n_scope, count: 1),
+                              default: I18n.translate(fractions.first, locale: locale, scope: i18n_scope, count: 0)
       end
 
       options.delete(:except)
@@ -137,10 +138,8 @@ module DOTIW
         _maybe_round! hash, discarded_hash, highest_measures[:remainder]
       end
 
-      phrases = []
-      I18n.with_options locale: options[:locale], scope: i18n_scope do |locale|
-        phrases = hash.map { |key, value| locale.t(key, count: value) }
-      end
+      locale = options[:locale]
+      phrases = hash.map { |key, value| I18n.translate(key, locale: locale, scope: i18n_scope, count: value) }
 
       options[:words_connector] ||= I18n.translate :"#{i18n_scope}.words_connector",
                                                    default: :'support.array.words_connector',
