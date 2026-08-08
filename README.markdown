@@ -172,15 +172,21 @@ Only want a specific measurement of time? No problem!
 
 ```ruby
 >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute, false, only: :minutes)
-=> "1 minute"
+=> "61 minutes"
 ```
+
+Excluded measurements are folded into the next smaller included measurement instead of being
+discarded, so the returned duration is always accurate (1 hour + 1 minute = 61 minutes, not 1
+minute).
 
 You only want some? No problem too!
 
 ```ruby
 >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.day + 1.minute, false, only: [:minutes, :hours])
-=> "1 hour and 1 minute"
+=> "25 hours and 1 minute"
 ```
+
+Here the excluded day is folded into hours (1 day + 1 hour = 25 hours).
 
 #### :except
 
@@ -188,15 +194,19 @@ Don't want a measurement of time? No problem!
 
 ```ruby
 >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.minute, false, except: :minutes)
-=> "1 hour"
+=> "1 hour and 60 seconds"
 ```
+
+The excluded minute is folded into seconds (1 minute = 60 seconds) rather than discarded.
 
 Culling a whole group of measurements of time:
 
 ```ruby
 >> distance_of_time_in_words(Time.now, Time.now + 1.hour + 1.day + 1.minute, false, except: [:minutes, :hours])
-=> "1 day"
+=> "1 day and 3660 seconds"
 ```
+
+The excluded hour and minute cascade down into seconds (1 hour + 1 minute = 3660 seconds).
 
 #### :highest\_measure\_only
 
