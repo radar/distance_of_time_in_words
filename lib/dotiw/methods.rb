@@ -102,9 +102,23 @@ module DOTIW
       options[:except] = Array.wrap(options[:except]).map!(&:to_sym) if options[:except]
       options[:only] = Array.wrap(options[:only]).map!(&:to_sym) if options[:only]
 
-      DOTIW::TimeHash::TIME_FRACTIONS.each do |fraction|
-        if options[:except]&.include?(fraction) || (options[:only] && !options[:only].include?(fraction))
-          discarded_hash[fraction] = hash.delete fraction
+      if options[:except] || options[:only]
+        # Fold excluded fractions into the next smaller fraction instead of discarding their
+        # duration outright, e.g. weeks excluded via only: [:years, :months, :days] are converted
+        # to days and added to the days count, rather than losing those weeks entirely. Larger
+        # fractions are processed first so that a run of consecutive excluded fractions cascades
+        # down to the largest fraction that's still included (or is dropped if none remain).
+        DOTIW::TimeHash::TIME_FRACTIONS.reverse_each do |fraction|
+          next unless hash.key?(fraction)
+          next unless options[:except]&.include?(fraction) || (options[:only] && !options[:only].include?(fraction))
+
+          value = hash.delete(fraction)
+          discarded_hash[fraction] = value
+
+          next_fraction = _next_smaller_fraction(fraction)
+          next unless next_fraction
+
+          hash[next_fraction] = hash.fetch(next_fraction, 0) + (value * ROLLUP_THRESHOLDS[next_fraction])
         end
       end
 
@@ -189,6 +203,13 @@ module DOTIW
       else
         raise ArgumentError, "unrecognized remainder value #{remainder.inspect}"
       end
+    end
+
+    def _next_smaller_fraction(fraction)
+      index = DOTIW::TimeHash::TIME_FRACTIONS.index(fraction)
+      return nil if index.nil? || index.zero?
+
+      DOTIW::TimeHash::TIME_FRACTIONS[index - 1]
     end
 
     def _rollup!(hash, smallest_measure_index)

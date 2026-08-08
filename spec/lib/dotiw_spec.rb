@@ -346,22 +346,28 @@ describe 'A better distance_of_time_in_words' do
       [START_TIME,
        START_TIME + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
        { except: 'minutes' },
-       '1 year, 2 months, 3 days, 4 hours, and 6 seconds'],
+       # 5 excluded minutes are folded into seconds (5 * 60 + 6 = 306) instead of being discarded.
+       '1 year, 2 months, 3 days, 4 hours, and 306 seconds'],
       [START_TIME,
        START_TIME + 1.hour + 1.minute,
-       { except: 'minutes' }, '1 hour'],
+       { except: 'minutes' },
+       # The excluded minute is folded into seconds (1 * 60 = 60) instead of being discarded.
+       '1 hour and 60 seconds'],
       [START_TIME,
        START_TIME + 1.hour + 1.day + 1.minute,
        { except: %w[minutes hours] },
-       '1 day'],
+       # The excluded hour and minute cascade down into seconds (1 * 24 * 60 * 60 + 1 * 60 = 3660).
+       '1 day and 3660 seconds'],
       [START_TIME,
        START_TIME + 1.hour + 1.day + 1.minute,
        { only: %w[minutes hours] },
-       '1 hour and 1 minute'],
+       # The excluded day is folded into hours (1 * 24 + 1 = 25) instead of being discarded.
+       '25 hours and 1 minute'],
       [START_TIME,
        START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
        { except: 'minutes' },
-       '1 year, 2 months, 3 weeks, 4 days, 5 hours, and 7 seconds'],
+       # 6 excluded minutes are folded into seconds (6 * 60 + 7 = 367) instead of being discarded.
+       '1 year, 2 months, 3 weeks, 4 days, 5 hours, and 367 seconds'],
       [START_TIME,
        START_TIME + 1.hour + 2.minutes + 3.seconds,
        { highest_measure_only: true },
@@ -442,6 +448,27 @@ describe 'A better distance_of_time_in_words' do
       expect do
         distance_of_time_in_words(START_TIME, START_TIME + 1.day, true, { highest_measures: { remainder: :oops }})
       end.to raise_error(ArgumentError)
+    end
+
+    describe 'folding excluded fractions into included ones (regression for #77 and #120)' do
+      it 'folds excluded weeks into days rather than discarding them' do
+        from = '2019-01-02'.to_time
+        to = '2020-12-28'.to_time
+        expect(distance_of_time_in_words(from, to, false, only: %i[years months days]))
+          .to eq('1 year, 11 months, and 26 days')
+      end
+
+      it 'folds excluded weeks into days when using except' do
+        from = '2019-01-02'.to_time
+        to = '2020-12-28'.to_time
+        expect(distance_of_time_in_words(from, to, false, except: :weeks))
+          .to eq('1 year, 11 months, and 26 days')
+      end
+
+      it 'folds an excluded month into days' do
+        expect(distance_of_time_in_words(START_TIME, START_TIME + 1.month + 9.days, false, only: %i[months days]))
+          .to eq('1 month and 9 days')
+      end
     end
 
     if defined?(ActionView)
