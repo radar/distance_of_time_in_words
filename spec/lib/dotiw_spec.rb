@@ -228,6 +228,28 @@ describe 'A better distance_of_time_in_words' do
       end
     end
 
+    context 'across a historical UTC offset change (#153)' do
+      # Real, non-mocked reproduction from #153: Pacific/Norfolk permanently
+      # changed its UTC offset from +11:30 to +11:00 on 2015-10-04 (a
+      # tzdata rule change, not a recurring DST transition - both endpoints
+      # report dst? == false). The calendar distance (years/months/weeks/
+      # days) was correct, but the leftover hours/minutes leaked the 30
+      # minute offset difference as a spurious "23 hours and 30 minutes".
+      around do |example|
+        original_tz = ENV.fetch('TZ', nil)
+        ENV['TZ'] = 'Pacific/Norfolk'
+        example.run
+        ENV['TZ'] = original_tz
+      end
+
+      it 'is 1 year and 2 months, not 1 year, 2 months, 23 hours, and 30 minutes' do
+        start = '2015-1-15'.to_time
+        finish = '2016-3-15'.to_time
+
+        expect(distance_of_time_in_words(start, finish, true)).to eq('1 year and 2 months')
+      end
+    end
+
     describe 'accumulate_on:' do
       [
         [START_TIME,

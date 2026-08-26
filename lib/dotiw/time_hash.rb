@@ -13,15 +13,9 @@ module DOTIW
       @from_time  = from_time || Time.current
       @to_time    = to_time   || (@to_time_not_given = true && @from_time + distance.seconds)
       @smallest, @largest = [@from_time, @to_time].minmax
-      @to_time   += 1.hour if @to_time_not_given && offset_decreased?(smallest, largest)
-      @to_time   -= 1.hour if @to_time_not_given && offset_increased?(smallest, largest)
+      @to_time += offset_delta(smallest, largest) if @to_time_not_given
       @smallest, @largest = [@from_time, @to_time].minmax
-      @distance ||= begin
-        d = largest - smallest
-        d -= 1.hour if offset_decreased?(smallest, largest)
-        d += 1.hour if offset_increased?(smallest, largest)
-        d
-      end
+      @distance ||= (largest - smallest) + offset_delta(smallest, largest)
 
       build_time_hash
     end
@@ -40,15 +34,16 @@ module DOTIW
     ONE_WEEK = 7.days.freeze
     FOUR_WEEKS = 28.days.freeze
 
-    # Compare actual UTC offsets rather than Time#dst?, since dst? can be
-    # unreliable across Time/DateTime conversions (e.g. Time.at vs to_time)
-    # in timezones with an inverted DST scheme, such as Europe/Dublin.
-    def offset_decreased?(smallest, largest)
-      smallest.utc_offset > largest.utc_offset
-    end
-
-    def offset_increased?(smallest, largest)
-      smallest.utc_offset < largest.utc_offset
+    # The distance between two Time objects computed via subtraction already
+    # reflects any change in UTC offset between them (whether from a DST
+    # transition or a permanent tzdata rule change, e.g. Pacific/Norfolk's
+    # 2015 UTC offset change), which is what we want when reporting a raw
+    # elapsed duration. However, when we split that distance into calendar
+    # fields (years/months/weeks/days), we want the offset difference
+    # folded away so the leftover hours/minutes/seconds reflect only actual
+    # elapsed wall-clock time, not artifacts of an offset shift.
+    def offset_delta(smallest, largest)
+      largest.utc_offset - smallest.utc_offset
     end
 
     def build_time_hash
