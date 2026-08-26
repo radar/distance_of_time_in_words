@@ -193,6 +193,24 @@ describe 'A better distance_of_time_in_words' do
       end
     end
 
+    context 'when Time#dst? is unreliable across Time/DateTime conversions (#63)' do
+      # Simulates the scenario reported in #63: under some timezones (e.g.
+      # Europe/Dublin, which has an inverted DST scheme), Time#dst? can
+      # disagree between a Time built via Time.at(datetime) and one built
+      # via datetime.to_time for the exact same instant, even though their
+      # utc_offset is identical. This previously caused an incorrect +/-1
+      # hour "DST correction" to be applied.
+      it 'ignores a spurious dst? mismatch when utc_offset agrees' do
+        start = Time.at(DateTime.now)
+        finish = start + 1.minute
+
+        allow(start).to receive(:dst?).and_return(true)
+        allow(finish).to receive(:dst?).and_return(false)
+
+        expect(distance_of_time_in_words(start, finish)).to eq('1 minute')
+      end
+    end
+
     describe 'accumulate_on:' do
       [
         [START_TIME,
