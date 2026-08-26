@@ -6,6 +6,7 @@
 * [#148](https://github.com/radar/distance_of_time_in_words/pull/148): Add `max_unit` option to express the entire distance as a single number in one unit - [@dblock](https://github.com/dblock).
 * [#79](https://github.com/radar/distance_of_time_in_words/issues/79): Speed up `distance_of_time_in_words` by avoiding `I18n.with_options`/`ActiveSupport::OptionMerger` allocation for translations, using `I18n.translate` directly instead - [@dblock](https://github.com/dblock).
 * [#77](https://github.com/radar/distance_of_time_in_words/issues/77), [#120](https://github.com/radar/distance_of_time_in_words/issues/120): Fix `only`/`except` discarding the duration of excluded fractions instead of folding them into the next smaller included fraction - [@dblock](https://github.com/dblock).
+* [#63](https://github.com/radar/distance_of_time_in_words/issues/63): Fix incorrect DST correction in timezones with an inverted DST scheme (e.g. Europe/Dublin) by comparing `utc_offset` instead of the unreliable `Time#dst?` - [@dblock](https://github.com/dblock).
 * Your contribution here.
 
 ## 5.5.0 (2026/03/15)

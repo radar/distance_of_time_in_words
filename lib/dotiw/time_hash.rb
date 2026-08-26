@@ -13,13 +13,13 @@ module DOTIW
       @from_time  = from_time || Time.current
       @to_time    = to_time   || (@to_time_not_given = true && @from_time + distance.seconds)
       @smallest, @largest = [@from_time, @to_time].minmax
-      @to_time   += 1.hour if @to_time_not_given && smallest.dst? && !largest.dst?
-      @to_time   -= 1.hour if @to_time_not_given && !smallest.dst? && largest.dst?
+      @to_time   += 1.hour if @to_time_not_given && offset_decreased?(smallest, largest)
+      @to_time   -= 1.hour if @to_time_not_given && offset_increased?(smallest, largest)
       @smallest, @largest = [@from_time, @to_time].minmax
       @distance ||= begin
         d = largest - smallest
-        d -= 1.hour if smallest.dst? && !largest.dst?
-        d += 1.hour if !smallest.dst? && largest.dst?
+        d -= 1.hour if offset_decreased?(smallest, largest)
+        d += 1.hour if offset_increased?(smallest, largest)
         d
       end
 
@@ -39,6 +39,17 @@ module DOTIW
     ONE_DAY = 1.day.freeze
     ONE_WEEK = 7.days.freeze
     FOUR_WEEKS = 28.days.freeze
+
+    # Compare actual UTC offsets rather than Time#dst?, since dst? can be
+    # unreliable across Time/DateTime conversions (e.g. Time.at vs to_time)
+    # in timezones with an inverted DST scheme, such as Europe/Dublin.
+    def offset_decreased?(smallest, largest)
+      smallest.utc_offset > largest.utc_offset
+    end
+
+    def offset_increased?(smallest, largest)
+      smallest.utc_offset < largest.utc_offset
+    end
 
     def build_time_hash
       if (max_unit = options[:max_unit])
