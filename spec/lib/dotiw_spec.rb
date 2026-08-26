@@ -193,21 +193,38 @@ describe 'A better distance_of_time_in_words' do
       end
     end
 
-    context 'when Time#dst? is unreliable across Time/DateTime conversions (#63)' do
-      # Simulates the scenario reported in #63: under some timezones (e.g.
-      # Europe/Dublin, which has an inverted DST scheme), Time#dst? can
-      # disagree between a Time built via Time.at(datetime) and one built
-      # via datetime.to_time for the exact same instant, even though their
-      # utc_offset is identical. This previously caused an incorrect +/-1
+    context 'in timezones with an inverted DST scheme (#63)' do
+      # Real, non-mocked reproduction from #63: running the suite under
+      # certain timezones (e.g. Europe/Dublin, where IST is "standard" time
+      # and GMT is technically the DST offset) previously failed because
+      # Time#dst? disagreed between a Time built via Time.at(datetime) and
+      # one built via datetime.to_time for the exact same instant, even
+      # though their utc_offset was identical. This caused a spurious +/-1
       # hour "DST correction" to be applied.
-      it 'ignores a spurious dst? mismatch when utc_offset agrees' do
-        start = Time.at(DateTime.now)
-        finish = start + 1.minute
+      around do |example|
+        original_tz = ENV.fetch('TZ', nil)
+        ENV['TZ'] = tz
+        example.run
+        ENV['TZ'] = original_tz
+      end
 
-        allow(start).to receive(:dst?).and_return(true)
-        allow(finish).to receive(:dst?).and_return(false)
+      %w[
+        Europe/Dublin
+        Africa/Casablanca
+        Asia/Tehran
+        Europe/Moscow
+        Asia/Gaza
+      ].each do |timezone|
+        context "TZ=#{timezone}" do
+          let(:tz) { timezone }
 
-        expect(distance_of_time_in_words(start, finish)).to eq('1 minute')
+          it 'is 1 minute' do
+            start = Time.at(DateTime.now)
+            finish = DateTime.now + 1.minute
+
+            expect(distance_of_time_in_words(start, finish)).to eq('1 minute')
+          end
+        end
       end
     end
 
