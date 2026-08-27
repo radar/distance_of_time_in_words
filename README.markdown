@@ -1,4 +1,4 @@
-# dotiw ![Ruby](https://github.com/radar/distance_of_time_in_words/workflows/Ruby/badge.svg)
+# dotiw ![Ruby](https://github.com/radar/distance_of_time_in_words/workflows/Ruby/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/radar/distance_of_time_in_words/badge.svg?branch=master)](https://coveralls.io/github/radar/distance_of_time_in_words?branch=master)
 
 The `dotiw` library that adds `distance_of_time_in_words` to any Ruby project, or overrides the default implementation in Rails with more accurate output.
 

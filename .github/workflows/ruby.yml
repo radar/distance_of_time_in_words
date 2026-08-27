@@ -51,3 +51,20 @@ jobs:
           gem install bundler -v ${BUNDLER:-2.1.4}
           bundle install --jobs 4 --retry 3
           bundle exec rake
+      - name: Upload coverage to Coveralls
+        if: matrix.ruby-version == '3.4'
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: ruby-${{ matrix.ruby-version }}-${{ matrix.gemfile }}
+          parallel: true
+
+  finish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close parallel build
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true

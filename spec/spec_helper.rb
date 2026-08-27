@@ -3,6 +3,11 @@
 ROOT_PATH = File.join(File.dirname(__FILE__), '..')
 $LOAD_PATH.unshift ROOT_PATH unless $LOAD_PATH.include? ROOT_PATH
 
+require 'simplecov'
+SimpleCov.start do
+  add_filter '/spec/'
+end
+
 # Ruby 3.4 dropped concurrent-ruby's implicit require of logger, which older
 # Rails versions rely on being already loaded, see https://github.com/rails/rails/issues/54271.
 require 'logger'

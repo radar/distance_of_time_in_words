@@ -1,5 +1,6 @@
 tmp
 pkg
+coverage
 spec/fixtures/database.yml
 .rvmrc
 Gemfile.lock
