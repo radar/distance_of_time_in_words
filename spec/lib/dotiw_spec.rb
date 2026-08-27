@@ -526,6 +526,13 @@ describe 'A better distance_of_time_in_words' do
         expect(distance_of_time_in_words(START_TIME, START_TIME + 1.month + 9.days, false, only: %i[months days]))
           .to eq('1 month and 9 days')
       end
+
+      it 'converts a negative day count into a week when the day-of-month matches but the hour rolls back' do
+        from = Time.new(2024, 5, 1, 10, 0, 0)
+        to = Time.new(2024, 6, 1, 9, 0, 0)
+        expect(distance_of_time_in_words(from, to, false, only: %i[months weeks days]))
+          .to eq('4 weeks and 2 days')
+      end
     end
 
     if defined?(ActionView)
