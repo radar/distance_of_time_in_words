@@ -10,6 +10,7 @@
 * [#153](https://github.com/radar/distance_of_time_in_words/issues/153): Fix leftover hours/minutes leaking a historical UTC offset change (e.g. Pacific/Norfolk's 2015 offset change) into the result instead of folding it into the calendar distance - [@dblock](https://github.com/dblock).
 * [#44](https://github.com/radar/distance_of_time_in_words/issues/44): Document that `vague: true` combined with a non-English `locale:` requires the host application to load Rails' own translations for that locale - [@dblock](https://github.com/dblock).
 * [#156](https://github.com/radar/distance_of_time_in_words/pull/156): Add Ruby 4.0 to the test matrix - [@dblock](https://github.com/dblock).
+* [#158](https://github.com/radar/distance_of_time_in_words/pull/158): Add test coverage reporting with SimpleCov and Coveralls, merged across all Ruby 3.4 CI jobs (default + pinned Rails gemfiles) using parallel builds - [@dblock](https://github.com/dblock).
 * Your contribution here.
 
 ## 5.5.0 (2026/03/15)
