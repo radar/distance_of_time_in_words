@@ -134,6 +134,8 @@ This will also be passed to `to_sentence`.
 
 Specify this if you want it to use the old `distance_of_time_in_words`. The value can be anything except `nil` or `false`.
 
+Note that `:vague` falls back to Rails/ActionView's own `distance_of_time_in_words`, which looks up its translations under `datetime.distance_in_words`. This namespace is provided by Rails core translations (e.g. via the [rails-i18n](https://github.com/svenfuchs/rails-i18n) gem) for non-English locales, not by dotiw. If you combine `:vague` with a non-English `:locale` and see a "translation missing" error, make sure your application also loads the corresponding Rails translations for that locale (see [#44](https://github.com/radar/distance_of_time_in_words/issues/44)).
+
 #### :include_seconds
 
 As described above this option is the equivalent to the third argument whether to include seconds.

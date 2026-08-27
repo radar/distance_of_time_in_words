@@ -33,3 +33,8 @@ end
 appraise 'rails_8.1' do
   gem 'rails', '~> 8.1.0'
 end
+
+appraise 'rails_8.1_i18n' do
+  gem 'rails', '~> 8.1.0'
+  gem 'rails-i18n'
+end

@@ -573,10 +573,28 @@ describe 'A better distance_of_time_in_words' do
           [START_TIME,
            START_TIME + 1.year + 2.months + 3.weeks + 4.days + 5.hours + 6.minutes + 7.seconds,
            { vague: nil },
-           '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds']
+           '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, and 7 seconds'],
+          [START_TIME,
+           START_TIME + 1.year + 2.months,
+           { vague: true, locale: :en },
+           'about 1 year']
         ].each do |start, finish, options, output|
           it "should be #{output}" do
             expect(distance_of_time_in_words(start, finish, true, options)).to eq(output)
+          end
+        end
+
+        # requires the rails-i18n gem for non-English datetime.distance_in_words translations, see #44
+        if defined?(RailsI18n)
+          it 'should be rundt 1 år for vague: true, locale: :nb' do
+            finish = START_TIME + 1.year + 2.months
+            expect(distance_of_time_in_words(START_TIME, finish, true, vague: true, locale: :nb)).to eq('rundt 1 år')
+          end
+        else
+          it 'returns a translation missing message for vague: true, locale: :nb without the rails-i18n gem' do
+            finish = START_TIME + 1.year + 2.months
+            expect(distance_of_time_in_words(START_TIME, finish, true, vague: true, locale: :nb))
+              .to eq('Translation missing: nb.datetime.distance_in_words.about_x_years')
           end
         end
 

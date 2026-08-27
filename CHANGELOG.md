@@ -8,6 +8,7 @@
 * [#77](https://github.com/radar/distance_of_time_in_words/issues/77), [#120](https://github.com/radar/distance_of_time_in_words/issues/120): Fix `only`/`except` discarding the duration of excluded fractions instead of folding them into the next smaller included fraction - [@dblock](https://github.com/dblock).
 * [#63](https://github.com/radar/distance_of_time_in_words/issues/63): Fix incorrect DST correction in timezones with an inverted DST scheme (e.g. Europe/Dublin) by comparing `utc_offset` instead of the unreliable `Time#dst?` - [@dblock](https://github.com/dblock).
 * [#153](https://github.com/radar/distance_of_time_in_words/issues/153): Fix leftover hours/minutes leaking a historical UTC offset change (e.g. Pacific/Norfolk's 2015 offset change) into the result instead of folding it into the calendar distance - [@dblock](https://github.com/dblock).
+* [#44](https://github.com/radar/distance_of_time_in_words/issues/44): Document that `vague: true` combined with a non-English `locale:` requires the host application to load Rails' own translations for that locale - [@dblock](https://github.com/dblock).
 * [#156](https://github.com/radar/distance_of_time_in_words/pull/156): Add Ruby 4.0 to the test matrix - [@dblock](https://github.com/dblock).
 * Your contribution here.
 
