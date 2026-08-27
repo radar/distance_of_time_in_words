@@ -17,7 +17,11 @@ describe 'A better distance_of_time_in_words' do
 
   before do
     I18n.locale = :en
-    ActiveSupport.to_time_preserves_timezone = :zone
+    # This config is deprecated as of Rails 8.1 (it becomes the permanent,
+    # non-configurable behavior) and is removed entirely in Rails 8.2.
+    if Gem::Version.new(ActiveSupport::VERSION::STRING) < Gem::Version.new('8.1')
+      ActiveSupport.to_time_preserves_timezone = :zone
+    end
 
     allow(Time).to receive(:now).and_return(START_TIME)
     allow(Time.zone).to receive(:now).and_return(START_TIME)
