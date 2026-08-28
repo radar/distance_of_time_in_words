@@ -1,3 +1,7 @@
+## 5.6.1 (Next)
+
+* Your contribution here.
+
 ## 5.6.0 (2026/8/28)
 
 * [#145](https://github.com/radar/distance_of_time_in_words/pull/145): Add `dotiw/core` require path to use dotiw without overriding the Rails date helpers, `DOTIW.distance_of_time_in_words` shortcut - [@ermolaev](https://github.com/ermolaev).
