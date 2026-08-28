@@ -1,4 +1,4 @@
-## 5.6.0 (Next)
+## 5.6.0 (2026/8/28)
 
 * [#145](https://github.com/radar/distance_of_time_in_words/pull/145): Add `dotiw/core` require path to use dotiw without overriding the Rails date helpers, `DOTIW.distance_of_time_in_words` shortcut - [@ermolaev](https://github.com/ermolaev).
 * [#146](https://github.com/radar/distance_of_time_in_words/pull/146): Add support for Rails 8 - [@dblock](https://github.com/dblock).
@@ -11,7 +11,6 @@
 * [#44](https://github.com/radar/distance_of_time_in_words/issues/44): Document that `vague: true` combined with a non-English `locale:` requires the host application to load Rails' own translations for that locale - [@dblock](https://github.com/dblock).
 * [#156](https://github.com/radar/distance_of_time_in_words/pull/156): Add Ruby 4.0 to the test matrix - [@dblock](https://github.com/dblock).
 * [#158](https://github.com/radar/distance_of_time_in_words/pull/158): Add test coverage reporting with SimpleCov and Coveralls, merged across all Ruby 3.4 CI jobs (default + pinned Rails gemfiles) using parallel builds - [@dblock](https://github.com/dblock).
-* Your contribution here.
 
 ## 5.5.0 (2026/03/15)
 
