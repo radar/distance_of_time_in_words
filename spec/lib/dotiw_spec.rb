@@ -293,6 +293,17 @@ describe 'A better distance_of_time_in_words' do
       end
     end
 
+    context 'with explicit named zones' do
+      # https://github.com/moment/luxon/blob/3.7.2/test/datetime/diff.test.js#L317-L330
+      it 'preserves the elapsed time between UTC and CEST' do
+        from = Time.utc(2022, 5, 5, 23, 0, 0)
+        to = Time.new(2022, 5, 10, 0, 0, 0, '+02:00')
+
+        expect(to - from).to eq(3.days + 23.hours)
+        expect(distance_of_time_in_words(from, to, true)).to eq('3 days and 23 hours')
+      end
+    end
+
     describe 'accumulate_on:' do
       [
         [START_TIME,
