@@ -305,16 +305,17 @@ describe 'A better distance_of_time_in_words' do
 
       # https://github.com/bitwalker/timex/blob/3.7.11/test/format_duration_humanized_test.exs
       it 'preserves one minute across the Europe/Dublin DST fall-back (#165)' do
-        # Prior to the #165 fix, this was only reproducible when #to_time
-        # preserves the actual TimeZone object (see the #162 fix above),
-        # which only happens on Rails >= 8.0. On earlier Rails, #zone comes
-        # back nil for the same conversion, same_clock? conservatively
-        # treated the pair as unrelated clocks, no offset folding happened
-        # at all, and this example passed for the wrong reason instead of
-        # demonstrating #165. Now that offset_delta is only ever applied to
-        # the sub-day leftover rather than the top-level distance, it can
-        # no longer overcorrect past zero, so this passes for the right
-        # reason on every supported Rails version.
+        # Passing an ActiveSupport::TimeWithZone straight through (rather than
+        # calling #to_time on it, as in the #162 example above) exercises the
+        # same_clock? branch that compares #time_zone directly. Prior to the
+        # #165 fix, dotiw unconditionally called #to_time on any TimeWithZone
+        # argument, which discarded the real zone entirely on Rails < 8.0 (see
+        # DOTIW::Methods#coerce_to_time, #170) - so this was only reproducible
+        # on Rails >= 8.0, and passed for the wrong reason everywhere else. Now
+        # that #coerce_to_time no longer makes that unforced conversion, and
+        # offset_delta is only ever applied to the sub-day leftover rather
+        # than the top-level distance, this passes for the right reason on
+        # every supported Rails version.
         dublin = ActiveSupport::TimeZone['Europe/Dublin']
         from = Time.utc(2024, 10, 27, 0, 59, 30).in_time_zone(dublin)
         to = from + 1.minute
@@ -323,6 +324,23 @@ describe 'A better distance_of_time_in_words' do
         expect(to.utc_offset).to eq(0)
         expect(to - from).to eq(1.minute)
         expect(distance_of_time_in_words(from, to)).to eq('1 minute')
+      end
+
+      # https://github.com/dblock/tz_test/blob/master/ruby/test.rb
+      it 'folds the Pacific/Norfolk historical offset change into the calendar distance' do
+        # As with the Dublin example above, from/to are passed through as
+        # ActiveSupport::TimeWithZone rather than being converted with
+        # #to_time, so their real zone is preserved on every Rails version
+        # (see DOTIW::Methods#coerce_to_time, #170) and same_clock? can
+        # correctly recognize this as the same clock across Pacific/Norfolk's
+        # 2015 historical UTC offset change.
+        norfolk = ActiveSupport::TimeZone['Pacific/Norfolk']
+        from = norfolk.local(2015, 1, 15)
+        to = norfolk.local(2016, 3, 15)
+
+        expect(from.utc_offset).to eq(11.hours + 30.minutes)
+        expect(to.utc_offset).to eq(11.hours)
+        expect(distance_of_time_in_words(from, to, true)).to eq('1 year and 2 months')
       end
     end
 

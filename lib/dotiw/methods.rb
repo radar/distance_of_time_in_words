@@ -5,8 +5,8 @@ module DOTIW
     extend self
 
     def distance_of_time_in_words_hash(from_time, to_time, options = {})
-      from_time = from_time.to_time if !from_time.is_a?(Time) && from_time.respond_to?(:to_time)
-      to_time = to_time.to_time if !to_time.is_a?(Time) && to_time.respond_to?(:to_time)
+      from_time = coerce_to_time(from_time)
+      to_time = coerce_to_time(to_time)
 
       DOTIW::TimeHash.new(nil, from_time, to_time, options).to_hash
     end
@@ -73,10 +73,26 @@ module DOTIW
       if value.is_a?(Numeric)
         Time.at(value)
       elsif value.respond_to?(:to_time)
-        value.to_time
+        coerce_to_time(value)
       else
         raise ArgumentError, "#{value.inspect} can't be converted to a Time value"
       end
+    end
+
+    # An ActiveSupport::TimeWithZone already carries its zone explicitly and
+    # supports every operation TimeHash needs (arithmetic, #advance, calendar
+    # accessors, #utc_offset), so there's no reason to convert it to a plain
+    # Time first. Doing so is actively harmful: on Rails < 8.0 (before
+    # to_time_preserves_timezone defaulted to :zone), TimeWithZone#to_time
+    # discards the real zone and returns a Time in the process's local zone
+    # instead, which loses the information TimeHash's same_clock? needs to
+    # correctly fold a historical UTC offset change into the distance
+    # (#153/#162/#165) on Rails < 8.0 (#170) - the loss isn't inherent to
+    # older Rails, it's an unforced conversion we don't need to make.
+    def coerce_to_time(value)
+      return value if value.is_a?(Time) || value.respond_to?(:time_zone)
+
+      value.to_time
     end
 
     def options_with_scope(options)
