@@ -42,8 +42,41 @@ module DOTIW
     # fields (years/months/weeks/days), we want the offset difference
     # folded away so the leftover hours/minutes/seconds reflect only actual
     # elapsed wall-clock time, not artifacts of an offset shift.
+    #
+    # This only makes sense when both times are the same clock (the same
+    # location/zone before and after a transition). If they're simply
+    # expressed with different, unrelated UTC offsets (e.g. one in UTC and
+    # one with an explicit "-08:00" offset), any difference between their
+    # offsets is an artifact of how each was represented, not a transition,
+    # and folding it in would double count what subtraction already got
+    # right (#160).
     def offset_delta(smallest, largest)
+      return 0 unless same_clock?(smallest, largest)
+
       largest.utc_offset - smallest.utc_offset
+    end
+
+    # Whether smallest and largest are readings of the same underlying
+    # clock, as opposed to two independently fixed offsets that simply
+    # happen to differ (e.g. one in UTC, one with an explicit "-08:00").
+    # Only in the former case does a UTC offset difference represent a
+    # real transition (DST, or a historical tzdata rule change) rather
+    # than an artifact of how each time happens to be represented.
+    #
+    # An ActiveSupport::TimeWithZone carries its zone explicitly, so two
+    # of them share a clock when their +time_zone+ matches. A plain Ruby
+    # Time has no such attribute, but it's tied to the process's system
+    # zone unless it was given an explicit fixed offset (+Time.new+ with
+    # a UTC offset argument) or is in UTC mode (+Time.utc+/+Time.gm+), in
+    # which case +#zone+ is +nil+ or fixed and can never transition, so
+    # two such plain times share the same (system) clock.
+    def same_clock?(smallest, largest)
+      if smallest.respond_to?(:time_zone) || largest.respond_to?(:time_zone)
+        smallest.respond_to?(:time_zone) && largest.respond_to?(:time_zone) &&
+          smallest.time_zone == largest.time_zone
+      else
+        !smallest.zone.nil? && !smallest.utc? && !largest.zone.nil? && !largest.utc?
+      end
     end
 
     def build_time_hash

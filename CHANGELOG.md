@@ -1,5 +1,6 @@
 ## 5.6.1 (Next)
 
+* [#160](https://github.com/radar/distance_of_time_in_words/issues/160): Fix `offset_delta` incorrectly folding the full UTC offset difference into the distance when comparing timestamps with different, unrelated offsets (e.g. one in UTC, one with an explicit `-08:00` offset) instead of only when they're the same clock across a real DST/tzdata transition - [@dblock](https://github.com/dblock).
 * Your contribution here.
 
 ## 5.6.0 (2026/08/28)
