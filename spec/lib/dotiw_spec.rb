@@ -293,6 +293,40 @@ describe 'A better distance_of_time_in_words' do
       end
     end
 
+    context 'with explicit named zones' do
+      # https://github.com/moment/luxon/blob/3.7.2/test/datetime/diff.test.js#L317-L330
+      it 'preserves the elapsed time between UTC and CEST' do
+        from = Time.utc(2022, 5, 5, 23, 0, 0)
+        to = Time.new(2022, 5, 10, 0, 0, 0, '+02:00')
+
+        expect(to - from).to eq(3.days + 23.hours)
+        expect(distance_of_time_in_words(from, to, true)).to eq('3 days and 23 hours')
+      end
+
+      # https://github.com/bitwalker/timex/blob/3.7.11/test/format_duration_humanized_test.exs
+      it 'preserves one minute across the Europe/Dublin DST fall-back (#165)', pending: 'offset_delta folds the full 1 hour transition into a much smaller real distance, see #165' do
+        dublin = ActiveSupport::TimeZone['Europe/Dublin']
+        from = Time.utc(2024, 10, 27, 0, 59, 30).in_time_zone(dublin)
+        to = from + 1.minute
+
+        expect(from.utc_offset).to eq(1.hour)
+        expect(to.utc_offset).to eq(0)
+        expect(to - from).to eq(1.minute)
+        expect(distance_of_time_in_words(from, to)).to eq('1 minute')
+      end
+
+      # https://github.com/dblock/tz_test/blob/master/ruby/test.rb
+      it 'folds the Pacific/Norfolk historical offset change into the calendar distance' do
+        norfolk = ActiveSupport::TimeZone['Pacific/Norfolk']
+        from = norfolk.local(2015, 1, 15)
+        to = norfolk.local(2016, 3, 15)
+
+        expect(from.utc_offset).to eq(11.hours + 30.minutes)
+        expect(to.utc_offset).to eq(11.hours)
+        expect(distance_of_time_in_words(from, to, true)).to eq('1 year and 2 months')
+      end
+    end
+
     describe 'accumulate_on:' do
       [
         [START_TIME,
