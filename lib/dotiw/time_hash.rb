@@ -11,11 +11,9 @@ module DOTIW
       @options    = options.dup
       @distance   = distance
       @from_time  = from_time || Time.current
-      @to_time    = to_time   || (@to_time_not_given = true && @from_time + distance.seconds)
+      @to_time    = to_time || (@from_time + distance.seconds)
       @smallest, @largest = [@from_time, @to_time].minmax
-      @to_time += offset_delta(smallest, largest) if @to_time_not_given
-      @smallest, @largest = [@from_time, @to_time].minmax
-      @distance ||= (largest - smallest) + offset_delta(smallest, largest)
+      @distance ||= largest - smallest
 
       build_time_hash
     end
@@ -38,10 +36,14 @@ module DOTIW
     # reflects any change in UTC offset between them (whether from a DST
     # transition or a permanent tzdata rule change, e.g. Pacific/Norfolk's
     # 2015 UTC offset change), which is what we want when reporting a raw
-    # elapsed duration. However, when we split that distance into calendar
-    # fields (years/months/weeks/days), we want the offset difference
-    # folded away so the leftover hours/minutes/seconds reflect only actual
-    # elapsed wall-clock time, not artifacts of an offset shift.
+    # elapsed duration - this is why we never touch the top-level @distance
+    # used to pick which build_* branch to use. However, once we've split
+    # that distance into calendar fields (years/months/weeks/days, #153),
+    # we want the offset difference folded out of the *sub-day leftover*
+    # only, so it reflects actual elapsed wall-clock time rather than an
+    # artifact of an offset shift, without risking flipping the sign of the
+    # much larger top-level distance the way applying this correction
+    # globally used to (#165).
     #
     # This only makes sense when both times are the same clock (the same
     # location/zone before and after a transition). If they're simply
@@ -229,9 +231,28 @@ module DOTIW
       output[:weeks]   = weeks
       output[:days]    = days
 
-      total_days, @distance = distance.abs.divmod(ONE_DAY.to_i)
-
-      [total_days, @distance]
+      # total_days is discarded: years/months/weeks/days above are derived
+      # from calendar components (largest/smallest year/month/day), an
+      # entirely separate calculation from @distance. All we need from here
+      # on is the leftover below the day boundary, which is just @distance
+      # mod one day - decoupled like this (rather than reconstructed by
+      # advancing smallest by years/months/weeks/days and diffing against
+      # largest) so a calendar edge case where that reconstruction doesn't
+      # land exactly on largest (e.g. Jan 31 -> Mar 2) can never leave a
+      # leftover large enough to loop back into this same branch forever.
+      # We do fold in any UTC offset change between smallest and largest
+      # (#153) exactly once - guarded, since build_years and build_months
+      # both call this method unconditionally, and accumulate_on: :years
+      # ends up invoking it twice (once via build_years, once via
+      # build_months) - but only here, not in the top-level @distance used
+      # to pick which build_* branch to use in the first place, so a real
+      # elapsed time much smaller than the offset change (#165) still gets
+      # bucketed correctly.
+      unless @offset_applied
+        @offset_applied = true
+        @distance = distance.abs + offset_delta(smallest, largest)
+      end
+      _total_days, @distance = distance.abs.divmod(ONE_DAY.to_i)
     end
   end
 end
