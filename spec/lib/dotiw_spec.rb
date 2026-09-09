@@ -284,12 +284,26 @@ describe 'A better distance_of_time_in_words' do
       # these directly via TimeZone#local/#to_time, rather than Ruby's Time.new(in:)
       # keyword (only available on Ruby 3.2+), reproduces the same shape of object
       # portably across the whole supported Ruby/Rails matrix.
-      it 'is 1 hour, not less than 1 second' do
+      it 'treats different TimeZone-object zones as different clocks, without folding in any offset' do
         tokyo_time = ActiveSupport::TimeZone['Asia/Tokyo'].local(2026, 1, 16, 4, 0, 0).to_time
         la_time = ActiveSupport::TimeZone['America/Los_Angeles'].local(2026, 1, 15, 12, 0, 0).to_time
 
         expect(la_time - tokyo_time).to eq(3600.0)
         expect(distance_of_time_in_words(tokyo_time, la_time)).to eq('1 hour')
+      end
+
+      # Same TimeZone-object shape as above, but far enough apart to be split
+      # into calendar fields (years/months/weeks/days, #153/#165), which is
+      # the only place same_clock? is invoked (see #165). Tokyo and LA are
+      # unrelated zones (not the same clock before/after a transition), so
+      # this exercises same_clock?'s "not a String zone" comparison finding
+      # the two TimeZone objects unequal, exactly like the #160 case does
+      # for String zones.
+      it 'treats TimeZone-object zones far enough apart to span calendar fields as different clocks' do
+        tokyo_time = ActiveSupport::TimeZone['Asia/Tokyo'].local(2025, 1, 16, 4, 0, 0).to_time
+        la_time = ActiveSupport::TimeZone['America/Los_Angeles'].local(2026, 3, 15, 12, 0, 0).to_time
+
+        expect(distance_of_time_in_words(tokyo_time, la_time, true)).to eq('1 year, 1 month, 3 weeks, and 6 days')
       end
     end
 
