@@ -277,6 +277,22 @@ describe 'A better distance_of_time_in_words' do
       end
     end
 
+    context 'with Time values using different zone objects (#162)' do
+      # #to_time on an ActiveSupport::TimeWithZone (with to_time_preserves_timezone
+      # set, the default since Rails 7.1) returns a plain Time whose #zone is the
+      # ActiveSupport::TimeZone object itself, not a String abbreviation. Building
+      # these directly via TimeZone#local/#to_time, rather than Ruby's Time.new(in:)
+      # keyword (only available on Ruby 3.2+), reproduces the same shape of object
+      # portably across the whole supported Ruby/Rails matrix.
+      it 'is 1 hour, not less than 1 second' do
+        tokyo_time = ActiveSupport::TimeZone['Asia/Tokyo'].local(2026, 1, 16, 4, 0, 0).to_time
+        la_time = ActiveSupport::TimeZone['America/Los_Angeles'].local(2026, 1, 15, 12, 0, 0).to_time
+
+        expect(la_time - tokyo_time).to eq(3600.0)
+        expect(distance_of_time_in_words(tokyo_time, la_time)).to eq('1 hour')
+      end
+    end
+
     describe 'accumulate_on:' do
       [
         [START_TIME,
