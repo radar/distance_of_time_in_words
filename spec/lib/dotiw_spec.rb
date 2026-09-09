@@ -305,15 +305,16 @@ describe 'A better distance_of_time_in_words' do
 
       # https://github.com/bitwalker/timex/blob/3.7.11/test/format_duration_humanized_test.exs
       it 'preserves one minute across the Europe/Dublin DST fall-back (#165)' do
-        # Only reproducible when #to_time preserves the actual TimeZone object
-        # (see the #162 fix above), which only happens on Rails >= 8.0. On
-        # earlier Rails, #zone comes back nil for the same conversion,
-        # same_clock? conservatively treats the pair as unrelated clocks, no
-        # offset folding happens at all, and this example passes for the
-        # wrong reason instead of demonstrating #165.
-        skip 'requires Rails >= 8.0, where #to_time preserves the TimeZone object' if Gem::Version.new(ActiveSupport::VERSION::STRING) < Gem::Version.new('8.0')
-        pending 'offset_delta folds the full 1 hour transition into a much smaller real distance, see #165'
-
+        # Prior to the #165 fix, this was only reproducible when #to_time
+        # preserves the actual TimeZone object (see the #162 fix above),
+        # which only happens on Rails >= 8.0. On earlier Rails, #zone comes
+        # back nil for the same conversion, same_clock? conservatively
+        # treated the pair as unrelated clocks, no offset folding happened
+        # at all, and this example passed for the wrong reason instead of
+        # demonstrating #165. Now that offset_delta is only ever applied to
+        # the sub-day leftover rather than the top-level distance, it can
+        # no longer overcorrect past zero, so this passes for the right
+        # reason on every supported Rails version.
         dublin = ActiveSupport::TimeZone['Europe/Dublin']
         from = Time.utc(2024, 10, 27, 0, 59, 30).in_time_zone(dublin)
         to = from + 1.minute
