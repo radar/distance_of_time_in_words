@@ -302,6 +302,27 @@ describe 'A better distance_of_time_in_words' do
         expect(to - from).to eq(3.days + 23.hours)
         expect(distance_of_time_in_words(from, to, true)).to eq('3 days and 23 hours')
       end
+
+      # https://github.com/bitwalker/timex/blob/3.7.11/test/format_duration_humanized_test.exs
+      it 'preserves one minute across the Europe/Dublin DST fall-back (#165)' do
+        # Only reproducible when #to_time preserves the actual TimeZone object
+        # (see the #162 fix above), which only happens on Rails >= 8.0. On
+        # earlier Rails, #zone comes back nil for the same conversion,
+        # same_clock? conservatively treats the pair as unrelated clocks, no
+        # offset folding happens at all, and this example passes for the
+        # wrong reason instead of demonstrating #165.
+        skip 'requires Rails >= 8.0, where #to_time preserves the TimeZone object' if Gem::Version.new(ActiveSupport::VERSION::STRING) < Gem::Version.new('8.0')
+        pending 'offset_delta folds the full 1 hour transition into a much smaller real distance, see #165'
+
+        dublin = ActiveSupport::TimeZone['Europe/Dublin']
+        from = Time.utc(2024, 10, 27, 0, 59, 30).in_time_zone(dublin)
+        to = from + 1.minute
+
+        expect(from.utc_offset).to eq(1.hour)
+        expect(to.utc_offset).to eq(0)
+        expect(to - from).to eq(1.minute)
+        expect(distance_of_time_in_words(from, to)).to eq('1 minute')
+      end
     end
 
     describe 'accumulate_on:' do
