@@ -65,15 +65,20 @@ module DOTIW
     #
     # An ActiveSupport::TimeWithZone carries its zone explicitly, so two
     # of them share a clock when their +time_zone+ matches. A plain Ruby
-    # Time has no such attribute, but it's tied to the process's system
-    # zone unless it was given an explicit fixed offset (+Time.new+ with
-    # a UTC offset argument) or is in UTC mode (+Time.utc+/+Time.gm+), in
-    # which case +#zone+ is +nil+ or fixed and can never transition, so
-    # two such plain times share the same (system) clock.
+    # Time normally reports its zone as a String abbreviation (e.g. "PST")
+    # or +nil+ (fixed numeric offset, which can never transition, so two
+    # such times can't share a clock). Depending on the Ruby/ActiveSupport
+    # version, however, converting an ActiveSupport::TimeWithZone via
+    # +#to_time+ can instead produce a plain Time whose +#zone+ is the
+    # ActiveSupport::TimeZone object itself (#162) - in that case we
+    # compare the zone objects directly rather than assuming any two
+    # non-String zones both refer to the process's system zone.
     def same_clock?(smallest, largest)
       if smallest.respond_to?(:time_zone) || largest.respond_to?(:time_zone)
         smallest.respond_to?(:time_zone) && largest.respond_to?(:time_zone) &&
           smallest.time_zone == largest.time_zone
+      elsif !smallest.zone.is_a?(String) || !largest.zone.is_a?(String)
+        !smallest.zone.nil? && smallest.zone == largest.zone
       else
         !smallest.zone.nil? && !smallest.utc? && !largest.zone.nil? && !largest.utc?
       end
