@@ -254,6 +254,29 @@ describe 'A better distance_of_time_in_words' do
       end
     end
 
+    context 'with different UTC offsets that are not the same clock (#160)' do
+      # Real, non-mocked reproduction from #160: comparing two timestamps
+      # expressed with different, unrelated UTC offsets (not the same
+      # location before/after a real transition) incorrectly folded the
+      # full offset difference between them into the reported distance.
+      # Neither endpoint here crosses any DST or historical offset
+      # transition; only their representation differs.
+      it 'is 1 hour, not 9 hours' do
+        from = Time.new(2026, 1, 15, 11, 0, 0, '-08:00')
+        to = Time.utc(2026, 1, 15, 20)
+
+        expect(to - from).to eq(3600.0)
+        expect(distance_of_time_in_words(from, to)).to eq('1 hour')
+      end
+
+      it 'is still 1 hour when both timestamps are in UTC' do
+        from = Time.new(2026, 1, 15, 11, 0, 0, '-08:00').getutc
+        to = Time.utc(2026, 1, 15, 20)
+
+        expect(distance_of_time_in_words(from, to)).to eq('1 hour')
+      end
+    end
+
     describe 'accumulate_on:' do
       [
         [START_TIME,
