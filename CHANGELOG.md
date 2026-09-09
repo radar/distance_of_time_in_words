@@ -1,10 +1,9 @@
-## 5.6.1 (Next)
+## 5.6.1 (2026/09/09)
 
 * [#160](https://github.com/radar/distance_of_time_in_words/issues/160): Fix `offset_delta` incorrectly folding the full UTC offset difference into the distance when comparing timestamps with different, unrelated offsets (e.g. one in UTC, one with an explicit `-08:00` offset) instead of only when they're the same clock across a real DST/tzdata transition - [@dblock](https://github.com/dblock).
 * [#162](https://github.com/radar/distance_of_time_in_words/issues/162): Fix `same_clock?` incorrectly treating two `Time` values converted from `ActiveSupport::TimeWithZone` in different zones as the same clock on Rails >= 8.0, where `#to_time` returns a `Time` whose `#zone` is the `ActiveSupport::TimeZone` object itself rather than a `nil`/String abbreviation - [@dblock](https://github.com/dblock).
 * [#165](https://github.com/radar/distance_of_time_in_words/issues/165): Fix `offset_delta` folding the full UTC offset change into the top-level distance, which could overcorrect past zero and report "less than 1 second" for a case where a small real elapsed time (e.g. 1 minute) crosses a much larger DST transition (e.g. Europe/Dublin's 1 hour fall-back) - the offset correction is now only applied to the sub-day leftover once the distance has already been split into calendar fields - [@dblock](https://github.com/dblock).
 * [#170](https://github.com/radar/distance_of_time_in_words/issues/170): Fix `distance_of_time_in_words` unnecessarily converting an `ActiveSupport::TimeWithZone` argument to a plain `Time` via `#to_time`, which discarded its real zone on Rails < 8.0 and prevented `same_clock?` from correctly folding in a historical UTC offset change (e.g. Pacific/Norfolk's 2015 offset change, #153) on those versions - [@dblock](https://github.com/dblock).
-* Your contribution here.
 
 ## 5.6.0 (2026/08/28)
 
